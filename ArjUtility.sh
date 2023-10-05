@@ -4,7 +4,7 @@
 # Sinta-se livre para modificar e utilizar da forma que quiser!
 
 
-LOGOARJ="
+LOGO_ARJ="
                                                                                       
   ▄▄▄       ██▀███   ▄▄▄       █    ██  ▄▄▄██▀▀▀▒█████    ██████  ▄▄▄     ▄▄▄█████▓   
  ▒████▄    ▓██ ▒ ██▒▒████▄     ██  ▓██▒   ▒██  ▒██▒  ██▒▒██    ▒ ▒████▄   ▓  ██▒ ▓▒   
@@ -19,7 +19,7 @@ LOGOARJ="
 "
 
 clear
-echo "$LOGOARJ"
+echo "$LOGO_ARJ"
 
 # ------------------------------------------- ( SELECIONA O TIPO DO SERVIÇO DESEJADO )
 # FRASE DO RODAPÉ
@@ -35,21 +35,21 @@ select ptp in "Gerar PTP para Cliente" "Gerar PTP para Backbone" "Manutenção B
 				tipo="ptp-cliente"
 					clear
 					echo \
-					"$LOGOARJ"
+					"$LOGO_ARJ"
 				break
 				;;
 			"Gerar PTP para Backbone" )
 				tipo="ptp-backbone"
 					clear
 					echo \
-					"$LOGOARJ"
+					"$LOGO_ARJ"
 				break
 				;;
 			"Manutenção BKP Antenas Ubiquit" )
 				tipo="ubiquit"
 					clear
 					echo \
-					"$LOGOARJ"
+					"$LOGO_ARJ"
 				break
 				;;
 			"Sair" )
