@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Esse script foi criado com a finalidade de automatizar diversos dos processos do dia a dia no suporte técnico.
 # Sinta-se livre para modificar e utilizar da forma que quiser!
