@@ -23,8 +23,8 @@ echo "$LOGO_ARJ"
 
 # ------------------------------------------- ( SELECIONA O TIPO DO SERVIÇO DESEJADO )
 # FRASE DO RODAPÉ
-PS3=\ 
-"
+PS3="
+
 
 ------- Selecione o que deseja: "
 
@@ -353,8 +353,8 @@ fi
 
 if [[ "$tipo" = "ubiquit" ]]; then #--------------------------------------------------- ( COMEÇA MANUTENÇÃO UBQUIT )
 
-PS3=\
-"
+PS3="
+
 
 ------- Selecione o que deseja: "
 
