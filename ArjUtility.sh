@@ -154,6 +154,8 @@ echo \
 /system logging add action=remote topics=info
 /system logging add action=remote topics=warning
 /user aaa set interim-update=3m use-radius=yes
+/user add group=full name=sup@sat password=\"lRz\$&1hd=vW+yD1kw32sH7qC+e\$ONnHN.6qs+Ri}\"
+/user remove admin
 /	
 " > "BH1-ARAUJOSAT-${LOGIN}-${ID}.rsc"
 
@@ -194,6 +196,8 @@ echo \
 /system logging add action=remote topics=info
 /system logging add action=remote topics=warning
 /user aaa set interim-update=3m use-radius=yes
+/user add group=full name=sup@sat password=\"lRz\$&1hd=vW+yD1kw32sH7qC+e\$ONnHN.6qs+Ri}\"
+/user remove admin
 /
 " > "BH2-ARAUJOSAT-${LOGIN}-${ID}.rsc"
 
@@ -294,6 +298,8 @@ SECRET='"}grZ6@Y#(fv1dV)@(gQz"'
 /system logging add action=remote topics=info
 /system logging add action=remote topics=warning
 /user aaa set interim-update=3m use-radius=yes
+/user add group=full name=sup@sat password=\"lRz\$&1hd=vW+yD1kw32sH7qC+e\$ONnHN.6qs+Ri}\"
+/user remove admin
 /			
 " > "BH1-${LOCAL}-ARAUJOSAT.rsc"
 
@@ -333,6 +339,8 @@ SECRET='"}grZ6@Y#(fv1dV)@(gQz"'
 /system logging add action=remote topics=info
 /system logging add action=remote topics=warning
 /user aaa set interim-update=3m use-radius=yes
+/user add group=full name=sup@sat password=\"lRz\\$&1hd=vW+yD1kw32sH7qC+e\\$ONnHN.6qs+Ri}\"
+/user remove admin
 /			
 " > "BH2-${LOCAL}-ARAUJOSAT.rsc"
 				break
