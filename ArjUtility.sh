@@ -33,8 +33,7 @@ rodape2="
 
 ------- As informações estão corretas?: "
 
-# ----------------------- FRASE DO RODAPÉ )
-PS3="$rodape1"
+PS3="$rodape1" # ----------------------- FRASE DO RODAPÉ )
 
 # ------------------------------------------- ( SELECIONA O TIPO DO SERVIÇO DESEJADO )
 select SERVICE in "Gerar PTP para PPPoE" "Gerar PTP para Bridge" "Manutenção BKP Antenas Ubiquit" "Sair"
@@ -231,8 +230,7 @@ ptp_bridge_bh2 () {
 " > "BH2-${LOCAL}-ARAUJOSAT.rsc"
 }
 
-#  ----------------------------------- PONTO A PONTO DE PPPOE ) 
-if [[ "$tipo" = "ptp-pppoe" ]]; then
+if [[ "$tipo" = "ptp-pppoe" ]]; then # ------------------------------------------- PONTO A PONTO DE PPPOE ) 
 # ESCOLHA O ID DO CLIENTE
 	echo \
 	"- Digite o ID do Contrato do cliente?"
@@ -266,11 +264,9 @@ GATEWAY DO BH1: $GATEWAY
 
 ---------------------------------------
 "
-# RODAPÉ -----------------------------------)
-PS3="$rodape2"
+PS3="$rodape2" # ------------------------------------------- RODAPÉ )
 
-#  ----------------------------------- ( SELEÇÃO DE CONFIMAÇÃO SIM OU NÃO )
-select STATUS1 in "SIM!" "NÃO."
+select STATUS1 in "SIM!" "NÃO." #  ----------------------------------- ( SELEÇÃO DE CONFIMAÇÃO SIM OU NÃO )
 do
 		case $STATUS1 in
 		SIM! )
@@ -288,12 +284,9 @@ do
 				;;
 	esac
 done
-fi
+fi # ------------------------------------------------------------------------------------ FINAL PTP PPPOE ) 
 
-
-# FINAL DO SCRIPT Gerar PTP para Cliente DEDICADO -------------------------------------#
-
-if [[ "$tipo" = "ptp-bridge" ]]; then
+if [[ "$tipo" = "ptp-bridge" ]]; then  #--------------------------------------------------------- PONTO A PONTO BRIDGE - INICIO) 
 	echo \
 	"- Qual é o nome da localidade?"
 		read "LOCAL"
@@ -320,8 +313,7 @@ GATEWAY:   $GATEWAY
 
 ---------------------------------------
 "
-# RODAPÉ -----------------------------------)
-PS3="$rodape2"
+PS3="$rodape2" # ----------------------- FRASE DO RODAPÉ )
 
 select STATUS2 in "SIM!" "NÃO."
 do
@@ -342,7 +334,7 @@ do
 				;;
 	esac
 done
-fi
+fi # --------------------------------------------------------- PONTO A PONTO BRIDGE - FINAL) 
 ########################################################################################################################
 #												FINAL CRIAÇÃO DOS PTP
 ########################################################################################################################
@@ -604,7 +596,7 @@ lista_de_canais (){
 
 if [[ "$tipo" = "ubiquit" ]]; then #--------------------------------------------------- ( COMEÇA MANUTENÇÃO UBQUIT )
 
-PS3="$rodape1"
+PS3="$rodape1" # ----------------------- FRASE DO RODAPÉ )
 
 select MANUBQUIT in "Gerar BKP para Antena Ubiquit" "Download Atualização das Antenas v.6.3.11" "Gerar lista de Canais" "Sair"
 	do
@@ -665,8 +657,8 @@ GATEWAY: $GATEWAY
 
 ---------------------------------------
 "
-# RODAPÉ -----------------------------------)
-PS3="$rodape2"
+
+PS3="$rodape2" # ----------------------- FRASE DO RODAPÉ )
 
 
 		select STATUS3 in "Sim!" "Não." #----------------------------- (SELEÇÃO DE SIM OU NÃO)
