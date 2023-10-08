@@ -21,6 +21,11 @@ LOGO_ARJ="
 clear
 echo "$LOGO_ARJ"
 
+#CORES
+VERMELHO='\e[1;91m'
+VERDE='\e[1;92m'
+SEM_COR='\e[0m'
+
 # ------------------------------------------- ( SELECIONA O TIPO DO SERVIÇO DESEJADO )
 # FRASE DO RODAPÉ
 PS3="
@@ -57,7 +62,7 @@ select ptp in "Gerar PTP para Cliente" "Gerar PTP para Backbone" "Manutenção B
 				exit
 				;;
 			*) 
-				echo "Comando não identificado!"
+				echo -e "${VERMELHO}Comando não identificado!${SEM_COR}"
 				;;
 	esac
 done
@@ -211,7 +216,7 @@ break
 			exit
 				;;
 			* )
-				echo -e "\nPor favor insira uma opção válida."
+				echo -e "${VERMELHO}\nPor favor insira uma opção válida.${SEM_COR}"
 				;;
 esac
 done
@@ -351,7 +356,7 @@ SECRET='"}grZ6@Y#(fv1dV)@(gQz"'
 				exit
 					;;
 			* ) 
-				echo "Por favor insira uma opção válida."
+				echo -e "${VERMELHO}\nPor favor insira uma opção válida.${SEM_COR}"
 					;;
 	esac
 done
@@ -383,7 +388,7 @@ select MANUBQUIT in "Gerar BKP para Antena Ubiquit" "Download Atualização das 
 				exit
 				;;
 			* ) 
-					echo "Por favor insira uma opção válida."
+					echo -e "${VERMELHO}\nPor favor insira uma opção válida.${SEM_COR}"
 						;;
 			
 		esac
@@ -670,7 +675,7 @@ wpasupplicant.status=disabled
 					break
 					;;
 				* )
-					echo "Por favor insira uma opção válida."
+					echo -e "${VERMELHO}\nPor favor insira uma opção válida.${SEM_COR}"
 					;;
 				
 			esac
@@ -716,7 +721,7 @@ wpasupplicant.status=disabled
 						break
 						;;
 					*) 
-						echo "Comando não identificado!"
+						echo -e "${VERMELHO}Comando não identificado!${SEM_COR}"
 						;;
 			esac
 		done
