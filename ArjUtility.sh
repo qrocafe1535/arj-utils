@@ -37,17 +37,17 @@ rodape2="
 PS3="$rodape1"
 
 # ------------------------------------------- ( SELECIONA O TIPO DO SERVIÇO DESEJADO )
-select ptp in "Gerar PTP para Cliente" "Gerar PTP para Backbone" "Manutenção BKP Antenas Ubiquit" "Sair"
+select ptp in "Gerar PTP para PPPoE" "Gerar PTP para Bridge" "Manutenção BKP Antenas Ubiquit" "Sair"
 	do
 	case $ptp in
-			"Gerar PTP para Cliente" )
-				tipo="ptp-cliente"
+			"Gerar PTP para PPPoE" )
+				tipo="ptp-pppoe"
 					clear
 					echo -e "$LOGO_ARJ"
 				break
 				;;
-			"Gerar PTP para Backbone" )
-				tipo="ptp-backbone"
+			"Gerar PTP para Bridge" )
+				tipo="ptp-bridge"
 					clear
 					echo -e "$LOGO_ARJ"
 				break
@@ -232,7 +232,7 @@ ptp_bridge_bh2 () {
 }
 
 #  ----------------------------------- PONTO A PONTO DE PPPOE ) 
-if [[ "$tipo" = "ptp-cliente" ]]; then
+if [[ "$tipo" = "ptp-pppoe" ]]; then
 # ESCOLHA O ID DO CLIENTE
 	echo \
 	"- Digite o ID do Contrato do cliente?"
@@ -292,7 +292,7 @@ fi
 
 # FINAL DO SCRIPT Gerar PTP para Cliente DEDICADO -------------------------------------#
 
-if [[ "$tipo" = "ptp-backbone" ]]; then
+if [[ "$tipo" = "ptp-bridge" ]]; then
 	echo \
 	"- Qual é o nome da localidade?"
 		read "LOCAL"
