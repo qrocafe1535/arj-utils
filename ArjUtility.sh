@@ -699,6 +699,7 @@ wpasupplicant.status=disabled
 	fi
 
 #---------------------------------------------------------------------------- (COMEÇA LISTA DE CANAIS)
+
 	if [[ "$MANUBQUIT" = "Gerar lista de Canais" ]]; then 
 		
 		LISTACANAIS="
