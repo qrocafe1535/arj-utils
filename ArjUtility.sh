@@ -19,6 +19,7 @@ LOGO_ARJ="
 "
 
 clear
+#EXIBE LOGO
 echo "$LOGO_ARJ"
 
 #CORES
@@ -68,64 +69,10 @@ select ptp in "Gerar PTP para Cliente" "Gerar PTP para Backbone" "Manutenção B
 done
 # FINAL DA SELEÇÃO DO SERVIÇO DESEJADO --------------------------#
 
-
-# PONTO A PONTO DE CLIENTE -----------------------------------#
-
-if [[ "$tipo" = "ptp-cliente" ]]; then
-# ESCOLHA O ID DO CLIENTE
-	echo \
-	"- Digite o ID do Contrato do cliente?"
-		read "ID"
-# ESCOLHA O LOGIN DO PPPOE DO CLIENTE
-	echo  \
-	"- Qual o login do PPPoE do cliente?"
-		read "LOGIN"
-#ESCOLHA A SENHA DO PPPOE
-	echo -e \
-	"- Qual a senha do PPPoE do cliente?"
-		read "SENHA"
-# ESCOLHA O BLOCO QUE SERÁ ALOCADO PARA O BH1
-	echo -e \
-	"- Qual o bloco de ip do BH1? \nLembre-se de adicionar a mascara de subrede. \nFormato: XX.XX.XX.XX/MM"
-		read "BLOCO"
-#  QUAL O GATEWAY QUE O BH1 UTILIZARÁ COMO GATEWAY
-	echo -e \
-	"- Qual o gateway desse bloco? \nLembre-se de adicionar a mascara de subrede. \nFormato: XX.XX.XX.XX"
-		read "GATEWAY"
-
-## DEFINA O LOGIN  E A SENHA DO BH1 E BH2
-#	echo \
-#	"- Qual o usuário de acesso ao ponto a ponto?"
-#		read "USER"
-#	
-#	echo \
-#	"- Qual a senha de acesso ao ponto a ponto?"
-#		read "PASSWORD"
-
-echo \
-"
-------- CONFIRA AS INFORMAÇÕES --------
-
-ID DO CLIENTE:  $ID
-LOGIN DO PPPOE: $LOGIN
-SENHA DO PPPOE: $SENHA
-BLOCO DO BH1:   $BLOCO
-GATEWAY DO BH1: $GATEWAY
-
----------------------------------------
-"
-# RODAPÉ -----------------------------------)
-PS3=\
-"
-------- As informações estão corretas?: "
-
-#  ----------------------------------- ( SELEÇÃO DE CONFIMAÇÃO SIM OU NÃO )
-select STATUS1 in "SIM!" "NÃO."
-do
-	case $STATUS1 in
-	SIM! )
-#----------------------------------- ( EXPORTA PARA UM ARQUIVO DE BACKUP )
-#------- EXPORTA BH1 
+########################################################################################################################
+#													CRIAÇÃO DOS PTP 
+########################################################################################################################
+ptp_pppoe_bh1 () {
 echo \
 "
 /
@@ -149,7 +96,7 @@ echo \
 /ip service set winbox address=186.249.81.30/32,100.127.255.0/24 port=47569
 /ip service set api-ssl disabled=yes
 /ppp aaa set use-radius=yes
-/radius add address=10.51.200.2 comment=HEXANETWORKS secret=$SECRET service=login timeout=1s
+/radius add address=10.51.200.2 comment=HEXANETWORKS secret=\"}grZ6@Y#(fv1dV)@(gQz\" service=login timeout=1s
 /radius incoming set accept=yes
 /snmp set enabled=yes trap-version=2
 /system logging action set 3 remote=10.51.200.3 remote-port=32514
@@ -163,10 +110,9 @@ echo \
 /user remove admin
 /	
 " > "BH1-ARAUJOSAT-${LOGIN}-${ID}.rsc"
+}
 
-#------- EXPORTA BH2-CPE-CLIENTE.
-# secret do radius.
-SECRET='"}grZ6@Y#(fv1dV)@(gQz"'
+ptp_pppoe_bh2 () {
 echo \
 "
 /
@@ -191,7 +137,7 @@ echo \
 /ip service set winbox address=186.249.81.30/32,100.127.255.0/24 port=47569
 /ip service set api-ssl disabled=yes
 /ppp aaa set use-radius=yes
-/radius add address=10.51.200.2 comment=HEXANETWORKS secret=$SECRET service=login timeout=1s
+/radius add address=10.51.200.2 comment=HEXANETWORKS secret=\"}grZ6@Y#(fv1dV)@(gQz\" service=login timeout=1s
 /radius incoming set accept=yes
 /snmp set enabled=yes trap-version=2
 /system logging action set 3 remote=10.51.200.3 remote-port=32514
@@ -205,74 +151,10 @@ echo \
 /user remove admin
 /
 " > "BH2-ARAUJOSAT-${LOGIN}-${ID}.rsc"
+}
 
-echo -e \
-	"\nScript do BH1 e BH2 exportado com sucesso!"
-break
-;;
-			
-			NÃO. ) 
-				echo -e "\nTente novamente! Saindo....."
-			exit
-				;;
-			* )
-				echo -e "${VERMELHO}\nPor favor insira uma opção válida.${SEM_COR}"
-				;;
-esac
-done
-
-fi
-
-
-# FINAL DO SCRIPT Gerar PTP para Cliente DEDICADO -------------------------------------#
-
-if [[ "$tipo" = "ptp-backbone" ]]; then
-	echo \
-	"- Qual é o nome da localidade?"
-		read "LOCAL"
-
-	echo -e \
-	"- Qual é o ip do BH1? \nLembre-se de adicionar a mascara de subrede. \nFormato: XX.XX.XX.XX/MM"
-		read "BH1"
-	echo -e \
-	"- Qual é o ip do BH2? \nLembre-se de adicionar a mascara de subrede. \nFormato: XX.XX.XX.XX/MM"
-		read "BH2"
-	echo -e \
-	"- Qual o gateway do ponto a ponto? \nLembre-se de adicionar a mascara de subrede. \nFormato: XX.XX.XX.XX"
-		read "GATEWAY"
-
-## DEFINA O LOGIN  E A SENHA DO BH1 E BH2
-#	echo -e \
-#	"- Qual usuário de acesso? \nLembrando que também será adicionado o radius."
-#		read "USER"
-#	echo \
-#	"- Qual a senha de acesso?"
-#		read "PASSWORD"
-
+ptp_bridge_bh1 () {
 echo \
-"
-------- CONFIRA AS INFORMAÇÕES --------
-
-NOME DO BH1: BH1-$LOCAL-ARAUJOSAT
-NOME DO BH2: BH2-$LOCAL-ARAUJOSAT
-IP DO BH1: $BH1
-IP DO BH2: $BH2
-GATEWAY:   $GATEWAY
-
----------------------------------------
-"
-
-PS3=\
-"
-------- As informações estão corretas?: "
-
-select STATUS2 in "SIM!" "NÃO."
-do
-	case $STATUS2 in
-		SIM! )
-# secret do radius.
-SECRET='"}grZ6@Y#(fv1dV)@(gQz"'
-			echo \
 "
 /
 /interface bridge add name=bridge1
@@ -293,7 +175,7 @@ SECRET='"}grZ6@Y#(fv1dV)@(gQz"'
 /ip service set winbox address=186.249.81.30/32,100.127.255.0/24 port=47569
 /ip service set api-ssl disabled=yes
 /ppp aaa set use-radius=yes
-/radius add address=10.51.200.2 comment=HEXANETWORKS secret=$SECRET service=login timeout=1s
+/radius add address=10.51.200.2 comment=HEXANETWORKS secret=\"}grZ6@Y#(fv1dV)@(gQz\" service=login timeout=1s
 /radius incoming set accept=yes
 /snmp set enabled=yes trap-version=2
 /system logging action set 3 remote=10.51.200.3 remote-port=32514
@@ -307,12 +189,11 @@ SECRET='"}grZ6@Y#(fv1dV)@(gQz"'
 /user remove admin
 /			
 " > "BH1-${LOCAL}-ARAUJOSAT.rsc"
+}
 
-
-#----------------------------- (EXPORTA BH2-CPE-CLIENTE.)
-			echo \
+ptp_bridge_bh2 () {
+				echo \
 "
-
 /
 /interface bridge add name=bridge1
 /interface wireless set [ find default-name=wlan1 ] band=5ghz-a/n/ac channel-width=20/40mhz-XX country=no_country_set disabled=no frequency-mode=superchannel mode=station-bridge nv2-preshared-key=bh#$LOCAL nv2-security=enabled radio-name=BH2-$LOCAL scan-list=default,5100-6000 ssid=BH1-$LOCAL wireless-protocol=nv2
@@ -334,7 +215,7 @@ SECRET='"}grZ6@Y#(fv1dV)@(gQz"'
 /ip service set winbox address=186.249.81.30/32,100.127.255.0/24 port=47569
 /ip service set api-ssl disabled=yes
 /ppp aaa set use-radius=yes
-/radius add address=10.51.200.2 comment=HEXANETWORKS secret=$SECRET service=login timeout=1s
+/radius add address=10.51.200.2 comment=HEXANETWORKS secret=\"}grZ6@Y#(fv1dV)@(gQz\" service=login timeout=1s
 /radius incoming set accept=yes
 /snmp set enabled=yes trap-version=2
 /system logging action set 3 remote=10.51.200.3 remote-port=32514
@@ -348,83 +229,40 @@ SECRET='"}grZ6@Y#(fv1dV)@(gQz"'
 /user remove admin
 /			
 " > "BH2-${LOCAL}-ARAUJOSAT.rsc"
-				break
-					;;
+}
 
-			NÃO. ) 
-				echo "Tente novamente! Saindo....."
-				exit
-					;;
-			* ) 
-				echo -e "${VERMELHO}\nPor favor insira uma opção válida.${SEM_COR}"
-					;;
-	esac
-done
-fi
-
-
-
-if [[ "$tipo" = "ubiquit" ]]; then #--------------------------------------------------- ( COMEÇA MANUTENÇÃO UBQUIT )
-
-PS3="
-
-
-------- Selecione o que deseja: "
-
-select MANUBQUIT in "Gerar BKP para Antena Ubiquit" "Download Atualização das Antenas v.6.3.11" "Gerar lista de Canais" "Sair"
-	do
-		case $MANUBQUIT in
-			"Gerar BKP para Antena Ubiquit" )
-					break
-						;;
-			"Download Atualização das Antenas v.6.3.11" )
-					break
-						;;
-			"Gerar lista de Canais" )
-					break
-						;;	
-			"Sair" )
-				clear
-				exit
-				;;
-			* ) 
-					echo -e "${VERMELHO}\nPor favor insira uma opção válida.${SEM_COR}"
-						;;
-			
-		esac
-	done
-
-	#-------------------------------------------------------- ( Selecionou Gerar BKP para Antena Ubiquit )
-	if [[ "$MANUBQUIT" = "Gerar BKP para Antena Ubiquit" ]]; then
-
-		echo \
-			"Qual o nome do painel?"
-			read "NOME"  
-		echo \
-			"Qual o SSID que deseja propagar?"
-			read "SSID"  
-		echo \
-			"Qual WPA do painel?"
-			read "WPA" 
-		echo -e \
-			"Qual o IP do pinel? \nUtilizar o formato XX.XX.XX.XX"
-			read "IP" 
-		echo -e \
-			"Qual a mascara? \nUtilizar o formato XX.XX.XX.XX"
-			read "MASK" 		
-		echo -e \
-			"Qual o IP do gateway? \nUtilizar o formato XX.XX.XX.XX"
-			read "GATEWAY" 		
-		echo \
+#  ----------------------------------- PONTO A PONTO DE PPPOE ) 
+if [[ "$tipo" = "ptp-cliente" ]]; then
+# ESCOLHA O ID DO CLIENTE
+	echo \
+	"- Digite o ID do Contrato do cliente?"
+		read "ID"
+# ESCOLHA O LOGIN DO PPPOE DO CLIENTE
+	echo  \
+	"- Qual o login do PPPoE do cliente?"
+		read "LOGIN"
+# ESCOLHA A SENHA DO PPPOE
+	echo -e \
+	"- Qual a senha do PPPoE do cliente?"
+		read "SENHA"
+# ESCOLHA O BLOCO QUE SERÁ ALOCADO PARA O BH1
+	echo -e \
+	"- Qual o bloco de ip do BH1? \nLembre-se de adicionar a mascara de subrede. \nFormato: XX.XX.XX.XX/MM"
+		read "BLOCO"
+#  QUAL O GATEWAY QUE O BH1 UTILIZARÁ COMO GATEWAY
+	echo -e \
+	"- Qual o gateway desse bloco? \nLembre-se de adicionar a mascara de subrede. \nFormato: XX.XX.XX.XX"
+		read "GATEWAY"
+# CONFIRA SE AS INFORMAÇÕES ESTÃO CERTAS
+	echo \
 "
 ------- CONFIRA AS INFORMAÇÕES --------
 
-NOME: $NOME
-SSID: $SSID
-WPA: $WPA
-IP: $IP
-MASCARA: $MASK	
-GATEWAY: $GATEWAY
+ID DO CLIENTE:  $ID	
+LOGIN DO PPPOE: $LOGIN
+SENHA DO PPPOE: $SENHA
+BLOCO DO BH1:   $BLOCO
+GATEWAY DO BH1: $GATEWAY
 
 ---------------------------------------
 "
@@ -433,12 +271,92 @@ PS3=\
 "
 ------- As informações estão corretas?: "
 
+#  ----------------------------------- ( SELEÇÃO DE CONFIMAÇÃO SIM OU NÃO )
+select STATUS1 in "SIM!" "NÃO."
+do
+		case $STATUS1 in
+		SIM! )
+			ptp_pppoe_bh1
+			ptp_pppoe_bh2
+			echo -e "${VERDE}\nScript do BH1 e BH2 exportado com sucesso!${SEM_COR}"
+				break
+				;;
+		NÃO. ) 
+			echo -e "\nTente novamente! Saindo....."
+			exit
+				;;
+		* )
+			echo -e "${VERMELHO}\nPor favor insira uma opção válida.${SEM_COR}"
+				;;
+	esac
+done
+fi
 
-		select STATUS3 in "Sim!" "Não." #----------------------------- (SELEÇÃO DE SIM OU NÃO)
-			do
-			case $STATUS3 in 
-				"Sim!" ) #----------------------- (CASO SIM EXECUTE ABAIXO)
-					echo  \
+
+# FINAL DO SCRIPT Gerar PTP para Cliente DEDICADO -------------------------------------#
+
+if [[ "$tipo" = "ptp-backbone" ]]; then
+	echo \
+	"- Qual é o nome da localidade?"
+		read "LOCAL"
+
+	echo -e \
+	"- Qual é o ip do BH1? \nLembre-se de adicionar a mascara de subrede. \nFormato: XX.XX.XX.XX/MM"
+		read "BH1"
+	echo -e \
+	"- Qual é o ip do BH2? \nLembre-se de adicionar a mascara de subrede. \nFormato: XX.XX.XX.XX/MM"
+		read "BH2"
+	echo -e \
+	"- Qual o gateway do ponto a ponto? \nLembre-se de adicionar a mascara de subrede. \nFormato: XX.XX.XX.XX"
+		read "GATEWAY"
+# CONFIRA SE AS INFORMAÇÕES ESTÃO CERTAS
+	echo \
+"
+------- CONFIRA AS INFORMAÇÕES --------
+
+NOME DO BH1: BH1-$LOCAL-ARAUJOSAT
+NOME DO BH2: BH2-$LOCAL-ARAUJOSAT
+IP DO BH1: $BH1
+IP DO BH2: $BH2
+GATEWAY:   $GATEWAY
+
+---------------------------------------
+"
+
+PS3=\
+"
+------- As informações estão corretas?: "
+
+select STATUS2 in "SIM!" "NÃO."
+do
+	case $STATUS2 in
+		SIM! )
+			ptp_bridge_bh1
+			ptp_bridge_bh2
+			echo -e "${VERDE}\nScript do BH1 e BH2 exportado com sucesso!${SEM_COR}"
+				break
+				;;
+
+		NÃO. ) 
+			echo -e "\nTente novamente! Saindo....."
+			exit
+				;;
+		* ) 
+			echo -e "${VERMELHO}\nPor favor insira uma opção válida.${SEM_COR}"
+				;;
+	esac
+done
+fi
+########################################################################################################################
+#												FINAL CRIAÇÃO DOS PTP
+########################################################################################################################
+
+########################################################################################################################
+#											MANUTENÇÃO DAS ANTENAS UBQUIT
+########################################################################################################################
+
+bkp_da_antena(){
+	echo  \
 "
 aaa.1.br.devname=br0
 aaa.1.devname=ath0
@@ -667,6 +585,104 @@ wpasupplicant.profile.1.network.1.psk=$WPA
 wpasupplicant.status=disabled
 
 " > BKP-ARJ-${NOME}.cfg
+}
+
+download_att_antenas(){
+			diretorio_destino="/home/$USER/Downloads/ANTENAS-6.3.11"
+			echo "Realizando download dos arquivos direto da fabricante em $diretorio_destino"
+			mkdir -p "$diretorio_destino"  # -p para criar o diretório se ele não existir
+			# baixando binários na pasta definida.
+			echo "Binário XW"
+			wget -P "$diretorio_destino" "https://dl.ui.com/firmwares/XW-fw/v6.3.11/XW.v6.3.11.33396.230425.1644.bin"
+			echo "Binário XM"
+			wget -P "$diretorio_destino" "https://dl.ui.com/firmwares/XN-fw/v6.3.11/XM.v6.3.11.33396.230425.1742.bin"
+			echo -e "${VERDE}Download Finalizado com sucesso! No diretório $diretorio_destino ${SEM_COR}"
+}
+
+lista_de_canais (){
+	echo \
+"
+5180,5200,5220,5240,5260,5280,5300,5320,5340,5360,5380,5400,5420,5440,5460,5480,5500,5520,5540,5560,5580,5600,5620,5640,5660,5680,5700,5720,5725,5740,5745,5760,5765,5780,5785,5800,5805,5815,5820,5825,5840,5860,5880,5900
+"
+}
+
+if [[ "$tipo" = "ubiquit" ]]; then #--------------------------------------------------- ( COMEÇA MANUTENÇÃO UBQUIT )
+
+PS3="
+
+
+------- Selecione o que deseja: "
+
+select MANUBQUIT in "Gerar BKP para Antena Ubiquit" "Download Atualização das Antenas v.6.3.11" "Gerar lista de Canais" "Sair"
+	do
+		case $MANUBQUIT in
+			"Gerar BKP para Antena Ubiquit" )
+					break
+						;;
+			"Download Atualização das Antenas v.6.3.11" )
+					break
+						;;
+			"Gerar lista de Canais" )
+					break
+						;;	
+			"Sair" )
+				clear
+				exit
+				;;
+			* ) 
+					echo -e "${VERMELHO}\nPor favor insira uma opção válida.${SEM_COR}"
+						;;
+			
+		esac
+	done
+
+
+
+#-------------------------------------------------------- ( Selecionou Gerar BKP para Antena Ubiquit )
+	if [[ "$MANUBQUIT" = "Gerar BKP para Antena Ubiquit" ]]; then
+
+		echo \
+			"Qual o nome do painel?"
+			read "NOME"  
+		echo \
+			"Qual o SSID que deseja propagar?"
+			read "SSID"  
+		echo \
+			"Qual WPA do painel?"
+			read "WPA" 
+		echo -e \
+			"Qual o IP do pinel? \nUtilizar o formato XX.XX.XX.XX"
+			read "IP" 
+		echo -e \
+			"Qual a mascara? \nUtilizar o formato XX.XX.XX.XX"
+			read "MASK" 		
+		echo -e \
+			"Qual o IP do gateway? \nUtilizar o formato XX.XX.XX.XX"
+			read "GATEWAY" 		
+		echo \
+"
+------- CONFIRA AS INFORMAÇÕES --------
+
+NOME: $NOME
+SSID: $SSID
+WPA: $WPA
+IP: $IP
+MASCARA: $MASK	
+GATEWAY: $GATEWAY
+
+---------------------------------------
+"
+		# RODAPÉ -----------------------------------)
+		PS3=\
+		"
+		------- As informações estão corretas?: "
+
+
+		select STATUS3 in "Sim!" "Não." #----------------------------- (SELEÇÃO DE SIM OU NÃO)
+			do
+			case $STATUS3 in 
+				"Sim!" ) #----------------------- (CASO SIM EXECUTE ABAIXO)
+					bkp_da_antena
 					echo "BKP exportado com sucesso!"
 					break
 					;;
@@ -684,41 +700,29 @@ wpasupplicant.status=disabled
 	fi
 
 
-	#--------------------------------------------------- ( Download Atualização das Antenas v.6.3.11 )
+	#-----------------------------------------------------------------------------( Download Atualização das Antenas v.6.3.11 )
 	if [[ "$MANUBQUIT" = "Download Atualização das Antenas v.6.3.11" ]]; then
-
-			echo "Realizando download dos arquivos direto da fabricante em ~/Downloads/ANTENAS-6.3.11!"			
-			diretorio_destino="/home/$USER/Downloads/ANTENAS-6.3.11"
-			mkdir -p "$diretorio_destino"  # -p para criar o diretório se ele não existir
-			# baixando binários na pasta definida.
-			echo "Binário XW"
-			wget -P "$diretorio_destino" "https://dl.ui.com/firmwares/XW-fw/v6.3.11/XW.v6.3.11.33396.230425.1644.bin"
-			echo "Binário XM"
-			wget -P "$diretorio_destino" "https://dl.ui.com/firmwares/XN-fw/v6.3.11/XM.v6.3.11.33396.230425.1742.bin"
-			echo "Download Finalizado com sucesso!!"
+		download_att_antenas
 	fi
-
-#---------------------------------------------------------------------------- (COMEÇA LISTA DE CANAIS)
+	#---------------------------------------------------------------------------- (COMEÇA LISTA DE CANAIS)
 
 	if [[ "$MANUBQUIT" = "Gerar lista de Canais" ]]; then 
 		
-LISTACANAIS="
-
-5180,5200,5220,5240,5260,5280,5300,5320,5340,5360,5380,5400,5420,5440,5460,5480,5500,5520,5540,5560,5580,5600,5620,5640,5660,5680,5700,5720,5725,5740,5745,5760,5765,5780,5785,5800,5805,5815,5820,5825,5840,5860,5880,5900
-
-"
-
-		echo \
-		"$LISTACANAIS"
+		lista_de_canais
+		
 		echo \
 		"Deseja que seja criado um arquivo contendo a lista?"
 		select STATUSLISTA in "Sim!" "Não."
 			do
 			case $STATUSLISTA in
 					"Sim!" )
+						lista_de_canais > Lista_de_canais.txt
+						echo -e "${VERDE}\nLista de canais exportada com sucesso!${SEM_COR}"
 						break
 						;;
 					"Não." )
+					echo "Saindo!..."
+					exit
 						break
 						;;
 					*) 
@@ -726,18 +730,10 @@ LISTACANAIS="
 						;;
 			esac
 		done
-
-		if [[ "$STATUSLISTA" = "Sim!" ]]; then
-			echo "$LISTACANAIS" > Lista_de_canais.txt
-		
-		if [[ "$STATUSLISTA" = "Não." ]]; then
-			echo "Saindo!..."
-			exit
-		fi
-
-		fi
-	
 	fi #--------------------------------------- (TERMINA LISTA DE CANAIS)
 
 
 fi #-------------------------------------------------------------- ( TERMINA MANUTENÇÃO UBQUIT )
+########################################################################################################################
+#					    					MANUTENÇÃO DAS ANTENAS UBQUIT
+########################################################################################################################
