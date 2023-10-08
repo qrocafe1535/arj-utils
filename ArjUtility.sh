@@ -241,15 +241,15 @@ if [[ "$tipo" = "ptp-pppoe" ]]; then # -----------------------------------------
 #  QUAL O GATEWAY QUE O BH1 UTILIZARÁ COMO GATEWAY
 	echo -e "- Qual o gateway desse bloco? \nLembre-se de adicionar a mascara de subrede. \nFormato: XX.XX.XX.XX"; read "GATEWAY"		
 # CONFIRA SE AS INFORMAÇÕES ESTÃO CERTAS
-	echo \
+	echo -e \
 "
 ------- CONFIRA AS INFORMAÇÕES --------
 
-ID DO CLIENTE:  $ID	
-LOGIN DO PPPOE: $LOGIN
-SENHA DO PPPOE: $SENHA
-BLOCO DO BH1:   $BLOCO
-GATEWAY DO BH1: $GATEWAY
+ID DO CLIENTE:${VERMELHO}  $ID ${SEM_COR}
+LOGIN DO PPPOE:${VERMELHO} $LOGIN ${SEM_COR}
+SENHA DO PPPOE:${VERMELHO} $SENHA ${SEM_COR}
+BLOCO DO BH1:${VERMELHO}   $BLOCO ${SEM_COR}
+GATEWAY DO BH1:${VERMELHO} $GATEWAY ${SEM_COR}
 
 ---------------------------------------
 "
@@ -281,15 +281,15 @@ if [[ "$tipo" = "ptp-bridge" ]]; then  #----------------------------------------
 	echo -e "- Qual é o ip do BH2? \nLembre-se de adicionar a mascara de subrede. \nFormato: XX.XX.XX.XX/MM"; read "BH2"
 	echo -e "- Qual o gateway do ponto a ponto? \nLembre-se de adicionar a mascara de subrede. \nFormato: XX.XX.XX.XX"; read "GATEWAY"		
 # CONFIRA SE AS INFORMAÇÕES ESTÃO CERTAS
-	echo \
+	echo -e \
 "
 ------- CONFIRA AS INFORMAÇÕES --------
 
-NOME DO BH1: BH1-$LOCAL-ARAUJOSAT
-NOME DO BH2: BH2-$LOCAL-ARAUJOSAT
-IP DO BH1: $BH1
-IP DO BH2: $BH2
-GATEWAY:   $GATEWAY
+NOME DO BH1: BH1-${VERMELHO}$LOCAL${SEM_COR}-ARAUJOSAT
+NOME DO BH2: BH2-${VERMELHO}$LOCAL${SEM_COR}-ARAUJOSAT
+IP DO BH1: ${VERMELHO}$BH1${SEM_COR}
+IP DO BH2: ${VERMELHO}$BH2${SEM_COR}
+GATEWAY:   ${VERMELHO}$GATEWAY${SEM_COR}
 
 ---------------------------------------
 "
@@ -606,34 +606,22 @@ select MANUBQUIT in "Gerar BKP para Antena Ubiquit" "Download Atualização das 
 #-------------------------------------------------------- ( Selecionou Gerar BKP para Antena Ubiquit )
 	if [[ "$MANUBQUIT" = "Gerar BKP para Antena Ubiquit" ]]; then
 
-		echo \
-			"Qual o nome do painel?"
-			read "NOME"  
-		echo \
-			"Qual o SSID que deseja propagar?"
-			read "SSID"  
-		echo \
-			"Qual WPA do painel?"
-			read "WPA" 
+		echo "Qual o nome do painel?"; read "NOME"			 
+		echo "Qual o SSID que deseja propagar?"; read "SSID"  
+		echo "Qual WPA do painel?"; read "WPA" 
+		echo -e "Qual o IP do pinel? \nUtilizar o formato XX.XX.XX.XX"; read "IP"			 
+		echo -e "Qual a mascara? \nUtilizar o formato XX.XX.XX.XX"; read "MASK"			 		
+		echo -e "Qual o IP do gateway? \nUtilizar o formato XX.XX.XX.XX"; read "GATEWAY"			 		
 		echo -e \
-			"Qual o IP do pinel? \nUtilizar o formato XX.XX.XX.XX"
-			read "IP" 
-		echo -e \
-			"Qual a mascara? \nUtilizar o formato XX.XX.XX.XX"
-			read "MASK" 		
-		echo -e \
-			"Qual o IP do gateway? \nUtilizar o formato XX.XX.XX.XX"
-			read "GATEWAY" 		
-		echo \
 "
 ------- CONFIRA AS INFORMAÇÕES --------
 
-NOME: $NOME
-SSID: $SSID
-WPA: $WPA
-IP: $IP
-MASCARA: $MASK	
-GATEWAY: $GATEWAY
+NOME: ${VERMELHO}$NOME${SEM_COR}
+SSID: ${VERMELHO}$SSID${SEM_COR}
+WPA: ${VERMELHO}$WPA${SEM_COR}
+IP: ${VERMELHO}$IP${SEM_COR}
+MASCARA: ${VERMELHO}$MASK${SEM_COR}	
+GATEWAY: ${VERMELHO}$GATEWAY${SEM_COR}
 
 ---------------------------------------
 "
@@ -673,8 +661,7 @@ PS3="$RODAPE2" # ----------------------- FRASE DO RODAPÉ )
 		
 		lista_de_canais
 		
-		echo \
-		"Deseja que seja criado um arquivo contendo a lista?"
+		echo "Deseja que seja criado um arquivo contendo a lista?"
 		select STATUSLISTA in "Sim!" "Não."
 			do
 			case $STATUSLISTA in
