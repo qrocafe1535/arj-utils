@@ -3,6 +3,10 @@
 # Esse script foi criado com a finalidade de automatizar diversos dos processos do dia a dia no suporte técnico.
 # Sinta-se livre para modificar e utilizar da forma que quiser!
 
+#CORES
+VERMELHO='\e[1;91m'
+VERDE='\e[1;92m'
+SEM_COR='\e[0m'
 
 LOGO_ARJ="
                                                                                       
@@ -15,17 +19,11 @@ LOGO_ARJ="
    ▒   ▒▒ ░  ░▒ ░ ▒░  ▒   ▒▒ ░░░▒░ ░ ░  ▒ ░▒░    ░ ▒ ▒░ ░ ░▒  ░ ░  ▒   ▒▒ ░   ░       
    ░   ▒     ░░   ░   ░   ▒    ░░░ ░ ░  ░ ░ ░  ░ ░ ░ ▒  ░  ░  ░    ░   ▒    ░         
        ░  ░   ░           ░  ░   ░      ░   ░      ░ ░        ░        ░  ░           
-                                                                            by Matheus
+                                                                            ${VERMELHO}by Matheus${SEM_COR}
 "
 
 clear
-#EXIBE LOGO
-echo "$LOGO_ARJ"
-
-#CORES
-VERMELHO='\e[1;91m'
-VERDE='\e[1;92m'
-SEM_COR='\e[0m'
+echo -e "$LOGO_ARJ"
 
 # ------------------------------------------- ( SELECIONA O TIPO DO SERVIÇO DESEJADO )
 # FRASE DO RODAPÉ
@@ -40,22 +38,19 @@ select ptp in "Gerar PTP para Cliente" "Gerar PTP para Backbone" "Manutenção B
 			"Gerar PTP para Cliente" )
 				tipo="ptp-cliente"
 					clear
-					echo \
-					"$LOGO_ARJ"
+					echo -e "$LOGO_ARJ"
 				break
 				;;
 			"Gerar PTP para Backbone" )
 				tipo="ptp-backbone"
 					clear
-					echo \
-					"$LOGO_ARJ"
+					echo -e "$LOGO_ARJ"
 				break
 				;;
 			"Manutenção BKP Antenas Ubiquit" )
 				tipo="ubiquit"
 					clear
-					echo \
-					"$LOGO_ARJ"
+					echo -e "$LOGO_ARJ"
 				break
 				;;
 			"Sair" )
@@ -267,8 +262,8 @@ GATEWAY DO BH1: $GATEWAY
 ---------------------------------------
 "
 # RODAPÉ -----------------------------------)
-PS3=\
-"
+PS3="
+
 ------- As informações estão corretas?: "
 
 #  ----------------------------------- ( SELEÇÃO DE CONFIMAÇÃO SIM OU NÃO )
@@ -323,8 +318,8 @@ GATEWAY:   $GATEWAY
 ---------------------------------------
 "
 
-PS3=\
-"
+PS3="
+
 ------- As informações estão corretas?: "
 
 select STATUS2 in "SIM!" "NÃO."
@@ -672,10 +667,10 @@ GATEWAY: $GATEWAY
 
 ---------------------------------------
 "
-		# RODAPÉ -----------------------------------)
-		PS3=\
-		"
-		------- As informações estão corretas?: "
+# RODAPÉ -----------------------------------)
+PS3="
+
+------- As informações estão corretas?: "
 
 
 		select STATUS3 in "Sim!" "Não." #----------------------------- (SELEÇÃO DE SIM OU NÃO)
