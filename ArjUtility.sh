@@ -268,6 +268,7 @@ GATEWAY DO BH1: $GATEWAY
 "
 # RODAPÉ -----------------------------------)
 PS3="$rodape2"
+
 #  ----------------------------------- ( SELEÇÃO DE CONFIMAÇÃO SIM OU NÃO )
 select STATUS1 in "SIM!" "NÃO."
 do
