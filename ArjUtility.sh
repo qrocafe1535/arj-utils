@@ -3,6 +3,12 @@
 # Esse script foi criado com a finalidade de automatizar diversos dos processos do dia a dia no suporte técnico.
 # Sinta-se livre para modificar e utilizar da forma que quiser!
 
+#RODAPÉ
+RODAPE1="
+------- Selecione o que deseja: "
+RODAPE2="
+------- As informações estão corretas?: "
+
 #CORES
 VERMELHO='\e[1;91m'
 VERDE='\e[1;92m'
@@ -25,12 +31,7 @@ LOGO_ARJ="
 clear
 echo -e "$LOGO_ARJ"
 
-rodape1="
-------- Selecione o que deseja: "
-rodape2="
-------- As informações estão corretas?: "
-
-PS3="$rodape1" # ----------------------- FRASE DO RODAPÉ )
+PS3="$RODAPE1" # ----------------------- FRASE DO RODAPÉ )
 
 # ------------------------------------------- ( SELECIONA O TIPO DO SERVIÇO DESEJADO )
 select SERVICE in "Gerar PTP para PPPoE" "Gerar PTP para Bridge" "Manutenção BKP Antenas Ubiquit" "Sair"
@@ -261,7 +262,7 @@ GATEWAY DO BH1: $GATEWAY
 
 ---------------------------------------
 "
-PS3="$rodape2" # ------------------------------------------- RODAPÉ )
+PS3="$RODAPE2" # ------------------------------------------- RODAPÉ )
 
 select STATUS1 in "SIM!" "NÃO." #  ----------------------------------- ( SELEÇÃO DE CONFIMAÇÃO SIM OU NÃO )
 do
@@ -310,7 +311,7 @@ GATEWAY:   $GATEWAY
 
 ---------------------------------------
 "
-PS3="$rodape2" # ----------------------- FRASE DO RODAPÉ )
+PS3="$RODAPE2" # ----------------------- FRASE DO RODAPÉ )
 
 select STATUS2 in "SIM!" "NÃO."
 do
@@ -593,7 +594,7 @@ lista_de_canais (){
 
 if [[ "$tipo" = "ubiquit" ]]; then #--------------------------------------------------- ( COMEÇA MANUTENÇÃO UBQUIT )
 
-PS3="$rodape1" # ----------------------- FRASE DO RODAPÉ )
+PS3="$RODAPE1" # ----------------------- FRASE DO RODAPÉ )
 
 select MANUBQUIT in "Gerar BKP para Antena Ubiquit" "Download Atualização das Antenas v.6.3.11" "Gerar lista de Canais" "Sair"
 	do
@@ -655,7 +656,7 @@ GATEWAY: $GATEWAY
 ---------------------------------------
 "
 
-PS3="$rodape2" # ----------------------- FRASE DO RODAPÉ )
+PS3="$RODAPE2" # ----------------------- FRASE DO RODAPÉ )
 
 
 		select STATUS3 in "Sim!" "Não." #----------------------------- (SELEÇÃO DE SIM OU NÃO)
