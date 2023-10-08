@@ -26,11 +26,8 @@ clear
 echo -e "$LOGO_ARJ"
 
 rodape1="
-
 ------- Selecione o que deseja: "
-
 rodape2="
-
 ------- As informações estão corretas?: "
 
 PS3="$rodape1" # ----------------------- FRASE DO RODAPÉ )
