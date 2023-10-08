@@ -64,8 +64,7 @@ select SERVICE in "Gerar PTP para PPPoE" "Gerar PTP para Bridge" "Manutenção B
 				echo -e "${VERMELHO}Comando não identificado!${SEM_COR}"
 				;;
 	esac
-done
-# FINAL DA SELEÇÃO DO SERVIÇO DESEJADO --------------------------#
+done #---------------------------------------- FINAL DA SELEÇÃO DO SERVIÇO DESEJADO )
 
 ########################################################################################################################
 #													CRIAÇÃO DOS PTP 
