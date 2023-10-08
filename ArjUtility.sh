@@ -231,25 +231,15 @@ ptp_bridge_bh2 () {
 
 if [[ "$tipo" = "ptp-pppoe" ]]; then # ------------------------------------------- PONTO A PONTO DE PPPOE ) 
 # ESCOLHA O ID DO CLIENTE
-	echo \
-	"- Digite o ID do Contrato do cliente?"
-		read "ID"
+	echo "- Digite o ID do Contrato do cliente?"; read "ID"		
 # ESCOLHA O LOGIN DO PPPOE DO CLIENTE
-	echo  \
-	"- Qual o login do PPPoE do cliente?"
-		read "LOGIN"
+	echo "- Qual o login do PPPoE do cliente?"; read "LOGIN"		
 # ESCOLHA A SENHA DO PPPOE
-	echo -e \
-	"- Qual a senha do PPPoE do cliente?"
-		read "SENHA"
+	echo -e "- Qual a senha do PPPoE do cliente?"; read "SENHA"		
 # ESCOLHA O BLOCO QUE SERÁ ALOCADO PARA O BH1
-	echo -e \
-	"- Qual o bloco de ip do BH1? \nLembre-se de adicionar a mascara de subrede. \nFormato: XX.XX.XX.XX/MM"
-		read "BLOCO"
+	echo -e "- Qual o bloco de ip do BH1? \nLembre-se de adicionar a mascara de subrede. \nFormato: XX.XX.XX.XX/MM"; read "BLOCO"		
 #  QUAL O GATEWAY QUE O BH1 UTILIZARÁ COMO GATEWAY
-	echo -e \
-	"- Qual o gateway desse bloco? \nLembre-se de adicionar a mascara de subrede. \nFormato: XX.XX.XX.XX"
-		read "GATEWAY"
+	echo -e "- Qual o gateway desse bloco? \nLembre-se de adicionar a mascara de subrede. \nFormato: XX.XX.XX.XX"; read "GATEWAY"		
 # CONFIRA SE AS INFORMAÇÕES ESTÃO CERTAS
 	echo \
 "
@@ -286,19 +276,10 @@ done
 fi # ------------------------------------------------------------------------------------ FINAL PTP PPPOE ) 
 
 if [[ "$tipo" = "ptp-bridge" ]]; then  #--------------------------------------------------------- PONTO A PONTO BRIDGE - INICIO) 
-	echo \
-	"- Qual é o nome da localidade?"
-		read "LOCAL"
-
-	echo -e \
-	"- Qual é o ip do BH1? \nLembre-se de adicionar a mascara de subrede. \nFormato: XX.XX.XX.XX/MM"
-		read "BH1"
-	echo -e \
-	"- Qual é o ip do BH2? \nLembre-se de adicionar a mascara de subrede. \nFormato: XX.XX.XX.XX/MM"
-		read "BH2"
-	echo -e \
-	"- Qual o gateway do ponto a ponto? \nLembre-se de adicionar a mascara de subrede. \nFormato: XX.XX.XX.XX"
-		read "GATEWAY"
+	echo "- Qual é o nome da localidade?"; read "LOCAL"
+	echo -e "- Qual é o ip do BH1? \nLembre-se de adicionar a mascara de subrede. \nFormato: XX.XX.XX.XX/MM"; read "BH1"		
+	echo -e "- Qual é o ip do BH2? \nLembre-se de adicionar a mascara de subrede. \nFormato: XX.XX.XX.XX/MM"; read "BH2"
+	echo -e "- Qual o gateway do ponto a ponto? \nLembre-se de adicionar a mascara de subrede. \nFormato: XX.XX.XX.XX"; read "GATEWAY"		
 # CONFIRA SE AS INFORMAÇÕES ESTÃO CERTAS
 	echo \
 "
