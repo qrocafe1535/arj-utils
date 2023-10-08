@@ -25,13 +25,18 @@ LOGO_ARJ="
 clear
 echo -e "$LOGO_ARJ"
 
-# ------------------------------------------- ( SELECIONA O TIPO DO SERVIÇO DESEJADO )
-# FRASE DO RODAPÉ
-PS3="
-
+rodape1="
 
 ------- Selecione o que deseja: "
 
+rodape2="
+
+------- As informações estão corretas?: "
+
+# ----------------------- FRASE DO RODAPÉ )
+PS3="$rodape1"
+
+# ------------------------------------------- ( SELECIONA O TIPO DO SERVIÇO DESEJADO )
 select ptp in "Gerar PTP para Cliente" "Gerar PTP para Backbone" "Manutenção BKP Antenas Ubiquit" "Sair"
 	do
 	case $ptp in
@@ -262,10 +267,7 @@ GATEWAY DO BH1: $GATEWAY
 ---------------------------------------
 "
 # RODAPÉ -----------------------------------)
-PS3="
-
-------- As informações estão corretas?: "
-
+PS3="$rodape2"
 #  ----------------------------------- ( SELEÇÃO DE CONFIMAÇÃO SIM OU NÃO )
 select STATUS1 in "SIM!" "NÃO."
 do
@@ -317,10 +319,8 @@ GATEWAY:   $GATEWAY
 
 ---------------------------------------
 "
-
-PS3="
-
-------- As informações estão corretas?: "
+# RODAPÉ -----------------------------------)
+PS3="$rodape2"
 
 select STATUS2 in "SIM!" "NÃO."
 do
@@ -603,10 +603,7 @@ lista_de_canais (){
 
 if [[ "$tipo" = "ubiquit" ]]; then #--------------------------------------------------- ( COMEÇA MANUTENÇÃO UBQUIT )
 
-PS3="
-
-
-------- Selecione o que deseja: "
+PS3="$rodape1"
 
 select MANUBQUIT in "Gerar BKP para Antena Ubiquit" "Download Atualização das Antenas v.6.3.11" "Gerar lista de Canais" "Sair"
 	do
@@ -668,9 +665,7 @@ GATEWAY: $GATEWAY
 ---------------------------------------
 "
 # RODAPÉ -----------------------------------)
-PS3="
-
-------- As informações estão corretas?: "
+PS3="$rodape2"
 
 
 		select STATUS3 in "Sim!" "Não." #----------------------------- (SELEÇÃO DE SIM OU NÃO)
