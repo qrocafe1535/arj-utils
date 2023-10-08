@@ -37,9 +37,9 @@ rodape2="
 PS3="$rodape1"
 
 # ------------------------------------------- ( SELECIONA O TIPO DO SERVIÇO DESEJADO )
-select ptp in "Gerar PTP para PPPoE" "Gerar PTP para Bridge" "Manutenção BKP Antenas Ubiquit" "Sair"
+select SERVICE in "Gerar PTP para PPPoE" "Gerar PTP para Bridge" "Manutenção BKP Antenas Ubiquit" "Sair"
 	do
-	case $ptp in
+	case $SERVICE in
 			"Gerar PTP para PPPoE" )
 				tipo="ptp-pppoe"
 					clear
