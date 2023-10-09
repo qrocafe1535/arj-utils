@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# COISAS PARA ADICIONAR = ATUALIZAÇÃO DOS MIKROTIK - CONFIGURAÇÃO PARA PAINEL BPK 
+# COISAS PARA ADICIONAR = ATUALIZAÇÃO DOS MIKROTIK - CONFIGURAÇÃO PARA PAINEL BPK - MANUTENÇÃO UBUNTU
 # Esse script foi criado com a finalidade de automatizar diversos dos processos do dia a dia no suporte técnico.
 # Sinta-se livre para modificar e utilizar da forma que quiser!
 
