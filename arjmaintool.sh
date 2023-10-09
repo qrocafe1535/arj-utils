@@ -40,34 +40,35 @@ echo -e "$LOGO_ARJ"
 PS3="$RODAPE1" # ----------------------- FRASE DO RODAPÉ )
 
 # ------------------------------------------- ( SELECIONA O TIPO DO SERVIÇO DESEJADO )
-select tipo_do_servico in "Gerar PTP para Mikrotik" "Manutenção para Antenas Ubiquit" "Manutenção Ubuntu" "Sair"
-	do
-	case $tipo_do_servico in
-			"Gerar PTP para Mikrotik" )
-					clear
-					echo -e "$LOGO_ARJ"
-				break
-				;;
-			"Manutenção para Antenas Ubiquit" )
-					clear
-					echo -e "$LOGO_ARJ"
-				break
-				;;
-			"Manutenção Ubuntu" )
-					clear
-					echo -e "$LOGO_ARJ"
-				break
-				;;
-			"Sair" )
-					clear
-					exit
-				;;
-			*) 
-				echo -e "${VERMELHO}Comando não identificado!${SEM_COR}"
-				;;
-	esac
-done #---------------------------------------- FINAL DA SELEÇÃO DO SERVIÇO DESEJADO )
-
+if [[ -z "$1" ]]; then
+	select tipo_do_servico in "Gerar PTP para Mikrotik" "Manutenção para Antenas Ubiquit" "Manutenção Ubuntu" "Sair"
+		do
+		case $tipo_do_servico in
+				"Gerar PTP para Mikrotik" )
+						clear
+						echo -e "$LOGO_ARJ"
+					break
+					;;
+				"Manutenção para Antenas Ubiquit" )
+						clear
+						echo -e "$LOGO_ARJ"
+					break
+					;;
+				"Manutenção Ubuntu" )
+						clear
+						echo -e "$LOGO_ARJ"
+					break
+					;;
+				"Sair" )
+						clear
+						exit
+					;;
+				*) 
+					echo -e "${VERMELHO}Comando não identificado!${SEM_COR}"
+					;;
+		esac
+	done #---------------------------------------- FINAL DA SELEÇÃO DO SERVIÇO DESEJADO )
+fi
 ########################################################################################################################
 #													MIKROTIK
 ########################################################################################################################
@@ -786,7 +787,7 @@ create_screenshot_directory() {
 
 # Função para capturar a tela e salvar no diretório especificado
 take_screenshot() {
-    scrot "$screenshot_path/$screenshot_name"
+    scrot -z "$screenshot_path/$screenshot_name"
 }
 
 # Função principal
