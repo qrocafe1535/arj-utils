@@ -50,8 +50,8 @@ select tipo_do_servico in "Gerar PTP para Mikrotik" "Manutenção para Antenas U
 				break
 				;;
 			"Sair" )
-				clear
-				exit
+					clear
+					exit
 				;;
 			*) 
 				echo -e "${VERMELHO}Comando não identificado!${SEM_COR}"
@@ -690,8 +690,8 @@ PS3="$RODAPE2" # ----------------------- FRASE DO RODAPÉ )
 						break
 						;;
 					"Não." )
-					echo "Saindo!..."
-					exit
+						echo "Saindo!..."
+						exit
 						break
 						;;
 					*) 
