@@ -98,6 +98,7 @@ echo \
 /user aaa set interim-update=3m use-radius=yes
 /user add group=full address=186.249.81.30 name=sup@sat password=\"lRz\\\$&1hd=vW+yD1kw32sH7qC+e\\\$ONnHN.6qs+Ri}\"
 /user remove admin
+/int ethernet set l2mtu=20000 [f]
 /
 " > "BH1-ARAUJOSAT-${LOGIN}-${ID}.rsc"
 }
@@ -139,6 +140,7 @@ echo \
 /user aaa set interim-update=3m use-radius=yes
 /user add group=full address=186.249.81.30 name=sup@sat password=\"lRz\\\$&1hd=vW+yD1kw32sH7qC+e\\\$ONnHN.6qs+Ri}\"
 /user remove admin
+/int ethernet set l2mtu=20000 [f]
 /
 " > "BH2-ARAUJOSAT-${LOGIN}-${ID}.rsc"
 }
@@ -177,6 +179,7 @@ echo \
 /user aaa set interim-update=3m use-radius=yes
 /user add group=full address=186.249.81.30 name=sup@sat password=\"lRz\\\$&1hd=vW+yD1kw32sH7qC+e\\\$ONnHN.6qs+Ri}\"
 /user remove admin
+/int ethernet set l2mtu=20000 [f]
 /
 " > "BH1-${LOCAL}-ARAUJOSAT.rsc"
 }
@@ -217,6 +220,7 @@ ptp_bridge_bh2 () {
 /user aaa set interim-update=3m use-radius=yes
 /user add group=full address=186.249.81.30 name=sup@sat password=\"lRz\\\$&1hd=vW+yD1kw32sH7qC+e\\\$ONnHN.6qs+Ri}\"
 /user remove admin
+/int ethernet set l2mtu=20000 [f]
 /
 " > "BH2-${LOCAL}-ARAUJOSAT.rsc"
 }
