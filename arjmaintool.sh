@@ -396,7 +396,7 @@ fi # --------------------------------------------------------- PONTO A PONTO BRI
 #											MANUTENÇÃO DAS ANTENAS UBQUIT
 ########################################################################################################################
 
-bkp_da_antena(){
+bkp_da_antena () {
 	echo  \
 "
 aaa.1.br.devname=br0
@@ -628,7 +628,7 @@ wpasupplicant.status=disabled
 " > BKP-ARJ-${NOME}.cfg
 }
 
-download_att_antenas(){
+download_att_antenas () {
 			diretorio_destino="/home/$USER/Downloads/ANTENAS-6.3.11"
 			echo "Realizando download dos arquivos direto da fabricante em $diretorio_destino"
 			mkdir -p "$diretorio_destino"  # -p para criar o diretório se ele não existir
@@ -640,7 +640,7 @@ download_att_antenas(){
 			echo -e "${VERDE}Download Finalizado com sucesso! No diretório $diretorio_destino ${SEM_COR}"
 }
 
-lista_de_canais (){
+lista_de_canais () {
 	echo \
 "
 5180,5200,5220,5240,5260,5280,5300,5320,5340,5360,5380,5400,5420,5440,5460,5480,5500,5520,5540,5560,5580,5600,5620,5640,5660,5680,5700,5720,5725,5740,5745,5760,5765,5780,5785,5800,5805,5815,5820,5825,5840,5860,5880,5900
