@@ -814,7 +814,6 @@ main() {
         create_screenshot_directory
         apagar_pastas
         take_screenshot
-        echo "$data_mais_antiga"
         sleep 60
     done
 }
