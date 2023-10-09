@@ -5,7 +5,4 @@ Coisas para lembrar de adicionar.
     Adicionar download de att LTS para mikrotik 
 
     UBUNTU manutenção
-        Setup Ubuntu Suporte Full
         Atualização
-        Download Winbox
-        Download Dude

