@@ -102,7 +102,7 @@ echo \
 /user aaa set interim-update=3m use-radius=yes
 /user add group=full address=186.249.81.30 name=$user_ptp password=$user_password
 /user remove admin
-/int ethernet set l2mtu=20000 [f]
+/$add_l2mtu
 /
 " > "BH1-ARAUJOSAT-${LOGIN}-${ID}.rsc"
 }
@@ -144,7 +144,7 @@ echo \
 /user aaa set interim-update=3m use-radius=yes
 /user add group=full address=186.249.81.30 name=$user_ptp password=$user_password
 /user remove admin
-/int ethernet set l2mtu=20000 [f]
+/$add_l2mtu
 /
 " > "BH2-ARAUJOSAT-${LOGIN}-${ID}.rsc"
 }
@@ -183,7 +183,7 @@ echo \
 /user aaa set interim-update=3m use-radius=yes
 /user add group=full address=186.249.81.30 name=$user_ptp password=$user_password
 /user remove admin
-/int ethernet set l2mtu=20000 [f]
+/$add_l2mtu
 /
 " > "BH1-${LOCAL}-ARAUJOSAT.rsc"
 }
@@ -224,12 +224,50 @@ ptp_bridge_bh2 () {
 /user aaa set interim-update=3m use-radius=yes
 /user add group=full address=186.249.81.30 name=$user_ptp password=$user_password
 /user remove admin
-/int ethernet set l2mtu=20000 [f]
+/$add_l2mtu
 /
 " > "BH2-${LOCAL}-ARAUJOSAT.rsc"
 }
 
 if [[ "$tipo_do_servico" = "Gerar PTP para Mikrotik" ]]; then # ------------------------------------------- SELECIONE O PONTO A PONTO ) 
+
+adicionar_usuario_mk () {
+		select adicionar_usuario in "Padrão." "Custom." #  ----------------------------------- ( DESEJA ADICIONAR USUÁRIO DEFAULT?)
+		do
+				case $adicionar_usuario in
+				Padrão. )
+					user_ptp="sup@sat"
+					user_password='"lRz\$&1hd=vW+yD1kw32sH7qC+e\$ONnHN.6qs+Ri}"'
+					break
+						;;
+				Custom. )
+				read -p "Digite o Usuário: " user_ptp
+				read -s -p "Digite a Senha: " user_password
+					break
+						;;
+				* )
+					echo -e "${VERMELHO}\nPor favor insira uma opção válida.${SEM_COR}"
+						;;
+			esac
+		done #  ----------------------------------- ( FINAL DESEJA ADICIONAR USUÁRIO DEFAULT?)
+} 
+
+seta_max_l2mtu () {
+		select set_l2mtu in "Sim!" "Não."
+		do
+			case $set_l2mtu in 
+			Sim! )
+				add_l2mtu='int ethernet set l2mtu=20000 [f]'
+				break
+					;;
+			Não. )
+				add_l2mtu=''
+				break
+					;;
+			esac
+		done
+}
+
 
 	select tipo_do_ptp in "Gerar PTP para PPPoE" "Gerar PTP para Bridge" "Setar L2MTU Máximo" "Sair"
 		do
@@ -265,24 +303,9 @@ fi
 		echo -e "- Qual o bloco de ip do BH1? \nLembre-se de adicionar a mascara de subrede. \nFormato: ${AZUL}XX.XX.XX.XX/MM${SEM_COR}"; read "BLOCO"		
 		echo -e "- Qual o gateway desse bloco? \nLembre-se de adicionar a mascara de subrede. \nFormato: ${AZUL}XX.XX.XX.XX${SEM_COR}"; read "GATEWAY"		
 		echo -e "\nDeseja adicionar usuário e senha padrão ou custom?\n${VERMELHO}(também será removido o usuário admin)${SEM_COR}\n"
-		select adicionar_usuario in "Padrão." "Customizado." #  ----------------------------------- ( DESEJA ADICIONAR USUÁRIO DEFAULT?)
-		do
-				case $adicionar_usuario in
-				Padrão. )
-					user_ptp="sup@sat"
-					user_password='"lRz\$&1hd=vW+yD1kw32sH7qC+e\$ONnHN.6qs+Ri}"'
-					break
-						;;
-				Customizado. )
-				read -p "Digite o Usuário: " user_ptp
-				read -s -p "Digite a Senha: " user_password
-					break
-						;;
-				* )
-					echo -e "${VERMELHO}\nPor favor insira uma opção válida.${SEM_COR}"
-						;;
-			esac
-		done #  ----------------------------------- ( FINAL DESEJA ADICIONAR USUÁRIO DEFAULT?)
+		adicionar_usuario_mk
+		echo -e "Deseja setar o L2MTU no máximo? (recomendado)"
+		seta_max_l2mtu
 		echo -e \
 "
 ------- CONFIRA AS INFORMAÇÕES --------
@@ -293,21 +316,22 @@ SENHA DO PPPOE:${VERMELHO} $SENHA ${SEM_COR}
 BLOCO DO BH1:${VERMELHO}   $BLOCO ${SEM_COR}
 GATEWAY DO BH1:${VERMELHO} $GATEWAY ${SEM_COR}
 USUÁRIO: ${VERMELHO}$user_ptp${SEM_COR}
+L2MTU: ${VERMELHO}$set_l2mtu${SEM_COR}
 
 ---------------------------------------
 "
 PS3="$RODAPE2" # ------------------------------------------- RODAPÉ )
 
-		select STATUS1 in "SIM!" "NÃO." #  ----------------------------------- ( SELEÇÃO DE CONFIMAÇÃO SIM OU NÃO )
+		select STATUS1 in "Sim!" "Não." #  ----------------------------------- ( SELEÇÃO DE CONFIMAÇÃO SIM OU NÃO )
 		do
 				case $STATUS1 in
-				SIM! )
+				Sim! )
 					ptp_pppoe_bh1 #EXPORTA BH1
 					ptp_pppoe_bh2 #EXPORTA BH2
 					echo -e "${VERDE}\nScript do BH1 e BH2 exportado com sucesso!${SEM_COR}"
 						break
 						;;
-				NÃO. ) 
+				Não. ) 
 					echo -e "\nTente novamente! Saindo....."
 					exit
 						;;
@@ -324,24 +348,9 @@ if [[ "$tipo_do_ptp" = "Gerar PTP para Bridge" ]]; then  #----------------------
 	echo -e "- Qual é o ip do BH2? \nLembre-se de adicionar a mascara de subrede. \nFormato: ${AZUL}XX.XX.XX.XX/MM${SEM_COR}"; read "BH2"
 	echo -e "- Qual o gateway do ponto a ponto? \nFormato: ${AZUL}XX.XX.XX.XX${SEM_COR}"; read "GATEWAY"		
 	echo -e "\nDeseja adicionar usuário e senha padrão ou custom?\n${VERMELHO}(também será removido o usuário admin)${SEM_COR}\n"
-		select adicionar_usuario in "Padrão." "Custom." #  ----------------------------------- ( DESEJA ADICIONAR USUÁRIO DEFAULT?)
-		do
-				case $adicionar_usuario in
-				Padrão. )
-					user_ptp="sup@sat"
-					user_password='"lRz\$&1hd=vW+yD1kw32sH7qC+e\$ONnHN.6qs+Ri}"'
-					break
-						;;
-				Custom. )
-				read -p "Digite o Usuário: " user_ptp
-				read -s -p "Digite a Senha: " user_password
-					break
-						;;
-				* )
-					echo -e "${VERMELHO}\nPor favor insira uma opção válida.${SEM_COR}"
-						;;
-			esac
-		done #  ----------------------------------- ( FINAL DESEJA ADICIONAR USUÁRIO DEFAULT?)
+	adicionar_usuario_mk
+	echo -e "Deseja setar o L2MTU no máximo? (recomendado)"
+	seta_max_l2mtu
 # CONFIRA SE AS INFORMAÇÕES ESTÃO CERTAS
 	echo -e \
 "
@@ -353,22 +362,23 @@ IP DO BH1: ${VERMELHO}$BH1${SEM_COR}
 IP DO BH2: ${VERMELHO}$BH2${SEM_COR}
 GATEWAY:   ${VERMELHO}$GATEWAY${SEM_COR}
 USUÁRIO: ${VERMELHO}$user_ptp${SEM_COR}
+L2MTU: ${VERMELHO}$set_l2mtu${SEM_COR}
 
 ---------------------------------------
 "
 PS3="$RODAPE2" # ----------------------- FRASE DO RODAPÉ )
 
-select STATUS2 in "SIM!" "NÃO."
+select STATUS2 in "Sim!" "Não."
 do
 	case $STATUS2 in
-		SIM! )
+		Sim! )
 			ptp_bridge_bh1 #EXPORTA BH1
 			ptp_bridge_bh2 #EXPORTA BH2
 			echo -e "${VERDE}\nScript do BH1 e BH2 exportado com sucesso!${SEM_COR}"
 				break
 				;;
 
-		NÃO. ) 
+		Não. ) 
 			echo -e "\nTente novamente! Saindo....."
 			exit
 				;;
