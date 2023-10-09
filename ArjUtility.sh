@@ -620,8 +620,6 @@ select MANUBQUIT in "Gerar BKP para Antena Ubiquit" "Download Atualização das 
 		esac
 	done
 
-
-
 #-------------------------------------------------------- ( Selecionou Gerar BKP para Antena Ubiquit )
 	if [[ "$MANUBQUIT" = "Gerar BKP para Antena Ubiquit" ]]; then
 
