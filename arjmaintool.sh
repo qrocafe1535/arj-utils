@@ -807,13 +807,18 @@ take_screenshot() {
     scrot -z "$screenshot_path/$screenshot_name"
 }
 
+desativa_recentes () {
+	gsettings set org.gnome.desktop.privacy remember-recent-files false
+}
+
 # Função principal
 main() {
     while true; do
         # Take a screenshot every minute
         create_screenshot_directory
         apagar_pastas
-        take_screenshot
+		desativa_recentes
+		take_screenshot
         sleep 60
     done
 }
