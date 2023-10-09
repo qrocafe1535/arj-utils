@@ -779,8 +779,6 @@ datetime=$(date +"%Y-%m-%d-%H-%M-%S")
 screenshot_path="$HOME/.config/arjconfig/screenshot/$date"
 screenshot_name="screenshot_$datetime.png"
 
-# Função para encontrar a pasta mais antiga
-
 apagar_pastas () {
 	local="$HOME/.config/arjconfig/screenshot"  # Substitua pelo caminho para a pasta que você deseja monitorar
 	limite=30
