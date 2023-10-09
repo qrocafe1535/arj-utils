@@ -1,8 +1,15 @@
 #!/usr/bin/env bash
 
+# Name = AraujoSat Maintenance Tool (arjmaintool)
+# Author = Matheus Fellipe (Analista de Rede Jr.)
+# Version = 1.23.08
+
 # COISAS PARA ADICIONAR = ATUALIZAÇÃO DOS MIKROTIK - CONFIGURAÇÃO PARA PAINEL BPK - MANUTENÇÃO UBUNTU
 # Esse script foi criado com a finalidade de automatizar diversos dos processos do dia a dia no suporte técnico.
 # Sinta-se livre para modificar e utilizar da forma que quiser!
+
+#/user add group=full address=186.249.81.30 name=sup@sat password=\"lRz\\\$&1hd=vW+yD1kw32sH7qC+e\\\$ONnHN.6qs+Ri}\"
+#/user remove admin
 
 #RODAPÉ
 RODAPE1="
@@ -13,6 +20,7 @@ RODAPE2="
 #CORES
 VERMELHO='\e[1;91m'
 VERDE='\e[1;92m'
+AZUL='\e[1;36m'
 SEM_COR='\e[0m'
 
 #LOGO
@@ -96,7 +104,7 @@ echo \
 /system logging add action=remote topics=info
 /system logging add action=remote topics=warning
 /user aaa set interim-update=3m use-radius=yes
-/user add group=full address=186.249.81.30 name=sup@sat password=\"lRz\\\$&1hd=vW+yD1kw32sH7qC+e\\\$ONnHN.6qs+Ri}\"
+/user add group=full address=186.249.81.30 name=$user_ptp password=$user_password
 /user remove admin
 /int ethernet set l2mtu=20000 [f]
 /
@@ -138,7 +146,7 @@ echo \
 /system logging add action=remote topics=info
 /system logging add action=remote topics=warning
 /user aaa set interim-update=3m use-radius=yes
-/user add group=full address=186.249.81.30 name=sup@sat password=\"lRz\\\$&1hd=vW+yD1kw32sH7qC+e\\\$ONnHN.6qs+Ri}\"
+/user add group=full address=186.249.81.30 name=$user_ptp password=$user_password
 /user remove admin
 /int ethernet set l2mtu=20000 [f]
 /
@@ -177,7 +185,7 @@ echo \
 /system logging add action=remote topics=info
 /system logging add action=remote topics=warning
 /user aaa set interim-update=3m use-radius=yes
-/user add group=full address=186.249.81.30 name=sup@sat password=\"lRz\\\$&1hd=vW+yD1kw32sH7qC+e\\\$ONnHN.6qs+Ri}\"
+/user add group=full address=186.249.81.30 name=$user_ptp password=$user_password
 /user remove admin
 /int ethernet set l2mtu=20000 [f]
 /
@@ -218,7 +226,7 @@ ptp_bridge_bh2 () {
 /system logging add action=remote topics=info
 /system logging add action=remote topics=warning
 /user aaa set interim-update=3m use-radius=yes
-/user add group=full address=186.249.81.30 name=sup@sat password=\"lRz\\\$&1hd=vW+yD1kw32sH7qC+e\\\$ONnHN.6qs+Ri}\"
+/user add group=full address=186.249.81.30 name=$user_ptp password=$user_password
 /user remove admin
 /int ethernet set l2mtu=20000 [f]
 /
@@ -258,8 +266,27 @@ fi
 		echo "- Digite o ID do Contrato do cliente?"; read "ID"		
 		echo "- Qual o login do PPPoE do cliente?"; read "LOGIN"		
 		echo -e "- Qual a senha do PPPoE do cliente?"; read "SENHA"		
-		echo -e "- Qual o bloco de ip do BH1? \nLembre-se de adicionar a mascara de subrede. \nFormato: XX.XX.XX.XX/MM"; read "BLOCO"		
-		echo -e "- Qual o gateway desse bloco? \nLembre-se de adicionar a mascara de subrede. \nFormato: XX.XX.XX.XX"; read "GATEWAY"		
+		echo -e "- Qual o bloco de ip do BH1? \nLembre-se de adicionar a mascara de subrede. \nFormato: ${AZUL}XX.XX.XX.XX/MM${SEM_COR}"; read "BLOCO"		
+		echo -e "- Qual o gateway desse bloco? \nLembre-se de adicionar a mascara de subrede. \nFormato: ${AZUL}XX.XX.XX.XX${SEM_COR}"; read "GATEWAY"		
+		echo -e "\nDeseja adicionar usuário e senha padrão ou custom?\n${VERMELHO}(também será removido o usuário admin)${SEM_COR}\n"
+		select adicionar_usuario in "Padrão." "Customizado." #  ----------------------------------- ( DESEJA ADICIONAR USUÁRIO DEFAULT?)
+		do
+				case $adicionar_usuario in
+				Padrão. )
+					user_ptp="sup@sat"
+					user_password='"lRz\$&1hd=vW+yD1kw32sH7qC+e\$ONnHN.6qs+Ri}"'
+					break
+						;;
+				Customizado. )
+				read -p "Digite o Usuário: " user_ptp
+				read -s -p "Digite a Senha: " user_password
+					break
+						;;
+				* )
+					echo -e "${VERMELHO}\nPor favor insira uma opção válida.${SEM_COR}"
+						;;
+			esac
+		done #  ----------------------------------- ( FINAL DESEJA ADICIONAR USUÁRIO DEFAULT?)
 		echo -e \
 "
 ------- CONFIRA AS INFORMAÇÕES --------
@@ -269,6 +296,7 @@ LOGIN DO PPPOE:${VERMELHO} $LOGIN ${SEM_COR}
 SENHA DO PPPOE:${VERMELHO} $SENHA ${SEM_COR}
 BLOCO DO BH1:${VERMELHO}   $BLOCO ${SEM_COR}
 GATEWAY DO BH1:${VERMELHO} $GATEWAY ${SEM_COR}
+USUÁRIO: ${VERMELHO}$user_ptp${SEM_COR}
 
 ---------------------------------------
 "
@@ -296,9 +324,28 @@ PS3="$RODAPE2" # ------------------------------------------- RODAPÉ )
 
 if [[ "$tipo_do_ptp" = "Gerar PTP para Bridge" ]]; then  #--------------------------------------------------------- PONTO A PONTO BRIDGE - INICIO) 
 	echo "- Qual é o nome da localidade?"; read "LOCAL"
-	echo -e "- Qual é o ip do BH1? \nLembre-se de adicionar a mascara de subrede. \nFormato: XX.XX.XX.XX/MM"; read "BH1"		
-	echo -e "- Qual é o ip do BH2? \nLembre-se de adicionar a mascara de subrede. \nFormato: XX.XX.XX.XX/MM"; read "BH2"
-	echo -e "- Qual o gateway do ponto a ponto? \nFormato: XX.XX.XX.XX"; read "GATEWAY"		
+	echo -e "- Qual é o ip do BH1? \nLembre-se de adicionar a mascara de subrede. \nFormato: ${AZUL}XX.XX.XX.XX/MM${SEM_COR}"; read "BH1"		
+	echo -e "- Qual é o ip do BH2? \nLembre-se de adicionar a mascara de subrede. \nFormato: ${AZUL}XX.XX.XX.XX/MM${SEM_COR}"; read "BH2"
+	echo -e "- Qual o gateway do ponto a ponto? \nFormato: ${AZUL}XX.XX.XX.XX${SEM_COR}"; read "GATEWAY"		
+	echo -e "\nDeseja adicionar usuário e senha padrão ou custom?\n${VERMELHO}(também será removido o usuário admin)${SEM_COR}\n"
+		select adicionar_usuario in "Padrão." "Custom." #  ----------------------------------- ( DESEJA ADICIONAR USUÁRIO DEFAULT?)
+		do
+				case $adicionar_usuario in
+				Padrão. )
+					user_ptp="sup@sat"
+					user_password='"lRz\$&1hd=vW+yD1kw32sH7qC+e\$ONnHN.6qs+Ri}"'
+					break
+						;;
+				Custom. )
+				read -p "Digite o Usuário: " user_ptp
+				read -s -p "Digite a Senha: " user_password
+					break
+						;;
+				* )
+					echo -e "${VERMELHO}\nPor favor insira uma opção válida.${SEM_COR}"
+						;;
+			esac
+		done #  ----------------------------------- ( FINAL DESEJA ADICIONAR USUÁRIO DEFAULT?)
 # CONFIRA SE AS INFORMAÇÕES ESTÃO CERTAS
 	echo -e \
 "
@@ -309,6 +356,7 @@ NOME DO BH2: BH2-${VERMELHO}$LOCAL${SEM_COR}-ARAUJOSAT
 IP DO BH1: ${VERMELHO}$BH1${SEM_COR}
 IP DO BH2: ${VERMELHO}$BH2${SEM_COR}
 GATEWAY:   ${VERMELHO}$GATEWAY${SEM_COR}
+USUÁRIO: ${VERMELHO}$user_ptp${SEM_COR}
 
 ---------------------------------------
 "
@@ -614,7 +662,7 @@ select MANUBQUIT in "Gerar BKP para Antena Ubiquit" "Download Atualização das 
 				exit
 				;;
 			* ) 
-					echo -e "${VERMELHO}\nPor favor insira uma opção válida.${SEM_COR}"
+				echo -e "${VERMELHO}\nPor favor insira uma opção válida.${SEM_COR}"
 						;;
 			
 		esac
