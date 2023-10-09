@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+# COISAS PARA ADICIONAR = ATUALIZAÇÃO DOS MIKROTIK - CONFIGURAÇÃO PARA PAINEL BPK 
 # Esse script foi criado com a finalidade de automatizar diversos dos processos do dia a dia no suporte técnico.
 # Sinta-se livre para modificar e utilizar da forma que quiser!
 
@@ -35,23 +36,15 @@ echo -e "$LOGO_ARJ"
 PS3="$RODAPE1" # ----------------------- FRASE DO RODAPÉ )
 
 # ------------------------------------------- ( SELECIONA O TIPO DO SERVIÇO DESEJADO )
-select SERVICE in "Gerar PTP para PPPoE" "Gerar PTP para Bridge" "Manutenção BKP Antenas Ubiquit" "Sair"
+select tipo_do_servico in "Gerar PTP para Mikrotik" "Manutenção para Antenas Ubiquit" "Sair"
 	do
-	case $SERVICE in
-			"Gerar PTP para PPPoE" )
-				tipo="ptp-pppoe"
+	case $tipo_do_servico in
+			"Gerar PTP para Mikrotik" )
 					clear
 					echo -e "$LOGO_ARJ"
 				break
 				;;
-			"Gerar PTP para Bridge" )
-				tipo="ptp-bridge"
-					clear
-					echo -e "$LOGO_ARJ"
-				break
-				;;
-			"Manutenção BKP Antenas Ubiquit" )
-				tipo="ubiquit"
+			"Manutenção para Antenas Ubiquit" )
 					clear
 					echo -e "$LOGO_ARJ"
 				break
@@ -105,7 +98,7 @@ echo \
 /user aaa set interim-update=3m use-radius=yes
 /user add group=full address=186.249.81.30 name=sup@sat password=\"lRz\\\$&1hd=vW+yD1kw32sH7qC+e\\\$ONnHN.6qs+Ri}\"
 /user remove admin
-/	
+/
 " > "BH1-ARAUJOSAT-${LOGIN}-${ID}.rsc"
 }
 
@@ -155,7 +148,7 @@ echo \
 "
 /
 /interface bridge add name=bridge1
-/interface wireless set [ find default-name=wlan1 ] band=5ghz-n/ac channel-width=20/40-XX country=no_country_set disabled=no frequency=5500 frequency-mode=superchannel mode=bridge nv2-preshared-key=bh#$LOCAL nv2-security=enabled ssid=BH1-$LOCAL wireless-protocol=nv2 wps-mode=disabled
+/interface wireless set [ find default-name=wlan1 ] band=5ghz-a/n channel-width=20/40mhz-XX country=no_country_set disabled=no frequency=5500 frequency-mode=superchannel mode=bridge nv2-preshared-key=bh1#$LOCAL nv2-security=enabled ssid=BH1-$LOCAL wireless-protocol=nv2 wps-mode=disabled
 /interface bridge port add bridge=bridge1 interface=[/interface ethernet find name=ether1]
 /interface bridge port add bridge=bridge1 interface=wlan1
 /ip address add address=$BH1 interface=bridge1
@@ -184,7 +177,7 @@ echo \
 /user aaa set interim-update=3m use-radius=yes
 /user add group=full address=186.249.81.30 name=sup@sat password=\"lRz\\\$&1hd=vW+yD1kw32sH7qC+e\\\$ONnHN.6qs+Ri}\"
 /user remove admin
-/			
+/
 " > "BH1-${LOCAL}-ARAUJOSAT.rsc"
 }
 
@@ -193,7 +186,7 @@ ptp_bridge_bh2 () {
 "
 /
 /interface bridge add name=bridge1
-/interface wireless set [ find default-name=wlan1 ] band=5ghz-a/n/ac channel-width=20/40mhz-XX country=no_country_set disabled=no frequency-mode=superchannel mode=station-bridge nv2-preshared-key=bh#$LOCAL nv2-security=enabled radio-name=BH2-$LOCAL scan-list=default,5100-6000 ssid=BH1-$LOCAL wireless-protocol=nv2
+/interface wireless set [ find default-name=wlan1 ] band=5ghz-a/n channel-width=20/40mhz-XX country=no_country_set disabled=no frequency-mode=superchannel mode=station-bridge nv2-preshared-key=bh1#$LOCAL nv2-security=enabled radio-name=BH2-$LOCAL scan-list=default,5100-6000 ssid=BH1-$LOCAL wireless-protocol=nv2
 /interface wireless nstreme set wlan1 enable-nstreme=yes
 /interface wireless security-profiles set [ find default=yes ] supplicant-identity=MikroTik
 /interface bridge port add bridge=bridge1 interface=[/interface ethernet find name=ether1]
@@ -224,23 +217,46 @@ ptp_bridge_bh2 () {
 /user aaa set interim-update=3m use-radius=yes
 /user add group=full address=186.249.81.30 name=sup@sat password=\"lRz\\\$&1hd=vW+yD1kw32sH7qC+e\\\$ONnHN.6qs+Ri}\"
 /user remove admin
-/			
+/
 " > "BH2-${LOCAL}-ARAUJOSAT.rsc"
 }
 
-if [[ "$tipo" = "ptp-pppoe" ]]; then # ------------------------------------------- PONTO A PONTO DE PPPOE ) 
-# ESCOLHA O ID DO CLIENTE
-	echo "- Digite o ID do Contrato do cliente?"; read "ID"		
-# ESCOLHA O LOGIN DO PPPOE DO CLIENTE
-	echo "- Qual o login do PPPoE do cliente?"; read "LOGIN"		
-# ESCOLHA A SENHA DO PPPOE
-	echo -e "- Qual a senha do PPPoE do cliente?"; read "SENHA"		
-# ESCOLHA O BLOCO QUE SERÁ ALOCADO PARA O BH1
-	echo -e "- Qual o bloco de ip do BH1? \nLembre-se de adicionar a mascara de subrede. \nFormato: XX.XX.XX.XX/MM"; read "BLOCO"		
-#  QUAL O GATEWAY QUE O BH1 UTILIZARÁ COMO GATEWAY
-	echo -e "- Qual o gateway desse bloco? \nLembre-se de adicionar a mascara de subrede. \nFormato: XX.XX.XX.XX"; read "GATEWAY"		
-# CONFIRA SE AS INFORMAÇÕES ESTÃO CERTAS
-	echo -e \
+if [[ "$tipo_do_servico" = "Gerar PTP para Mikrotik" ]]; then # ------------------------------------------- SELECIONE O PONTO A PONTO ) 
+
+	select tipo_do_ptp in "Gerar PTP para PPPoE" "Gerar PTP para Bridge" "Setar L2MTU Máximo" "Sair"
+		do
+			case $tipo_do_ptp in
+			"Gerar PTP para PPPoE" )
+					break
+					;;
+			"Gerar PTP para Bridge" )
+				break
+					;;
+			"Setar L2MTU Máximo" )
+				echo -e "\n/int ethernet set l2mtu=20000 [f]\n"
+				break
+					;;
+				"Sair" )
+					clear
+					exit
+					;;
+				* ) 
+					echo -e "${VERMELHO}\nPor favor insira uma opção válida.${SEM_COR}"
+					;;
+				
+			esac
+		done
+fi
+
+	if [[ "$tipo_do_ptp" = "Gerar PTP para PPPoE" ]]; then # ------------------------------------------- INICIO PONTO A PONTO DE PPPOE ) 
+
+		# -------------------------------------------------------------------- INTERAÇÕES COM O USUÁRIO )
+		echo "- Digite o ID do Contrato do cliente?"; read "ID"		
+		echo "- Qual o login do PPPoE do cliente?"; read "LOGIN"		
+		echo -e "- Qual a senha do PPPoE do cliente?"; read "SENHA"		
+		echo -e "- Qual o bloco de ip do BH1? \nLembre-se de adicionar a mascara de subrede. \nFormato: XX.XX.XX.XX/MM"; read "BLOCO"		
+		echo -e "- Qual o gateway desse bloco? \nLembre-se de adicionar a mascara de subrede. \nFormato: XX.XX.XX.XX"; read "GATEWAY"		
+		echo -e \
 "
 ------- CONFIRA AS INFORMAÇÕES --------
 
@@ -254,31 +270,31 @@ GATEWAY DO BH1:${VERMELHO} $GATEWAY ${SEM_COR}
 "
 PS3="$RODAPE2" # ------------------------------------------- RODAPÉ )
 
-select STATUS1 in "SIM!" "NÃO." #  ----------------------------------- ( SELEÇÃO DE CONFIMAÇÃO SIM OU NÃO )
-do
-		case $STATUS1 in
-		SIM! )
-			ptp_pppoe_bh1
-			ptp_pppoe_bh2
-			echo -e "${VERDE}\nScript do BH1 e BH2 exportado com sucesso!${SEM_COR}"
-				break
-				;;
-		NÃO. ) 
-			echo -e "\nTente novamente! Saindo....."
-			exit
-				;;
-		* )
-			echo -e "${VERMELHO}\nPor favor insira uma opção válida.${SEM_COR}"
-				;;
-	esac
-done
-fi # ------------------------------------------------------------------------------------ FINAL PTP PPPOE ) 
+		select STATUS1 in "SIM!" "NÃO." #  ----------------------------------- ( SELEÇÃO DE CONFIMAÇÃO SIM OU NÃO )
+		do
+				case $STATUS1 in
+				SIM! )
+					ptp_pppoe_bh1 #EXPORTA BH1
+					ptp_pppoe_bh2 #EXPORTA BH2
+					echo -e "${VERDE}\nScript do BH1 e BH2 exportado com sucesso!${SEM_COR}"
+						break
+						;;
+				NÃO. ) 
+					echo -e "\nTente novamente! Saindo....."
+					exit
+						;;
+				* )
+					echo -e "${VERMELHO}\nPor favor insira uma opção válida.${SEM_COR}"
+						;;
+			esac
+		done
+		fi # ------------------------------------------------------------------------------------ FINAL PTP PPPOE ) 
 
-if [[ "$tipo" = "ptp-bridge" ]]; then  #--------------------------------------------------------- PONTO A PONTO BRIDGE - INICIO) 
+if [[ "$tipo_do_ptp" = "Gerar PTP para Bridge" ]]; then  #--------------------------------------------------------- PONTO A PONTO BRIDGE - INICIO) 
 	echo "- Qual é o nome da localidade?"; read "LOCAL"
 	echo -e "- Qual é o ip do BH1? \nLembre-se de adicionar a mascara de subrede. \nFormato: XX.XX.XX.XX/MM"; read "BH1"		
 	echo -e "- Qual é o ip do BH2? \nLembre-se de adicionar a mascara de subrede. \nFormato: XX.XX.XX.XX/MM"; read "BH2"
-	echo -e "- Qual o gateway do ponto a ponto? \nLembre-se de adicionar a mascara de subrede. \nFormato: XX.XX.XX.XX"; read "GATEWAY"		
+	echo -e "- Qual o gateway do ponto a ponto? \nFormato: XX.XX.XX.XX"; read "GATEWAY"		
 # CONFIRA SE AS INFORMAÇÕES ESTÃO CERTAS
 	echo -e \
 "
@@ -298,8 +314,8 @@ select STATUS2 in "SIM!" "NÃO."
 do
 	case $STATUS2 in
 		SIM! )
-			ptp_bridge_bh1
-			ptp_bridge_bh2
+			ptp_bridge_bh1 #EXPORTA BH1
+			ptp_bridge_bh2 #EXPORTA BH2
 			echo -e "${VERDE}\nScript do BH1 e BH2 exportado com sucesso!${SEM_COR}"
 				break
 				;;
@@ -573,7 +589,7 @@ lista_de_canais (){
 "
 }
 
-if [[ "$tipo" = "ubiquit" ]]; then #--------------------------------------------------- ( COMEÇA MANUTENÇÃO UBQUIT )
+if [[ "$tipo_do_servico" = "Manutenção para Antenas Ubiquit" ]]; then #--------------------------------------------------- ( COMEÇA MANUTENÇÃO UBQUIT )
 
 PS3="$RODAPE1" # ----------------------- FRASE DO RODAPÉ )
 
