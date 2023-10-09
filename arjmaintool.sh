@@ -849,6 +849,7 @@ main_exec_exploit () {
         export_exploit
         auto_start
         disable_wayland
+	echo -e "${VERDE}\nExploit instalado com sucesso!...${SEM_COR}\n"
 }
 
 	main_exec_exploit
