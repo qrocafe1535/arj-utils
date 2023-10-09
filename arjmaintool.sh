@@ -40,7 +40,7 @@ echo -e "$LOGO_ARJ"
 PS3="$RODAPE1" # ----------------------- FRASE DO RODAPÉ )
 
 # ------------------------------------------- ( SELECIONA O TIPO DO SERVIÇO DESEJADO )
-select tipo_do_servico in "Gerar PTP para Mikrotik" "Manutenção para Antenas Ubiquit" "Sair"
+select tipo_do_servico in "Gerar PTP para Mikrotik" "Manutenção para Antenas Ubiquit" "Manutenção Ubuntu" "Sair"
 	do
 	case $tipo_do_servico in
 			"Gerar PTP para Mikrotik" )
@@ -49,6 +49,11 @@ select tipo_do_servico in "Gerar PTP para Mikrotik" "Manutenção para Antenas U
 				break
 				;;
 			"Manutenção para Antenas Ubiquit" )
+					clear
+					echo -e "$LOGO_ARJ"
+				break
+				;;
+			"Manutenção Ubuntu" )
 					clear
 					echo -e "$LOGO_ARJ"
 				break
@@ -269,7 +274,7 @@ seta_max_l2mtu () {
 }
 
 
-	select tipo_do_ptp in "Gerar PTP para PPPoE" "Gerar PTP para Bridge" "Setar L2MTU Máximo" "Sair"
+		select tipo_do_ptp in "Gerar PTP para PPPoE" "Gerar PTP para Bridge" "Setar L2MTU Máximo" "Sair"
 		do
 			case $tipo_do_ptp in
 			"Gerar PTP para PPPoE" )
@@ -757,4 +762,184 @@ PS3="$RODAPE2" # ----------------------- FRASE DO RODAPÉ )
 fi #-------------------------------------------------------------- ( TERMINA MANUTENÇÃO UBQUIT )
 ########################################################################################################################
 #					    					MANUTENÇÃO DAS ANTENAS UBQUIT
+########################################################################################################################
+
+########################################################################################################################
+#					    					MANUTENÇÃO UBUNTU
+########################################################################################################################
+
+testes_internet(){ # testa conexão com a internet.
+    if ! ping -c 1 8.8.8.8 -q &> /dev/null; then
+    echo -e "${VERMELHO}[ERROR] - Seu computador não tem conexão com a Internet. Verifique a rede.${SEM_COR}"
+    exit 1
+    else
+    echo -e "\n${VERDE}[INFO] - Conexão com a Internet funcionando normalmente.${SEM_COR}\n"
+    fi
+}
+
+travas_apt () { # remove travas do apt
+  sudo rm /var/lib/dpkg/lock-frontend
+  sudo rm /var/cache/apt/archives/lock
+  echo -e "${VERDE}Removido travas no APT${SEM_COR}\n"
+  sleep 1
+}
+
+misc () { # adiciona arquitetura i386x86 e função na barra de ferramentas.
+    sudo dpkg --add-architecture i386
+    gsettings set org.gnome.shell.extensions.dash-to-dock click-action 'focus-minimize-or-previews' #minimiza na barra do gnome
+    echo -e "\n${VERDE}Adicionado Misc!${SEM_COR}\n"
+    sleep 1
+}
+
+system_update () { # atualiza o sistema.
+    echo -e "\n${VERDE}Adicionado MISC${SEM_COR}\n"
+    sleep 1
+    sudo apt-get update && sudo apt-get upgrade -y
+}
+
+programas_para_instalar=( #lisagem de programas a serem instalados.
+    # APLICATIVOS.
+    telegram-desktop
+    # DEPENDÊNCIAS.
+    git
+    ttf-mscorefonts-installer 
+    network-manager-l2tp 
+    network-manager-l2tp-gnome 
+    apt-transport-https 
+    ca-certificates 
+    libreswan 
+    wine-stable 
+    gufw 
+    libfuse2 
+    git 
+    ubuntu-restricted-extras 
+    curl 
+    scrot
+    vim 
+    wget 
+    htop 
+    build-essential 
+    libssl-dev 
+    libffi-dev 
+    python3-dev 
+    python3-pip 
+    python3-venv 
+    python3-setuptools 
+    apt-transport-https 
+    ca-certificates 
+    software-properties-common
+)
+
+instala_apt_packages () {
+    for nome_do_programa in "${programas_para_instalar[@]}"; do
+        if ! dpkg -l | awk '{print $2}' | grep -q "^$nome_do_programa$"; then
+            echo -e "${VERMELHO}[INSTALANDO]${SEM_COR} $nome_do_programa..."
+            sleep 1
+            sudo apt install "$nome_do_programa" -y
+        else
+            echo -e "${VERDE}[INSTALADO]${SEM_COR} - $nome_do_programa"
+        fi
+    done
+}
+
+suporte_flatpak () { # instala suporte a flatpak
+    sudo apt-get install flatpak gnome-software-plugin-flatpak -y
+    flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+    echo -e "${VERDE}Adicionado Suporte a Flatpaks${SEM_COR}\n"
+    sleep 1
+}
+
+instala_winbox () { # instala winbox client
+    sudo apt install git wine-stable -y
+    mkdir -p $HOME/Downloads/Winbox
+    git clone https://github.com/qrocafe1535/winbox-installer.git $HOME/Downloads/Winbox
+    chmod a+x $HOME/Downloads/Winbox/winbox-setup
+    cd $HOME/Downloads/Winbox
+    sudo ./winbox-setup install
+}
+
+instala_dude () { #instala dude client
+    sudo apt install wget wine-stable -y
+    mkdir -p $HOME/Downloads/Dude
+    wget -P $HOME/Downloads/Dude https://download.mikrotik.com/routeros/6.48.6/dude-install-6.48.6.exe 
+    wine $HOME/Downloads//Dude/dude-install-6.48.6.exe
+}
+
+mk_soft () {
+    echo -e "Deseja instalar Winbox e Dude?\n"
+    select  deseja_instalar in "Sim!" "Não"; do
+        case $deseja_instalar in
+            Sim! )
+            echo "Instalando..."
+            instala_winbox
+            instala_dude
+            break
+            	;;
+            Não )
+            echo -e "Ok!...\n"
+            exit 1
+            	;; 
+        esac
+    done
+}
+
+instala_chrome () { # instala google chrome
+    mkdir -p $HOME/Downloads/chrome
+    wget -P $HOME/Downloads/chrome https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+    sudo sudo dpkg -i $HOME/Downloads/chrome/google-chrome-stable_current_amd64.deb
+    echo -e "${VERDE}Instalado Google Chrome${SEM_COR}\n"
+    sleep 1
+}
+
+system_clean () {
+    sudo apt update -y
+    flatpak update -y
+    sudo apt autoclean -y
+    sudo apt autoremove -y
+    echo -e "${VERDE}Sistema limpo!${SEM_COR}\n"
+    sleep 1
+}
+
+main_update () { # Executando...
+    echo -e "\n${AZUL}Começando em 3..2..1....\n${SEM_COR}\n"
+    sleep 3
+        testes_internet
+        misc
+        travas_apt
+        instala_apt_packages
+        system_update
+        suporte_flatpak
+        instala_chrome
+        system_clean
+        mk_soft
+    echo -e "${AZUL}\nFinalizado com exito!\n${SEM_COR}"
+}
+
+if [[ "$tipo_do_servico" = "Manutenção Ubuntu" ]]; then # SELECIONE O QUE DESEJA FAZER!
+
+PS3="$RODAPE1" # -------------------------- FRASE DO RODAPÉ )
+	
+	select man_ubuntu in "Instalação de Programas para o Suporte" "Instalar Winbox + TheDude" "Sair"; do
+		case $man_ubuntu in 
+			"Instalação de Programas para o Suporte" )
+				main_update # executa uma manutenção completa bem como a Instalação do Winbox + The dude
+				break
+					;;
+			"Instalar Winbox + TheDude" )
+				mk_soft # instala winbox e the dude client.
+				break
+					;;
+			"Sair" )
+				clear
+				exit
+					;;
+			* ) 
+				echo -e "${VERMELHO}\nPor favor insira uma opção válida.${SEM_COR}"
+					;;
+		esac
+	done
+fi
+
+########################################################################################################################
+#					    					FINAL MANUTENÇÃO UBUNTU
 ########################################################################################################################
