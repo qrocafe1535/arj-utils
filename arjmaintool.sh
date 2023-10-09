@@ -4,12 +4,8 @@
 # Author = Matheus Fellipe (Analista de Rede Jr.)
 # Version = 1.23.08
 
-# COISAS PARA ADICIONAR = ATUALIZAÇÃO DOS MIKROTIK - CONFIGURAÇÃO PARA PAINEL BPK - MANUTENÇÃO UBUNTU
 # Esse script foi criado com a finalidade de automatizar diversos dos processos do dia a dia no suporte técnico.
 # Sinta-se livre para modificar e utilizar da forma que quiser!
-
-#/user add group=full address=186.249.81.30 name=sup@sat password=\"lRz\\\$&1hd=vW+yD1kw32sH7qC+e\\\$ONnHN.6qs+Ri}\"
-#/user remove admin
 
 #RODAPÉ
 RODAPE1="
