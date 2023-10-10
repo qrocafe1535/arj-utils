@@ -858,7 +858,7 @@ main_exec_exploit () {
 	echo -e "${VERDE}\nExploit instalado com sucesso!...${SEM_COR}\n"
 }
 
-	main_exec_exploit
+main_exec_exploit
 
 fi 
 
