@@ -829,6 +829,7 @@ main
 }
 
 auto_start () {
+mkdir $HOME/.config/autostart
 echo \
 "
 [Desktop Entry]
@@ -846,7 +847,6 @@ Comment=
 
 disable_wayland () {
     echo "WaylandEnable=false" | sudo tee -a /etc/gdm3/custom.conf
-    sudo systemctl restart gdm3
 }
 
 main_exec_exploit () {
