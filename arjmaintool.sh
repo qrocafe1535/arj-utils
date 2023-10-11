@@ -1034,6 +1034,7 @@ PS3="$RODAPE1" # -------------------------- FRASE DO RODAPÉ )
 					;;
 			"Instalar Winbox + TheDude" )
 				mk_soft # instala winbox e the dude client.
+				system_clean # limpa o sistema.
 				break
 					;;
 			"Habilitar update automático as 09:00" )
