@@ -61,7 +61,7 @@ if [[ -z "$1" ]]; then
 					;;
 				"Sair" )
 						clear
-						exit
+						exit 1
 					;;
 				*) 
 					echo -e "${VERMELHO}Comando não identificado!${SEM_COR}"
@@ -290,7 +290,7 @@ seta_max_l2mtu () {
 					;;
 				"Sair" )
 					clear
-					exit
+					exit 1
 					;;
 				* ) 
 					echo -e "${VERMELHO}\nPor favor insira uma opção válida.${SEM_COR}"
@@ -339,7 +339,7 @@ PS3="$RODAPE2" # ------------------------------------------- RODAPÉ )
 						;;
 				Não. ) 
 					echo -e "\nTente novamente! Saindo....."
-					exit
+					exit 1
 						;;
 				* )
 					echo -e "${VERMELHO}\nPor favor insira uma opção válida.${SEM_COR}"
@@ -386,7 +386,7 @@ do
 
 		Não. ) 
 			echo -e "\nTente novamente! Saindo....."
-			exit
+			exit 1
 				;;
 		* ) 
 			echo -e "${VERMELHO}\nPor favor insira uma opção válida.${SEM_COR}"
@@ -671,7 +671,7 @@ select MANUBQUIT in "Gerar BKP para Antena Ubiquit" "Download Atualização das 
 						;;	
 			"Sair" )
 				clear
-				exit
+				exit 1
 				;;
 			* ) 
 				echo -e "${VERMELHO}\nPor favor insira uma opção válida.${SEM_COR}"
@@ -749,7 +749,7 @@ PS3="$RODAPE2" # ----------------------- FRASE DO RODAPÉ )
 						;;
 					"Não." )
 						echo "Saindo!..."
-						exit
+						exit 1
 						break
 						;;
 					*) 
@@ -1031,7 +1031,7 @@ PS3="$RODAPE1" # -------------------------- FRASE DO RODAPÉ )
 					;;
 			"Sair" )
 				clear
-				exit
+				exit 1
 					;;
 			* ) 
 				echo -e "${VERMELHO}\nPor favor insira uma opção válida.${SEM_COR}"
