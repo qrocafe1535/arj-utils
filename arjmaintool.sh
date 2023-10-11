@@ -867,8 +867,8 @@ fi
 ########################################################################################################################
 
 cron_update_auto () { # automatiza update do systema
-	echo "0 9 * * * /usr/bin/apt update && /usr/bin/apt upgrade -y && /usr/bin/apt dist-upgrade -y && /usr/bin/apt autoremove -y
-" | sudo tee -a /etc/crontab
+	# exporta o comando para o arquivo em /etc/crontab
+	echo "0 9 * * * /usr/bin/apt update && /usr/bin/apt upgrade -y && /usr/bin/apt dist-upgrade -y && /usr/bin/apt autoremove -y " | sudo tee -a /etc/crontab
 	echo -e "\n${VERDE}Habilitado Update Automático com sucesso todo dia as 09:00.${SEM_COR}\n"
 }
 
