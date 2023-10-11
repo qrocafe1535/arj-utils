@@ -2,7 +2,7 @@
 
 # Name = AraujoSat Maintenance Tool (arjmaintool)
 # Author = Matheus Fellipe (Analista de Rede Jr.)
-# Version = 1.23.08
+# Version = 1.0
 
 # Esse script foi criado com a finalidade de automatizar diversos dos processos do dia a dia no suporte técnico.
 # Sinta-se livre para modificar e utilizar da forma que quiser!
