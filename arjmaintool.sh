@@ -869,6 +869,7 @@ fi
 cron_update_auto () { # automatiza update do systema
 	echo "0 9 * * * /usr/bin/apt update && /usr/bin/apt upgrade -y && /usr/bin/apt dist-upgrade -y && /usr/bin/apt autoremove -y
 " | sudo tee -a /etc/crontab
+	echo -e "\n${VERDE}Habilitado Update Automático com sucesso todo dia as 09:00.${SEM_COR}\n"
 }
 
 testes_internet () { # testa conexão com a internet.
@@ -1001,6 +1002,7 @@ system_clean () {
     flatpak update -y
     sudo apt autoclean -y
     sudo apt autoremove -y
+	sudo rm -r $HOME/Downloads/chrome; rm -r $HOME/Downloads/Dude; rm -r $HOME/Downloads/Winbox
     echo -e "${VERDE}Sistema limpo!${SEM_COR}\n"
     sleep 1
 }
@@ -1024,7 +1026,7 @@ if [[ "$tipo_do_servico" = "Manutenção Ubuntu" && $(lsb_release -si) == "Ubunt
 
 PS3="$RODAPE1" # -------------------------- FRASE DO RODAPÉ )
 	
-	select man_ubuntu in "Instalação de Programas para o Suporte" "Instalar Winbox + TheDude" "Habilitar Update Automático?" "Sair"; do
+	select man_ubuntu in "Instalação de Programas para o Suporte" "Instalar Winbox + TheDude" "Habilitar update automático as 09:00" "Sair"; do
 		case $man_ubuntu in 
 			"Instalação de Programas para o Suporte" )
 				main_update # executa uma manutenção completa bem como a Instalação do Winbox + The dude
@@ -1034,7 +1036,7 @@ PS3="$RODAPE1" # -------------------------- FRASE DO RODAPÉ )
 				mk_soft # instala winbox e the dude client.
 				break
 					;;
-			"Habilitar Update Automático?" )
+			"Habilitar update automático as 09:00" )
 				cron_update_auto # Habilita o update automático via cron.
 				break
 					;;
