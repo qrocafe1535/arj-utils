@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
-# Name = AraujoSat Maintenance Tool (arjmaintool)
-# Author = Matheus Fellipe (Analista de Rede Jr.)
-# Version = 1.0
-
-# Esse script foi criado com a finalidade de automatizar diversos dos processos do dia a dia no suporte técnico.
+# Nome = AraujoSat Maintenance Tool (arjmaintool)
+# Autor = Matheus Fellipe (Analista de Rede Jr.)
+# Versão = 1.0
+#
+# Descrição = Esse script foi criado com a finalidade de automatizar diversos dos processos do dia a dia no suporte técnico.
 # Sinta-se livre para modificar e utilizar da forma que quiser!
 
 #RODAPÉ
