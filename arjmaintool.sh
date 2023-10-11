@@ -1017,8 +1017,8 @@ main_update () { # Executando...
         system_update
         suporte_flatpak
         instala_chrome
-        system_clean
         mk_soft
+		system_clean
     echo -e "${AZUL}\nFinalizado com exito!\n${SEM_COR}"
 }
 
