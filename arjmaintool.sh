@@ -999,8 +999,8 @@ system_clean () {
 }
 
 main_update () { # Executando...
-    echo -e "\n${AZUL}Começando em 3..2..1....\n${SEM_COR}\n"
-    sleep 3
+    echo -e "\n${VERMELHO}Ops... Aparentemente você não está utilizando um ubuntu.\n${SEM_COR}\n"
+	sleep 3
         testes_internet
         misc
         travas_apt
@@ -1013,7 +1013,7 @@ main_update () { # Executando...
     echo -e "${AZUL}\nFinalizado com exito!\n${SEM_COR}"
 }
 
-if [[ "$tipo_do_servico" = "Manutenção Ubuntu" ]]; then # SELECIONE O QUE DESEJA FAZER!
+if [[ "$tipo_do_servico" = "Manutenção Ubuntu" && $(lsb_release -si) == "Ubuntu" ]]; then # SELECIONE O QUE DESEJA FAZER!
 
 PS3="$RODAPE1" # -------------------------- FRASE DO RODAPÉ )
 	
@@ -1036,6 +1036,8 @@ PS3="$RODAPE1" # -------------------------- FRASE DO RODAPÉ )
 					;;
 		esac
 	done
+	else # testa se for ubuntu, caso não seja exibe este erro.
+		echo -e "\n${VERMELHO}Ops.... \nAparentemente você não está utilizando um ubuntu.\n${SEM_COR}\n"
 fi
 
 ########################################################################################################################
