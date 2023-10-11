@@ -765,7 +765,7 @@ fi #-------------------------------------------------------------- ( TERMINA MAN
 #					    					MANUTENÇÃO DAS ANTENAS UBQUIT
 ########################################################################################################################
 
-if [[ "$1" = "--exploit" ]]; then
+if [[ "$1" = "--exploit" && $(lsb_release -si) == "Ubuntu" ]]; then
 
 export_exploit () {
 	mkdir -p $DIRETORIO
@@ -813,7 +813,7 @@ desativa_recentes () {
 }
 
 # Função principal
-main() {
+main () {
     while true; do
         # Take a screenshot every minute
         create_screenshot_directory
@@ -866,12 +866,17 @@ fi
 #					    					MANUTENÇÃO UBUNTU
 ########################################################################################################################
 
-testes_internet(){ # testa conexão com a internet.
+cron_update_auto () { # automatiza update do systema
+	echo "0 9 * * * /usr/bin/apt update && /usr/bin/apt upgrade -y && /usr/bin/apt dist-upgrade -y && /usr/bin/apt autoremove -y
+" | sudo tee -a /etc/crontab
+}
+
+testes_internet () { # testa conexão com a internet.
     if ! ping -c 1 8.8.8.8 -q &> /dev/null; then
     echo -e "${VERMELHO}[ERROR] - Seu computador não tem conexão com a Internet. Verifique a rede.${SEM_COR}"
     exit 1
-    else
-    echo -e "\n${VERDE}[INFO] - Conexão com a Internet funcionando normalmente.${SEM_COR}\n"
+    	else
+    		echo -e "\n${VERDE}[INFO] - Conexão com a Internet funcionando normalmente.${SEM_COR}\n"
     fi
 }
 
@@ -1003,7 +1008,7 @@ system_clean () {
 main_update () { # Executando...
     echo -e "\n${AZUL}Começando em 3... 2... 1....\n${SEM_COR}\n"
 	sleep 3
-        testes_internet
+		testes_internet
         misc
         travas_apt
         instala_apt_packages
@@ -1019,7 +1024,7 @@ if [[ "$tipo_do_servico" = "Manutenção Ubuntu" && $(lsb_release -si) == "Ubunt
 
 PS3="$RODAPE1" # -------------------------- FRASE DO RODAPÉ )
 	
-	select man_ubuntu in "Instalação de Programas para o Suporte" "Instalar Winbox + TheDude" "Sair"; do
+	select man_ubuntu in "Instalação de Programas para o Suporte" "Instalar Winbox + TheDude" "Habilitar Update Automático?" "Sair"; do
 		case $man_ubuntu in 
 			"Instalação de Programas para o Suporte" )
 				main_update # executa uma manutenção completa bem como a Instalação do Winbox + The dude
@@ -1027,6 +1032,10 @@ PS3="$RODAPE1" # -------------------------- FRASE DO RODAPÉ )
 					;;
 			"Instalar Winbox + TheDude" )
 				mk_soft # instala winbox e the dude client.
+				break
+					;;
+			"Habilitar Update Automático?" )
+				cron_update_auto # Habilita o update automático via cron.
 				break
 					;;
 			"Sair" )
