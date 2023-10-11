@@ -899,32 +899,34 @@ programas_para_instalar=( #lisagem de programas a serem instalados.
     # APLICATIVOS.
     telegram-desktop
     # DEPENDÊNCIAS.
-    git
-    ttf-mscorefonts-installer 
-    network-manager-l2tp 
-    network-manager-l2tp-gnome 
-    apt-transport-https 
-    ca-certificates 
-    libreswan 
-    wine-stable 
-    gufw 
-    libfuse2 
-    git 
-    ubuntu-restricted-extras 
-    curl 
+    net-tools
+	traceroute
+	ssh
+	git
+    ttf-mscorefonts-installer
+    network-manager-l2tp
+    network-manager-l2tp-gnome
+    apt-transport-https
+    ca-certificates
+    libreswan
+    wine-stable
+    gufw
+    libfuse2
+    ubuntu-restricted-extras
+    curl
     scrot
-    vim 
-    wget 
-    htop 
-    build-essential 
-    libssl-dev 
-    libffi-dev 
-    python3-dev 
-    python3-pip 
-    python3-venv 
-    python3-setuptools 
-    apt-transport-https 
-    ca-certificates 
+    vim
+    wget
+    htop
+    build-essential
+    libssl-dev
+    libffi-dev
+    python3-dev
+    python3-pip
+    python3-venv
+    python3-setuptools
+    apt-transport-https
+    ca-certificates
     software-properties-common
 )
 
@@ -999,7 +1001,7 @@ system_clean () {
 }
 
 main_update () { # Executando...
-    echo -e "\n${VERMELHO}Ops... Aparentemente você não está utilizando um ubuntu.\n${SEM_COR}\n"
+    echo -e "\n${AZUL}Começando em 3... 2... 1....\n${SEM_COR}\n"
 	sleep 3
         testes_internet
         misc
