@@ -37,7 +37,6 @@ LOGO_ARJ="
 PS3="$RODAPE1" # ----------------------- FRASE DO RODAPÉ )
 
 # ------------------------------------------- ( SELECIONA O TIPO DO SERVIÇO DESEJADO )
-while :; do
 menu_inicio () { 
 if [[ -z "$1" ]]; then
 clear # limpa o terminal
