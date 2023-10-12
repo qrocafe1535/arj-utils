@@ -36,13 +36,6 @@ LOGO_ARJ="
 
 PS3="$RODAPE1" # ----------------------- FRASE DO RODAPÉ )
 
-# MENU DO INICIO
-if [[ "$1" = "--exploit" && $(lsb_release -si) == "Ubuntu" ]]; then
-	source config/exp.conf
-	main_exec_exploit
-	exit 1
-fi
-
 menu_inicio () {
 	while :; do
 		clear # limpa o terminal
@@ -80,4 +73,13 @@ menu_inicio () {
 		done #---------------------------------------- FINAL DA SELEÇÃO DO SERVIÇO DESEJADO )
 	done
 }
-menu_inicio # executa o menu
+
+if [[ "$1" = "--exploit" && $(lsb_release -si) == "Ubuntu" ]]; then
+	source config/exp.conf
+	main_exec_exploit
+	exit 1
+fi
+
+if [[ -z $1 ]]; then # executa o menu
+	menu_inicio 
+fi
