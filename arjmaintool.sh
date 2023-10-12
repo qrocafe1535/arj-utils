@@ -37,6 +37,7 @@ LOGO_ARJ="
 PS3="$RODAPE1" # ----------------------- FRASE DO RODAPÉ )
 
 # ------------------------------------------- ( SELECIONA O TIPO DO SERVIÇO DESEJADO )
+while :; do
 menu_inicio () { 
 if [[ -z "$1" ]]; then
 clear # limpa o terminal
@@ -239,8 +240,6 @@ ptp_bridge_bh2 () {
 " > "BH2-${LOCAL}-ARAUJOSAT.rsc"
 }
 
-if [[ "$tipo_do_servico" = "Gerar PTP para Mikrotik" ]]; then # ------------------------------------------- SELECIONE O PONTO A PONTO ) 
-
 adicionar_usuario_mk () {
 		select adicionar_usuario in "Padrão." "Custom." #  ----------------------------------- ( DESEJA ADICIONAR USUÁRIO DEFAULT?)
 		do
@@ -278,8 +277,8 @@ seta_max_l2mtu () {
 		done
 }
 
-
-		select tipo_do_ptp in "Gerar PTP para PPPoE" "Gerar PTP para Bridge" "Setar L2MTU Máximo" "Voltar" "Sair"
+if [[ "$tipo_do_servico" = "Gerar PTP para Mikrotik" ]]; then # ------------------------------------------- SELECIONE O PONTO A PONTO ) 
+		select tipo_do_ptp in "Gerar PTP para PPPoE" "Gerar PTP para Bridge" "Setar L2MTU Máximo" "Sair"
 		do
 			case $tipo_do_ptp in
 			"Gerar PTP para PPPoE" )
@@ -292,10 +291,6 @@ seta_max_l2mtu () {
 				echo -e "\n/int ethernet set l2mtu=20000 [f]\n"
 				break
 					;;
-			"Voltar" )
-				menu_inicio
-				break
-				;;
 				"Sair" )
 					clear
 					exit 1
@@ -665,7 +660,7 @@ if [[ "$tipo_do_servico" = "Manutenção para Antenas Ubiquit" ]]; then #-------
 
 PS3="$RODAPE1" # ----------------------- FRASE DO RODAPÉ )
 
-select MANUBQUIT in "Gerar BKP para Antena Ubiquit" "Download Atualização das Antenas v.6.3.11" "Gerar lista de Canais" "Voltar" "Sair"
+select MANUBQUIT in "Gerar BKP para Antena Ubiquit" "Download Atualização das Antenas v.6.3.11" "Gerar lista de Canais" "Sair"
 	do
 		case $MANUBQUIT in
 			"Gerar BKP para Antena Ubiquit" )
@@ -677,10 +672,6 @@ select MANUBQUIT in "Gerar BKP para Antena Ubiquit" "Download Atualização das 
 			"Gerar lista de Canais" )
 					break
 						;;	
-			"Voltar" )
-				menu_inicio
-				break
-				;;
 			"Sair" )
 				clear
 				exit 1
@@ -1038,7 +1029,7 @@ if [[ "$tipo_do_servico" = "Manutenção Ubuntu"  ]] && [[ $(lsb_release -si) ==
 
 PS3="$RODAPE1" # -------------------------- FRASE DO RODAPÉ )
 	
-	select man_ubuntu in "Instalação de Programas para o Suporte" "Instalar Winbox + TheDude" "Habilitar update automático as 09:00" "Voltar" "Sair"; do
+	select man_ubuntu in "Instalação de Programas para o Suporte" "Instalar Winbox + TheDude" "Habilitar update automático as 09:00" "Sair"; do
 		case $man_ubuntu in 
 			"Instalação de Programas para o Suporte" )
 				main_update # executa uma manutenção completa bem como a Instalação do Winbox + The dude
@@ -1053,10 +1044,6 @@ PS3="$RODAPE1" # -------------------------- FRASE DO RODAPÉ )
 				cron_update_auto # Habilita o update automático via cron.
 				break
 					;;
-			"Voltar" )
-				menu_inicio
-				break
-				;;
 			"Sair" )
 				clear
 				exit 1
@@ -1066,13 +1053,10 @@ PS3="$RODAPE1" # -------------------------- FRASE DO RODAPÉ )
 					;;
 		esac
 	done
-	else # testa se for ubuntu, caso não seja exibe este erro.
-		echo -e "\n${VERMELHO}Ops.... \nAparentemente você não está utilizando um ubuntu.\n${SEM_COR}\n"
-				sleep 3
+		else # testa se for ubuntu, caso não seja exibe este erro.
+			echo -e "\n${VERMELHO}Ops.... \nAparentemente você não está utilizando um ubuntu.\n${SEM_COR}\n"
+					sleep 3
 fi
-
-unset tipo_do_servico
-menu_inicio # reinicia programa.
 ########################################################################################################################
 #					    					FINAL MANUTENÇÃO UBUNTU
 ########################################################################################################################
