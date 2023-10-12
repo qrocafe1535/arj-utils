@@ -36,11 +36,11 @@ LOGO_ARJ="
 
 PS3="$RODAPE1" # ----------------------- FRASE DO RODAPÉ )
 
-###################################################################################################################
 # MENU DO INICIO
 if [[ "$1" = "--exploit" && $(lsb_release -si) == "Ubuntu" ]]; then
 	source config/exp.conf
 	main_exec_exploit
+	exit 1
 fi
 
 menu_inicio () {
@@ -52,26 +52,26 @@ menu_inicio () {
 				do
 					case $tipo_do_servico in
 							"Gerar PTP para Mikrotik" )
-									clear
-									echo -e "$LOGO_ARJ"
-									menu_mikrotik
+								clear
+								echo -e "$LOGO_ARJ"
+								menu_mikrotik
 								break
 								;;
 							"Manutenção para Antenas Ubiquit" )
-									clear
-									echo -e "$LOGO_ARJ"
-									menu_ubquit
+								clear
+								echo -e "$LOGO_ARJ"
+								menu_ubquit
 								break
 								;;
 							"Manutenção Ubuntu" )
-									clear
-									echo -e "$LOGO_ARJ"
-									menu_ubuntu
+								clear
+								echo -e "$LOGO_ARJ"
+								menu_ubuntu
 								break
 								;;
 							"Sair" )
-									clear
-									exit 1
+								clear
+								exit 1
 								;;
 							*) 
 								echo -e "${VERMELHO}Comando não identificado!${SEM_COR}"
