@@ -14,6 +14,7 @@ RODAPE2="
 ------- As informações estão corretas?: "
 
 #CORES
+AMARELO='\033[33m'
 VERMELHO='\e[1;91m'
 VERDE='\e[1;92m'
 AZUL='\e[1;36m'
