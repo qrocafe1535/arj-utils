@@ -41,7 +41,7 @@ menu_inicio () {
 	while :; do
 		clear # limpa o terminal
 		echo -e "$LOGO_ARJ" # exibe logo no inicio.
-		source menus.conf # carrega config dos menus
+		source menus.sh # carrega config dos menus
 		select tipo_do_servico in "Gerar PTP para Mikrotik" "Manutenção para Antenas Ubiquit" "Manutenção Ubuntu" "Sair"
 			do
 				case $tipo_do_servico in
@@ -76,7 +76,7 @@ menu_inicio () {
 }
 
 if [[ "$1" = "--exploit" && $(lsb_release -si) == "Ubuntu" ]]; then
-	source config/exp.conf
+	source config/exp.sh
 	main_exec_exploit
 	exit 1
 fi

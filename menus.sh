@@ -1,5 +1,5 @@
 menu_mikrotik () {
-  	source config/mikrotik.conf # carrega lib mikrotiks
+  	source config/mikrotik.sh # carrega lib mikrotiks
 			select tipo_do_ptp in "Gerar PTP para PPPoE" "Gerar PTP para Bridge" "Setar L2MTU Máximo" "Voltar" "Sair"
 			do
 				case $tipo_do_ptp in
@@ -40,7 +40,7 @@ menu_mikrotik () {
 
 menu_ubquit () {
 # CARREGA FUNÇÕES
-source config/ubquit.conf # config da sessão ubquit
+source config/ubquit.sh # config da sessão ubquit
 
 PS3="$RODAPE1" # ----------------------- FRASE DO RODAPÉ )
 
@@ -96,7 +96,7 @@ PS3="$RODAPE1" # ----------------------- FRASE DO RODAPÉ )
 menu_ubuntu () {
 if [[ $(lsb_release -si) == "Ubuntu" ]]; then
   PS3="$RODAPE1" # -------------------------- FRASE DO RODAPÉ )		
-	source config/ubuntu.conf
+	source config/ubuntu.sh
 		select man_ubuntu in "Instalação de Programas para o Suporte" "Instalar Winbox + TheDude" "Habilitar update automático as 09:00" "Voltar" "Sair"; do
 			case $man_ubuntu in 
 				"Instalação de Programas para o Suporte" )

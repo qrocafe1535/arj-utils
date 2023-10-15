@@ -87,7 +87,7 @@ netconf.3.hwaddr.status=disabled
 netconf.3.ip6.status=enabled
 netconf.3.ip=$IP
 netconf.3.mtu=1500
-netconf.3.netmask=$MASK
+netconf.3.netmask=$mask_cidr
 netconf.3.role=mlan
 netconf.3.status=enabled
 netconf.3.up=enabled
@@ -232,6 +232,41 @@ wpasupplicant.status=disabled
 " > BKP-ARJ-${NOME}.cfg
 }
 
+identifica_bloco () { # identifica o bloco que será utilizado
+	echo -e "\nQual o bloco que será utilizado? \nUtilize o formato: ${AZUL}X.X.X.X Y${SEM_COR}"
+	read -p "Endereço IP: " ip mask
+
+# variaveis 
+	network=$( echo "$ip" | cut -d "." -f1,2,3 ) # network ip
+	host=$( echo "$ip" | cut -d "." -f4 ) # separa o ultimo octeto do host da rede
+	host_mask=$( echo "$mask" | cut -d "." -f4 ) # separa o ultimo octeto da mascara da rede
+
+	if [[ $host_mask -eq 252 ]] || [[ $host_mask -eq 30 ]]; then
+			mask_cidr="255.255.255.252"
+	else 
+			echo -e "${VERMELHO}\nO valor inserido não corresponde a um valor válido.${SEM_COR}\nSó serão aceitos blocos /30\n"
+			exit 1
+	fi
+
+	gateway="$network.$(( $host + 1))" # gateway da rede
+	ap1="$network.$(( $host + 2))" # ip do ap1
+	return 0
+}
+
+testa_bloco () { # verifica se o bloco utilizado estará livre.
+	if ping -c 1 -W 1 "$gateway" &> /dev/null; then
+			echo -e "\n${AMARELO}[ATENÇÃO]${SEM_COR} O IP $gateway está respondendo a ICMP."
+		elif ping -c 1 -W 1 "$network" &> /dev/null; then
+			echo -e "\n${AMARELO}[ATENÇÃO]${SEM_COR} O IP $ap1 está respondendo a ICMP."
+	else
+			echo -e "\n${VERDE}O bloco está livre.${SEM_COR}\n"
+			sleep 1
+	fi
+			GATEWAY="$network.$(( $host + 1))"
+			AP1="$network.$(( $host + 2))"
+}
+
+
 download_att_antenas () {
 			diretorio_destino="/home/$USER/Downloads/ANTENAS-6.3.11"
 			echo "Realizando download dos arquivos direto da fabricante em $diretorio_destino"
@@ -255,9 +290,8 @@ gerar_config_painel () {
 		echo "Qual o nome do painel?"; read "NOME"			 
 		echo "Qual o SSID que deseja propagar?"; read "SSID"  
 		echo "Qual WPA do painel?"; read "WPA" 
-		echo -e "Qual o IP do pinel? \nUtilizar o formato XX.XX.XX.XX"; read "IP"			 
-		echo -e "Qual a mascara? \nUtilizar o formato XX.XX.XX.XX"; read "MASK"			 		
-		echo -e "Qual o IP do gateway? \nUtilizar o formato XX.XX.XX.XX"; read "GATEWAY"			 		
+		identifica_bloco
+		testa_bloco
 		echo -e \
 "
 ------- CONFIRA AS INFORMAÇÕES --------
@@ -265,9 +299,9 @@ gerar_config_painel () {
 NOME: ${VERMELHO}$NOME${SEM_COR}
 SSID: ${VERMELHO}$SSID${SEM_COR}
 WPA: ${VERMELHO}$WPA${SEM_COR}
-IP: ${VERMELHO}$IP${SEM_COR}
-MASCARA: ${VERMELHO}$MASK${SEM_COR}	
 GATEWAY: ${VERMELHO}$GATEWAY${SEM_COR}
+IP: ${VERMELHO}$AP1${SEM_COR}
+MASCARA: ${VERMELHO}$mask_cidr${SEM_COR}
 
 ---------------------------------------
 "
@@ -280,12 +314,14 @@ PS3="$RODAPE2" # ----------------------- FRASE DO RODAPÉ )
 			case $STATUS3 in 
 				"Sim!" ) #----------------------- (CASO SIM EXECUTE ABAIXO)
 					bkp_da_antena
-					echo "BKP exportado com sucesso!"
+					echo -e "\n${VERDE}Backup exportado com sucesso!${SEM_COR}\n"
+					sleep 3
 					break
 					;;
 				"Não." )
 					echo -e "Tente novamente! \nSaindo..."
 					break
+					sleep 3
 					;;
 				* )
 					echo -e "${VERMELHO}\nPor favor insira uma opção válida.${SEM_COR}"

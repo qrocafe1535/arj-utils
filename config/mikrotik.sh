@@ -198,36 +198,9 @@ seta_max_l2mtu () {
 		done
 }
 
-frase_simornot () {
-							select CONTINUE in "Sim!" "Não"; do
-									case $adicionar_usuario in
-									Sim! )
-										break
-											;;
-									Não ) 
-									echo "Saindo..."
-									sleep 1
-									exit 1
-										break
-											;;
-									* )
-										echo -e "${VERMELHO}\nPor favor insira uma opção válida.${SEM_COR}"
-											;;
-								esac
-							done
-}
-
 identifica_bloco () { # identifica o bloco que será utilizado
 	echo -e "\nQual o bloco que será utilizado? \nUtilize o formato: ${AZUL}X.X.X.X Y${SEM_COR}"
 	read -p "Endereço IP: " ip mask
-
-#echo "$ip"
-#sleep 5
-#	if [[ ! $ip =~ ^[0-255]+\.[0-255]+\.[0-255]+\.[0-255]+$ ]] && [[ ! $mask =~ ^[0-255]+\.[0-255]+\.[0-255]+\.[0-255]+$ ]]; then
-#		echo -e "${VERMELHO}\nFormato de entrada inválido. Use X.X.X.X Y${SEM_COR}"
-#		sleep 5
-#		exit 1
-#	fi
 
 # variaveis 
 	network=$( echo "$ip" | cut -d "." -f1,2,3 ) # network ip
@@ -252,20 +225,20 @@ identifica_bloco () { # identifica o bloco que será utilizado
 
 testa_bloco () { # verifica se o bloco utilizado estará livre.
 	if ping -c 1 -W 1 "$gateway" &> /dev/null; then
-			echo -e "\n${AMARELO}[ERRO]${SEM_COR} O IP $gateway está respondendo a ICMP."
+			echo -e "\n${AMARELO}[ATENÇÃO]${SEM_COR} O IP $gateway está respondendo a ICMP."
 		elif ping -c 1 -W 1 "$network" &> /dev/null; then
-			echo -e "\n${AMARELO}[ERRO]${SEM_COR} O IP $network está respondendo a ICMP."
+			echo -e "\n${AMARELO}[ATENÇÃO]${SEM_COR} O IP $network está respondendo a ICMP."
 		elif ping -c 1 -W 1 "$bh1" &> /dev/null; then
-			echo -e "\n${AMARELO}[ERRO]${SEM_COR} O IP $bh1 está respondendo a ICMP."
+			echo -e "\n${AMARELO}[ATENÇÃO]${SEM_COR} O IP $bh1 está respondendo a ICMP."
 		elif ping -c 1 -W 1 "$bh2" &> /dev/null; then
-			echo -e "\n${AMARELO}[ERRO]${SEM_COR} O IP $bh2 está respondendo a ICMP."
+			echo -e "\n${AMARELO}[ATENÇÃO]${SEM_COR} O IP $bh2 está respondendo a ICMP."
 	else
-			GATEWAY="$network.$(( $host + 1))$mask_cidr"
-			BH1="$network.$(( $host + 2))$mask_cidr"
-			BH2="$network.$(( $host + 3))$mask_cidr"
-			echo -e "\n${VERDE}O bloco está livre.${SEM_COR}\n"
+				echo -e "\n${VERDE}O bloco está livre.${SEM_COR}\n"
 			sleep 1
-fi
+	fi
+		GATEWAY="$network.$(( $host + 1))$mask_cidr"
+		BH1="$network.$(( $host + 2))$mask_cidr"
+		BH2="$network.$(( $host + 3))$mask_cidr"
 }
 
 
