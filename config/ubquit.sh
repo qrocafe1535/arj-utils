@@ -287,9 +287,9 @@ lista_de_canais () {
 }
 
 gerar_config_painel () {
-		echo "Qual o nome do painel?"; read "NOME"			 
-		echo "Qual o SSID que deseja propagar?"; read "SSID"  
-		echo "Qual WPA do painel?"; read "WPA" 
+		read -p "Qual o nome do painel? " "NOME"			 
+		read -p "Qual o SSID que deseja propagar? " "SSID"  
+		read -p "Qual WPA do painel? " "WPA" 
 		identifica_bloco
 		testa_bloco
 		echo -e \
