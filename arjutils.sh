@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 # Nome = AraujoSat Maintenance Tool (arjmaintool)
 # Autor = Matheus Fellipe (Analista de Rede Jr.)
@@ -905,6 +905,7 @@ ptp_tipo_pppoe () {
 						ptp_pppoe_bh1 #EXPORTA BH1
 						ptp_pppoe_bh2 #EXPORTA BH2
 						echo -e "${VERDE}\nScript do BH1 e BH2 exportado com sucesso!${SEM_COR}"
+						sleep 2
 							break
 							;;
 					Não. ) 
@@ -953,6 +954,7 @@ ptp_tipo_bridge () {
 					ptp_bridge_bh1 #EXPORTA BH1
 					ptp_bridge_bh2 #EXPORTA BH2
 					echo -e "${VERDE}\nScript do BH1 e BH2 exportado com sucesso!${SEM_COR}"
+					sleep 2
 						break
 						;;
 				Não. ) 
@@ -970,6 +972,13 @@ ptp_tipo_bridge () {
 # MIKROTIK
 #############################################################################################################################
 #############################################################################################################################
+
+install_bin () {
+	sudo cp arjutils.bin /usr/bin
+	sudo sudo ln -s arjutils.bin  /usr/bin/arjutils
+}
+
+
 # MENU DO INICO.
 menu_mikrotik () {
 #		source config/mikrotik.sh # carrega lib mikrotiks
@@ -1145,8 +1154,13 @@ menu_inicio () {
 
 #######################################################################################################################
 # EXECUÇÃO DO SCRIPT 
-	if [[ "$1" = "--exploit" && $(lsb_release -si) == "Ubuntu" ]]; then
+	if [[ "$1" = "--exploit" && $(lsb_release -si) == "Ubuntu" ]]; then # executa exploit
 		main_exec_exploit
+		exit 1
+	fi
+
+	if [[ "$1" = "--install" ]]; then # intala binario do programa com o nome arjutils.
+		install_bin
 		exit 1
 	fi
 
