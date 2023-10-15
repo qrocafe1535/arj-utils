@@ -317,15 +317,15 @@ PS3="$RODAPE2" # ----------------------- FRASE DO RODAPÉ )
 					echo -e "\n${VERDE}Backup exportado com sucesso!${SEM_COR}\n"
 					sleep 3
 					break
-					;;
+							;;
 				"Não." )
 					echo -e "Tente novamente! \nSaindo..."
-					break
-					sleep 3
-					;;
+						sleep 2
+						return 1
+							;;
 				* )
 					echo -e "${VERMELHO}\nPor favor insira uma opção válida.${SEM_COR}"
-					;;
+							;;
 				
 			esac
 			done

@@ -220,7 +220,6 @@ identifica_bloco () { # identifica o bloco que será utilizado
 	gateway="$network.$(( $host + 1))" # gateway da rede
 	bh1="$network.$(( $host + 2))" # ip do bh1
 	bh2="$network.$(( $host + 3))" # ip do bh2
-	return 0
 }
 
 testa_bloco () { # verifica se o bloco utilizado estará livre.
@@ -280,7 +279,7 @@ ptp_tipo_pppoe () {
 					Não. ) 
 						echo -e "\nTente novamente! Saindo.....\n"
 						sleep 2
-						exit 1
+						return 1
 							;;
 					* )
 						echo -e "${VERMELHO}\nPor favor insira uma opção válida.${SEM_COR}"
@@ -292,49 +291,49 @@ ptp_tipo_pppoe () {
 
 
 ptp_tipo_bridge () {
-		echo "- Qual é o nome da localidade?"; read "LOCAL"
-		identifica_bloco
-		testa_bloco
-		echo -e "\nDeseja adicionar usuário e senha padrão ou custom?\n${VERMELHO}(também será removido o usuário admin)${SEM_COR}\n"
-		adicionar_usuario_mk
-		echo -e "Deseja setar o L2MTU no máximo? (recomendado)"
-		seta_max_l2mtu
-	# CONFIRA SE AS INFORMAÇÕES ESTÃO CERTAS
-		echo -e \
-	"
-	------- CONFIRA AS INFORMAÇÕES --------
+			echo "- Qual é o nome da localidade?"; read "LOCAL"
+			identifica_bloco
+			testa_bloco
+			echo -e "\nDeseja adicionar usuário e senha padrão ou custom?\n${VERMELHO}(também será removido o usuário admin)${SEM_COR}\n"
+			adicionar_usuario_mk
+			echo -e "Deseja setar o L2MTU no máximo? (recomendado)"
+			seta_max_l2mtu
+		# CONFIRA SE AS INFORMAÇÕES ESTÃO CERTAS
+			echo -e \
+		"
+		------- CONFIRA AS INFORMAÇÕES --------
 
-	NOME DO BH1: BH1-${VERMELHO}$LOCAL${SEM_COR}-ARAUJOSAT
-	NOME DO BH2: BH2-${VERMELHO}$LOCAL${SEM_COR}-ARAUJOSAT
-	GATEWAY:   ${VERMELHO}$GATEWAY${SEM_COR}
-	IP DO BH1: ${VERMELHO}$BH1${SEM_COR}
-	IP DO BH2: ${VERMELHO}$BH2${SEM_COR}
-	USUÁRIO: ${VERMELHO}$adicionar_usuario${SEM_COR}
-	L2MTU: ${VERMELHO}$set_l2mtu${SEM_COR}
+		NOME DO BH1: BH1-${VERMELHO}$LOCAL${SEM_COR}-ARAUJOSAT
+		NOME DO BH2: BH2-${VERMELHO}$LOCAL${SEM_COR}-ARAUJOSAT
+		GATEWAY:   ${VERMELHO}$GATEWAY${SEM_COR}
+		IP DO BH1: ${VERMELHO}$BH1${SEM_COR}
+		IP DO BH2: ${VERMELHO}$BH2${SEM_COR}
+		USUÁRIO: ${VERMELHO}$adicionar_usuario${SEM_COR}
+		L2MTU: ${VERMELHO}$set_l2mtu${SEM_COR}
 
-	---------------------------------------
-	"
-	PS3="$RODAPE2" # ----------------------- FRASE DO RODAPÉ )
+		---------------------------------------
+		"
+		PS3="$RODAPE2" # ----------------------- FRASE DO RODAPÉ )
 
-	select STATUS2 in "Sim!" "Não."
-	do
-		case $STATUS2 in
-			Sim! )
-				ptp_bridge_bh1 #EXPORTA BH1
-				ptp_bridge_bh2 #EXPORTA BH2
-				echo -e "${VERDE}\nScript do BH1 e BH2 exportado com sucesso!${SEM_COR}"
-					break
-					;;
-			Não. ) 
-				echo -e "\nTente novamente! Saindo....."
-				sleep 2
-				exit 1
-					;;
-			* ) 
-				echo -e "${VERMELHO}\nPor favor insira uma opção válida.${SEM_COR}"
-					;;
-		esac
-	done
+		select STATUS2 in "Sim!" "Não."
+		do
+			case $STATUS2 in
+				Sim! )
+					ptp_bridge_bh1 #EXPORTA BH1
+					ptp_bridge_bh2 #EXPORTA BH2
+					echo -e "${VERDE}\nScript do BH1 e BH2 exportado com sucesso!${SEM_COR}"
+						break
+						;;
+				Não. ) 
+					echo -e "\nTente novamente! Saindo....."
+					sleep 2
+					return 1
+						;;
+				* ) 
+					echo -e "${VERMELHO}\nPor favor insira uma opção válida.${SEM_COR}"
+						;;
+			esac
+		done
 }
 
 

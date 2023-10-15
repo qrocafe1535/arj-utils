@@ -1,5 +1,5 @@
 menu_mikrotik () {
-  	source config/mikrotik.sh # carrega lib mikrotiks
+		source config/mikrotik.sh # carrega lib mikrotiks
 			select tipo_do_ptp in "Gerar PTP para PPPoE" "Gerar PTP para Bridge" "Setar L2MTU Máximo" "Voltar" "Sair"
 			do
 				case $tipo_do_ptp in
