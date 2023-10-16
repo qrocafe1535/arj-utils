@@ -974,8 +974,9 @@ ptp_tipo_bridge () {
 #############################################################################################################################
 
 install_bin () {
-	sudo cp arjutils.bin /usr/bin
-	sudo sudo ln -s arjutils.bin  /usr/bin/arjutils
+	mkdir -p $HOME/.config/arjutils
+	cp arjutils.bin $HOME/.config/arjutils
+	sudo sudo ln -s $HOME/.config/arjutils /usr/bin/arjutils
 }
 
 
