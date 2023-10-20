@@ -379,7 +379,7 @@ netconf.3.devname=br0
 netconf.3.hwaddr.mac=
 netconf.3.hwaddr.status=disabled
 netconf.3.ip6.status=enabled
-netconf.3.ip=$IP
+netconf.3.ip=$AP1
 netconf.3.mtu=1500
 netconf.3.netmask=$mask_cidr
 netconf.3.role=mlan
@@ -526,7 +526,7 @@ wpasupplicant.status=disabled
 " > BKP-ARJ-${NOME}.cfg
 }
 
-identifica_bloco () { # identifica o bloco que será utilizado
+identifica_bloco_antena () { # identifica o bloco que será utilizado
 	echo -e "\nQual o bloco que será utilizado? \nUtilize o formato: ${AZUL}X.X.X.X Y${SEM_COR}"
 	read -p "Endereço IP: " ip mask
 
@@ -547,7 +547,7 @@ identifica_bloco () { # identifica o bloco que será utilizado
 	return 0
 }
 
-testa_bloco () { # verifica se o bloco utilizado estará livre.
+testa_bloco_antena () { # verifica se o bloco utilizado estará livre.
 	if ping -c 1 -W 1 "$gateway" &> /dev/null; then
 			echo -e "\n${AMARELO}[ATENÇÃO]${SEM_COR} O IP $gateway está respondendo a ICMP."
 		elif ping -c 1 -W 1 "$network" &> /dev/null; then
@@ -584,8 +584,8 @@ gerar_config_painel () {
 		read -p "Qual o nome do painel? " "NOME"			 
 		read -p "Qual o SSID que deseja propagar? " "SSID"  
 		read -p "Qual WPA do painel? " "WPA" 
-		identifica_bloco
-		testa_bloco
+		identifica_bloco_antena
+		testa_bloco_antena
 		echo -e \
 "
 ------- CONFIRA AS INFORMAÇÕES --------
