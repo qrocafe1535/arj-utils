@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Nome = AraujoSat Maintenance Tool (arjmaintool)
+# Nome = AraujoSat Maintenance Utils (arjutils)
 # Autor = Matheus Fellipe (Analista de Rede Jr.)
 # Versão = 1.0
 #
@@ -1022,10 +1022,10 @@ menu_mikrotik () {
 
 
 menu_ubquit () {
-# CARREGA FUNÇÕES
-#source config/ubquit.sh # config da sessão ubquit
+	# CARREGA FUNÇÕES
+	#source config/ubquit.sh # config da sessão ubquit
 
-PS3="$RODAPE1" # ----------------------- FRASE DO RODAPÉ )
+	PS3="$RODAPE1" # ----------------------- FRASE DO RODAPÉ )
 
 	select MANUBQUIT in "Gerar BKP para Antena Ubiquit" "Download Atualização das Antenas v.6.3.11" "Gerar lista de Canais" "Voltar" "Sair"
 	do
@@ -1077,40 +1077,40 @@ PS3="$RODAPE1" # ----------------------- FRASE DO RODAPÉ )
 }
 
 menu_ubuntu () {
-if [[ $(lsb_release -si) == "Ubuntu" ]]; then
-  PS3="$RODAPE1" # -------------------------- FRASE DO RODAPÉ )		
-#	source config/ubuntu.sh
-		select man_ubuntu in "Instalação de Programas para o Suporte" "Instalar Winbox + TheDude" "Habilitar update automático as 09:00" "Voltar" "Sair"; do
-			case $man_ubuntu in 
-				"Instalação de Programas para o Suporte" )
-					main_update # executa uma manutenção completa bem como a Instalação do Winbox + The dude
-					break
-						;;
-				"Instalar Winbox + TheDude" )
-					mk_soft # instala winbox e the dude client.
-					system_clean # limpa o sistema.
-					break
-						;;
-				"Habilitar update automático as 09:00" )
-					cron_update_auto # Habilita o update automático via cron.
-					break
-						;;
-				"Voltar" )
-					break
-						;;
-				"Sair" )
-					clear
-					exit 1
-						;;
-				* ) 
-					echo -e "${VERMELHO}\nPor favor insira uma opção válida.${SEM_COR}"
-						;;
-			esac
-		done
-else 
-  echo -e "\n${VERMELHO}Ops... \nO sistema utlizado não parece ser base Ubuntu\n${SEM_COR}"
-    sleep 3
-fi
+	if [[ $(lsb_release -si) == "Ubuntu" ]]; then
+		PS3="$RODAPE1" # -------------------------- FRASE DO RODAPÉ )		
+	#	source config/ubuntu.sh
+			select man_ubuntu in "Instalação de Programas para o Suporte" "Instalar Winbox + TheDude" "Habilitar update automático as 09:00" "Voltar" "Sair"; do
+				case $man_ubuntu in 
+					"Instalação de Programas para o Suporte" )
+						main_update # executa uma manutenção completa bem como a Instalação do Winbox + The dude
+						break
+							;;
+					"Instalar Winbox + TheDude" )
+						mk_soft # instala winbox e the dude client.
+						system_clean # limpa o sistema.
+						break
+							;;
+					"Habilitar update automático as 09:00" )
+						cron_update_auto # Habilita o update automático via cron.
+						break
+							;;
+					"Voltar" )
+						break
+							;;
+					"Sair" )
+						clear
+						exit 1
+							;;
+					* ) 
+						echo -e "${VERMELHO}\nPor favor insira uma opção válida.${SEM_COR}"
+							;;
+				esac
+			done
+	else 
+		echo -e "\n${VERMELHO}Ops... \nO sistema utlizado não parece ser base Ubuntu\n${SEM_COR}"
+			sleep 3
+	fi
 }
 
 PS3="$RODAPE1" # ----------------------- FRASE DO RODAPÉ )
