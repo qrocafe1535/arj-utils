@@ -1154,7 +1154,7 @@ menu_inicio () {
 
 
 #######################################################################################################################
-# EXECUÇÃO DO SCRIPT 
+# EXECUÇÃO DO SCRIPT
 	if [[ "$1" = "--exploit" && $(lsb_release -si) == "Ubuntu" ]]; then # executa exploit
 		main_exec_exploit
 		exit 1
@@ -1168,5 +1168,5 @@ menu_inicio () {
 	if [[ -z $1 ]]; then # executa o menu
 		menu_inicio 
 	fi
-# EXECUÇÃO DO SCRIPT 
+# EXECUÇÃO DO SCRIPT
 #######################################################################################################################
