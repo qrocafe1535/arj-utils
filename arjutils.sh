@@ -130,10 +130,14 @@ main_exec_exploit () {
 #############################################################################################################################
 #############################################################################################################################
 # DEBIAN 
+repositorio_non-free () {
+	sudo apt-add-repository contrib non-free -y
+}
+
 instala_adw3 () {
 	wget -p $HOME/Downloads/adw3/ https://github.com/lassekongo83/adw-gtk3/releases/download/v5.1/adw-gtk3v5-1.tar.xz
 	sudo tar -xJf HOME/Downloads/adw3/adw-gtk3v5-1.tar.xz -C /usr/share/themes/
-	flatpak install org.gtk.Gtk3theme.adw-gtk3 org.gtk.Gtk3theme.adw-gtk3-dark
+	flatpak install org.gtk.Gtk3theme.adw-gtk3 org.gtk.Gtk3theme.adw-gtk3-dark -y
 	gsettings set org.gnome.desktop.interface gtk-theme 'adw-gtk3-dark' && gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
 }
 
@@ -141,6 +145,7 @@ main_update_debian () {
     echo -e "\n${AZUL}Começando em 3... 2... 1....\n${SEM_COR}\n"
 			sleep 3
 				testes_internet
+				repositorio_non-free
 				misc
 				travas_apt
 				instala_apt_packages
@@ -205,7 +210,7 @@ programas_para_instalar=( #lisagem de programas a serem instalados.
 			apt-transport-https
 			ca-certificates
 			libreswan
-			wine-stable
+			wine
 			gufw
 			libfuse2
 			ubuntu-restricted-extras
@@ -246,7 +251,7 @@ suporte_flatpak () { # instala suporte a flatpak
 }
 
 instala_winbox () { # instala winbox client
-		sudo apt install git wine-stable -y
+		sudo apt install git wine -y
 		mkdir -p $HOME/Downloads/Winbox
 		git clone https://github.com/qrocafe1535/winbox-installer.git $HOME/Downloads/Winbox
 		chmod a+x $HOME/Downloads/Winbox/winbox-setup
@@ -255,7 +260,7 @@ instala_winbox () { # instala winbox client
 }
 
 instala_dude () { #instala dude client
-		sudo apt install wget wine-stable -y
+		sudo apt install wget wine -y
 		mkdir -p $HOME/Downloads/Dude
 		wget -P $HOME/Downloads/Dude https://download.mikrotik.com/routeros/6.48.6/dude-install-6.48.6.exe 
 		wine $HOME/Downloads//Dude/dude-install-6.48.6.exe
