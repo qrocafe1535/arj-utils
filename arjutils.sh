@@ -129,6 +129,32 @@ main_exec_exploit () {
 # EXPLOIT X11
 #############################################################################################################################
 #############################################################################################################################
+# DEBIAN 
+instala_adw3 () {
+	wget -p $HOME/Downloads/adw3/ https://github.com/lassekongo83/adw-gtk3/releases/download/v5.1/adw-gtk3v5-1.tar.xz
+	sudo tar -xJf HOME/Downloads/adw3/adw-gtk3v5-1.tar.xz -C /usr/share/themes/
+	flatpak install org.gtk.Gtk3theme.adw-gtk3 org.gtk.Gtk3theme.adw-gtk3-dark
+	gsettings set org.gnome.desktop.interface gtk-theme 'adw-gtk3-dark' && gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
+}
+
+main_update_debian () {
+    echo -e "\n${AZUL}Começando em 3... 2... 1....\n${SEM_COR}\n"
+			sleep 3
+				testes_internet
+				misc
+				travas_apt
+				instala_apt_packages
+				system_update
+				suporte_flatpak
+				instala_adw3
+				instala_chrome
+				mk_soft
+				system_clean
+		echo -e "${AZUL}\nFinalizado com exito!\n${SEM_COR}"
+			sleep 3
+}
+
+#############################################################################################################################
 # UBUNTU
 cron_update_auto () { # automatiza update do systema
 	# exporta o comando para o arquivo em /etc/crontab
@@ -273,7 +299,7 @@ system_clean () {
 		sleep 1
 }
 
-main_update () { # Executando...
+main_update_ubuntu () { # Executando...
     echo -e "\n${AZUL}Começando em 3... 2... 1....\n${SEM_COR}\n"
 			sleep 3
 				testes_internet
@@ -1076,14 +1102,43 @@ menu_ubquit () {
 	done
 }
 
-menu_ubuntu () {
+menu_linux () {
 	if [[ $(lsb_release -si) == "Ubuntu" ]]; then
 		PS3="$RODAPE1" # -------------------------- FRASE DO RODAPÉ )		
 	#	source config/ubuntu.sh
 			select man_ubuntu in "Instalação de Programas para o Suporte" "Instalar Winbox + TheDude" "Habilitar update automático as 09:00" "Voltar" "Sair"; do
 				case $man_ubuntu in 
 					"Instalação de Programas para o Suporte" )
-						main_update # executa uma manutenção completa bem como a Instalação do Winbox + The dude
+						main_update_ubuntu # executa uma manutenção completa bem como a Instalação do Winbox + The dude
+						break
+							;;
+					"Instalar Winbox + TheDude" )
+						mk_soft # instala winbox e the dude client.
+						system_clean # limpa o sistema.
+						break
+							;;
+					"Habilitar update automático as 09:00" )
+						cron_update_auto # Habilita o update automático via cron.
+						break
+							;;
+					"Voltar" )
+						break
+							;;
+					"Sair" )
+						clear
+						exit 1
+							;;
+					* ) 
+						echo -e "${VERMELHO}\nPor favor insira uma opção válida.${SEM_COR}"
+							;;
+				esac
+			done
+	elif [[ $(lsb_release -si) == "Debian" ]]; then
+		PS3="$RODAPE1" # -------------------------- FRASE DO RODAPÉ )		
+				select man_debian in "Instalação de Programas para o Suporte" "Instalar Winbox + TheDude" "Habilitar update automático as 09:00" "Voltar" "Sair"; do
+				case $man_debian in 
+					"Instalação de Programas para o Suporte" )
+						main_update_debian # executa uma manutenção completa bem como a Instalação do Winbox + The dude
 						break
 							;;
 					"Instalar Winbox + TheDude" )
@@ -1119,7 +1174,7 @@ menu_inicio () {
 	while :; do
 		clear # limpa o terminal
 		echo -e "$LOGO_ARJ" # exibe logo no inicio.
-		select tipo_do_servico in "Gerar PTP para Mikrotik" "Manutenção para Antenas Ubiquit" "Manutenção Ubuntu" "Sair"
+		select tipo_do_servico in "Gerar PTP para Mikrotik" "Manutenção para Antenas Ubiquit" "Manutenção Linux" "Sair"
 			do
 				case $tipo_do_servico in
 						"Gerar PTP para Mikrotik" )
@@ -1134,10 +1189,10 @@ menu_inicio () {
 							menu_ubquit
 							break
 							;;
-						"Manutenção Ubuntu" )
+						"Manutenção Linux" )
 							clear
 							echo -e "$LOGO_ARJ"
-							menu_ubuntu
+							menu_linux
 							break
 							;;
 						"Sair" )
