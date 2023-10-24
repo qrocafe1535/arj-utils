@@ -41,7 +41,7 @@ menu_inicio () {
 		clear # limpa o terminal
 		echo -e "$LOGO_ARJ" # exibe logo no inicio.
 		source config/menus.sh # carrega menus
-		select tipo_do_servico in "Gerar PTP para Mikrotik" "Manutenção para Antenas Ubiquit" "Manutenção Linux" "Gerador de Senhas" "Sair"
+		select tipo_do_servico in "Gerar PTP para Mikrotik" "Manutenção para Antenas Ubiquit" "Manutenção Linux" "Sair"
 			do
 				case $tipo_do_servico in
 						"Gerar PTP para Mikrotik" )
