@@ -163,11 +163,11 @@ main_update_debian () {
 	echo -e "\n${AZUL}Começando em 3... 2... 1....\n${SEM_COR}\n"
 		sleep 3
 		testes_internet
+		instala_apt_packages
 		repositorio_non-free
 		misc
 		travas_apt
 		instala_wine
-		instala_apt_packages
 		system_update
 		suporte_flatpak
 		instala_adw3
