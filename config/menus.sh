@@ -95,6 +95,8 @@ menu_linux () {
 	if [[ $(lsb_release -si) == "Ubuntu" ]]; then
 		PS3="$RODAPE1" # -------------------------- FRASE DO RODAPÉ )		
 		source config/ubuntu.sh
+		echo -e "\nSistema detectado = ${VERDE}UBUNTU${SEM_COR}\n"
+		sleep 1
 			select man_ubuntu in "Instalação de Programas para o Suporte" "Instalar Winbox + TheDude" "Habilitar update automático as 09:00" "Voltar" "Sair"; do
 				case $man_ubuntu in 
 					"Instalação de Programas para o Suporte" )
@@ -126,6 +128,8 @@ menu_linux () {
 	elif [[ $(lsb_release -si) == "Debian" ]]; then # sessão do debian
 		PS3="$RODAPE1" # -------------------------- FRASE DO RODAPÉ )
 		source config/debian.sh
+		echo -e "\nSistema detectado = ${VERDE}DEBIAN${SEM_COR}\n"
+		sleep 1
 				select man_debian in "Instalação de Programas para o Suporte" "Instalar Winbox + TheDude" "Habilitar update automático as 09:00" "Voltar" "Sair"; do
 				case $man_debian in 
 					"Instalação de Programas para o Suporte" )
