@@ -2,8 +2,8 @@ instala_adw3 () { # habilita suporte a temas libadwaita trazendo melhora visual 
 	mkdir -p $HOME/Downloads/adw3
 	wget -P $HOME/Downloads/adw3 https://github.com/lassekongo83/adw-gtk3/releases/download/v5.1/adw-gtk3v5-1.tar.xz
 	sudo tar -xf $HOME/Downloads/adw3/adw-gtk3v5-1.tar.xz -C /usr/share/themes
-	gsettings set org.gnome.desktop.interface gtk-theme 'adw-gtk3-dark' && gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
 	flatpak install org.gtk.Gtk3theme.adw-gtk3 org.gtk.Gtk3theme.adw-gtk3-dark
+	gsettings set org.gnome.desktop.interface gtk-theme 'adw-gtk3-dark' && gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
 	echo -e "\n${VERDE}Habilitado suporte a thema legado libadwaita dark!${SEM_COR}\n"
 	sleep 1
 }
@@ -39,7 +39,6 @@ misc () { # adiciona arquitetura i386x86 e função na barra de ferramentas.
 }
 
 system_update () { # atualiza o sistema.
-	echo -e "\n${VERDE}Adicionado MISC${SEM_COR}\n"
 	sleep 1
 	sudo apt-get update && sudo apt-get upgrade -y
 }
@@ -94,10 +93,9 @@ suporte_flatpak () { # instala suporte a flatpak
 
 instala_winbox () { # instala winbox client
 	mkdir -p $HOME/Downloads/Winbox
-	git clone https://github.com/qrocafe1535/winbox-installer.git $HOME/Downloads/Winbox
+	git clone https://github.com/mriza/winbox-installer.git $HOME/Downloads/Winbox
 	chmod a+x $HOME/Downloads/Winbox/winbox-setup
-	cd $HOME/Downloads/Winbox
-	sudo ./winbox-setup install
+	sudo bash $HOME/Downloads/Winbox/winbox-setup install
 }
 
 instala_dude () { #instala dude client
@@ -161,19 +159,19 @@ instala_wine () { # instala o wine no debian.
 
 main_update_debian () {
 	echo -e "\n${AZUL}Começando em 3... 2... 1....\n${SEM_COR}\n"
-		sleep 3
-		testes_internet
-		instala_apt_packages
-		repositorio_non-free
-		misc
-		travas_apt
-		instala_wine
-		system_update
-		suporte_flatpak
-		instala_adw3
-		instala_chrome
-		mk_soft
-		system_clean
-		echo -e "${AZUL}\nFinalizado com exito!\n${SEM_COR}"
-		sleep 3
+	sleep 3
+	testes_internet
+	instala_apt_packages
+	repositorio_non-free
+	misc
+	travas_apt
+	instala_wine
+	system_update
+	suporte_flatpak
+	instala_adw3
+	instala_chrome
+	mk_soft
+	system_clean
+	echo -e "${AZUL}\nFinalizado com exito!\n${SEM_COR}"
+	sleep 3
 }
