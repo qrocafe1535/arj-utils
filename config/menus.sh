@@ -37,7 +37,6 @@ menu_mikrotik () {
 	fi
 }
 
-
 menu_ubquit () {
 	source config/ubquit.sh # config da sessão ubquit
 	PS3="$RODAPE1" # ----------------------- FRASE DO RODAPÉ )
