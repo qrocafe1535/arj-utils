@@ -76,12 +76,13 @@ menu_inicio () {
 # -------------------------------------------------------------------------------------------------------------------#
 #		Executa tudo.
 # -------------------------------------------------------------------------------------------------------------------#
-	if [[ "$1" = "--exploit" && $(lsb_release -si) == "Ubuntu" || "Debian" ]]; then # executa exploit
+if [[ "$1" = "--exploit" && $(lsb_release -si) == "Ubuntu" ]]; then # executa exploit
 		main_exec_exploit
 		exit 1
-	fi
-
-	if [[ -z $1 ]]; then # executa o menu
+	elif [[ "$1" = "--exploit" && $(lsb_release -si) == "Debian" ]]; then
+		main_exec_exploit
+		exit 1
+	else # executa o menu
 		menu_inicio 
-	fi
+fi
 # -------------------------------------------------------------------------------------------------------------------#
