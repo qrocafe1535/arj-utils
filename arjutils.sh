@@ -41,35 +41,34 @@ menu_inicio () {
 		clear # limpa o terminal
 		echo -e "$LOGO_ARJ" # exibe logo no inicio.
 		source config/menus.sh # carrega menus
-		select tipo_do_servico in "Gerar PTP para Mikrotik" "Manutenção para Antenas Ubiquit" "Manutenção Linux" "Sair"
-			do
-				case $tipo_do_servico in
-						"Gerar PTP para Mikrotik" )
-							clear
-							echo -e "$LOGO_ARJ"
-							menu_mikrotik
-							break
-							;;
-						"Manutenção para Antenas Ubiquit" )
-							clear
-							echo -e "$LOGO_ARJ"
-							menu_ubquit
-							break
-							;;
-						"Manutenção Linux" )
-							clear
-							echo -e "$LOGO_ARJ"
-							menu_linux
-							break
-							;;
-						"Sair" )
-							clear
-							exit 1
-							;;
-						*) 
-							echo -e "${VERMELHO}Comando não identificado!${SEM_COR}"
-							;;
-				esac
+		select tipo_do_servico in "Gerar PTP para Mikrotik" "Manutenção para Antenas Ubiquit" "Manutenção Linux" "Sair"; do
+			case $tipo_do_servico in
+				"Gerar PTP para Mikrotik" )
+					clear
+					echo -e "$LOGO_ARJ"
+					menu_mikrotik
+					break
+					;;
+				"Manutenção para Antenas Ubiquit" )
+					clear
+					echo -e "$LOGO_ARJ"
+					menu_ubquit
+					break
+					;;
+				"Manutenção Linux" )
+					clear
+					echo -e "$LOGO_ARJ"
+					menu_linux
+					break
+					;;
+				"Sair" )
+					clear
+					exit 1
+					;;
+				*) 
+					echo -e "${VERMELHO}Comando não identificado!${SEM_COR}"
+					;;
+			esac
 		done
 	done
 }
