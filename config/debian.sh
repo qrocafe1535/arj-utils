@@ -1,9 +1,18 @@
-#############################################################################################################################
-# DEBIAN 
+instala_adw3 () { # habilita suporte a temas libadwaita trazendo melhora visual ao desktop.
+	mkdir -p $HOME/Downloads/adw3
+	wget -P $HOME/Downloads/adw3 https://github.com/lassekongo83/adw-gtk3/releases/download/v5.1/adw-gtk3v5-1.tar.xz
+	sudo tar -xf $HOME/Downloads/adw3/adw-gtk3v5-1.tar.xz -C /usr/share/themes
+	gsettings set org.gnome.desktop.interface gtk-theme 'adw-gtk3-dark' && gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
+	flatpak install org.gtk.Gtk3theme.adw-gtk3 org.gtk.Gtk3theme.adw-gtk3-dark
+		echo -e "\n${VERDE}Habilitado suporte a thema legado libadwaita dark!${SEM_COR}\n"
+		sleep 1
+}
+
 cron_update_auto () { # automatiza update do systema
 	# exporta o comando para o arquivo em /etc/crontab
 	echo "0 9 * * * /usr/bin/apt update && /usr/bin/apt upgrade -y && /usr/bin/apt dist-upgrade -y && /usr/bin/apt autoremove -y " | sudo tee -a /etc/crontab
 	echo -e "\n${VERDE}Habilitado Update Automático com sucesso todo dia as 09:00.${SEM_COR}\n"
+	sleep 1
 }
 
 testes_internet () { # testa conexão com a internet.
@@ -12,6 +21,7 @@ testes_internet () { # testa conexão com a internet.
 		exit 1
 			else
 				echo -e "\n${VERDE}[INFO] - Conexão com a Internet funcionando normalmente.${SEM_COR}\n"
+				sleep 1
 		fi
 }
 
