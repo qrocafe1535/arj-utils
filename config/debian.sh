@@ -96,6 +96,7 @@ instala_winbox () { # instala winbox client
 	git clone https://github.com/mriza/winbox-installer.git $HOME/Downloads/Winbox
 	chmod a+x $HOME/Downloads/Winbox/winbox-setup
 	sudo bash $HOME/Downloads/Winbox/winbox-setup install
+	sudo ln -s /usr/local/bin/winbox.sh /usr/bin/winbox
 }
 
 instala_dude () { #instala dude client
