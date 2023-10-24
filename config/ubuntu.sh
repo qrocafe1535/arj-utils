@@ -1,5 +1,3 @@
-#############################################################################################################################
-# UBUNTU
 cron_update_auto () { # automatiza update do systema
 	# exporta o comando para o arquivo em /etc/crontab
 	echo "0 9 * * * /usr/bin/apt update && /usr/bin/apt upgrade -y && /usr/bin/apt dist-upgrade -y && /usr/bin/apt autoremove -y " | sudo tee -a /etc/crontab
@@ -158,5 +156,3 @@ main_update_ubuntu () { # Executando...
 		echo -e "${AZUL}\nFinalizado com exito!\n${SEM_COR}"
 			sleep 3
 }
-# UBUNTU
-#############################################################################################################################

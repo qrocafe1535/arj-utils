@@ -40,8 +40,8 @@ menu_inicio () {
 	while :; do
 		clear # limpa o terminal
 		echo -e "$LOGO_ARJ" # exibe logo no inicio.
-		source config/menus.sh
-		select tipo_do_servico in "Gerar PTP para Mikrotik" "Manutenção para Antenas Ubiquit" "Manutenção Linux" "Sair"
+		source config/menus.sh # carrega menus
+		select tipo_do_servico in "Gerar PTP para Mikrotik" "Manutenção para Antenas Ubiquit" "Manutenção Linux" "Gerador de Senhas" "Sair"
 			do
 				case $tipo_do_servico in
 						"Gerar PTP para Mikrotik" )
@@ -70,11 +70,11 @@ menu_inicio () {
 							echo -e "${VERMELHO}Comando não identificado!${SEM_COR}"
 							;;
 				esac
-		done #---------------------------------------- FINAL DA SELEÇÃO DO SERVIÇO DESEJADO )
+		done
 	done
 }
-
-
+# -------------------------------------------------------------------------------------------------------------------#
+#		Executa tudo.
 # -------------------------------------------------------------------------------------------------------------------#
 	if [[ "$1" = "--exploit" && $(lsb_release -si) == "Ubuntu" ]]; then # executa exploit
 		main_exec_exploit
