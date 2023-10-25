@@ -39,6 +39,7 @@ misc () { # adiciona arquitetura i386x86 e função na barra de ferramentas.
 }
 
 system_update () { # atualiza o sistema.
+	echo -e "\n${VERDE}Atualizando sistema${SEM_COR}\n"
 	sleep 1
 	sudo apt-get update && sudo apt-get upgrade -y
 }
@@ -86,7 +87,7 @@ instala_apt_packages () {
 
 suporte_flatpak () { # instala suporte a flatpak
 	sudo apt-get install flatpak gnome-software-plugin-flatpak -y
-	flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+	sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 	echo -e "${VERDE}Adicionado Suporte a Flatpaks${SEM_COR}\n"
 	sleep 1
 }
@@ -136,6 +137,7 @@ system_clean () {
 	flatpak update -y
 	sudo apt autoclean -y
 	sudo apt autoremove -y
+	sudo apt install -f
 	sudo rm -r $HOME/Downloads/chrome
 	sudo rm -r $HOME/Downloads/Dude
 	sudo rm -r $HOME/Downloads/Winbox
@@ -162,10 +164,10 @@ main_update_debian () {
 	echo -e "\n${AZUL}Começando em 3... 2... 1....\n${SEM_COR}\n"
 	sleep 3
 	testes_internet
+	travas_apt
 	instala_apt_packages
 	repositorio_non-free
 	misc
-	travas_apt
 	instala_wine
 	system_update
 	suporte_flatpak
