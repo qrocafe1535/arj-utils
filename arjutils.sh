@@ -87,6 +87,6 @@ if [[ "$1" = "--exploit" && $(lsb_release -si) == "Ubuntu" ]]; then # executa ex
 		main_exec_exploit
 		exit 1
 	else # executa o menu
-		menu_inicio 
+		menu_inicio
 fi
 # =======================================================================================|
