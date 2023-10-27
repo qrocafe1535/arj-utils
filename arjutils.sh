@@ -34,13 +34,13 @@ LOGO_ARJ="
        ░  ░   ░           ░  ░   ░      ░   ░      ░ ░        ░        ░  ░           
                                                                             ${VERMELHO}by Matheus${SEM_COR}
 "
-
-PS3="$RODAPE1" # ----------------------- FRASE DO RODAPÉ )
+# =======================================================================================|
+PS3="$RODAPE1"
 menu_inicio () {
 	while :; do
-		clear # limpa o terminal
-		echo -e "$LOGO_ARJ" # exibe logo no inicio.
-		source config/menus.sh # carrega menus
+		clear
+		echo -e "$LOGO_ARJ" # Exibe logo no inicio.
+		source config/menus.sh # Carrega menus
 		select tipo_do_servico in "Gerar PTP para Mikrotik" "Manutenção para Antenas Ubiquit" "Manutenção Linux" "Sair"; do
 			case $tipo_do_servico in
 				"Gerar PTP para Mikrotik" )
@@ -72,11 +72,9 @@ menu_inicio () {
 		done
 	done
 }
-# -------------------------------------------------------------------------------------------------------------------#
-#		Executa tudo.
-# -------------------------------------------------------------------------------------------------------------------#
-
-if [[ $UID -eq 0 ]]; then # verifica se for root fecha o programa.
+# =======================================================================================|
+# Executa tudo.
+if [[ $UID -eq 0 ]]; then # Verifica se for root fecha o programa.
 	echo -e "\n${VERMELHO}[ERRO]${SEM_COR} O programa não deve ser executado como root."
 	sleep 2
 	exit 1
@@ -85,10 +83,10 @@ fi
 if [[ "$1" = "--exploit" && $(lsb_release -si) == "Ubuntu" ]]; then # executa exploit
 		main_exec_exploit
 		exit 1
-	elif [[ "$1" = "--exploit" && $(lsb_release -si) == "Debian" ]]; then
+	elif [[ "$1" = "--exploit" && $(lsb_release -si) == "Debian" ]]; then # executa exploit
 		main_exec_exploit
 		exit 1
 	else # executa o menu
 		menu_inicio 
 fi
-# -------------------------------------------------------------------------------------------------------------------#
+# =======================================================================================|
