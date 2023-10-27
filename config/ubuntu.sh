@@ -28,7 +28,7 @@ misc () { # adiciona arquitetura i386x86 e função na barra de ferramentas.
 }
 
 system_update () { # atualiza o sistema.
-	echo -e "\n${VERDE}Adicionado MISC${SEM_COR}\n"
+	echo -e "\n${VERDE}Atualizando sistema${SEM_COR}\n"
 	sleep 1
 	sudo apt-get update && sudo apt-get upgrade -y
 }
@@ -82,18 +82,17 @@ instala_apt_packages () {
 
 suporte_flatpak () { # instala suporte a flatpak
 	sudo apt-get install flatpak gnome-software-plugin-flatpak -y
-	flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+	sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 	echo -e "${VERDE}Adicionado Suporte a Flatpaks${SEM_COR}\n"
 	sleep 1
 }
 
 instala_winbox () { # instala winbox client
-	sudo apt install git wine-stable -y
 	mkdir -p $HOME/Downloads/Winbox
-	git clone https://github.com/qrocafe1535/winbox-installer.git $HOME/Downloads/Winbox
+	git clone https://github.com/mriza/winbox-installer.git $HOME/Downloads/Winbox
 	chmod a+x $HOME/Downloads/Winbox/winbox-setup
-	cd $HOME/Downloads/Winbox
-	sudo ./winbox-setup install
+	sudo bash $HOME/Downloads/Winbox/winbox-setup install
+	sudo ln -s /usr/local/bin/winbox.sh /usr/bin/winbox
 }
 
 instala_dude () { #instala dude client
@@ -128,6 +127,7 @@ system_clean () {
 	flatpak update -y
 	sudo apt autoclean -y
 	sudo apt autoremove -y
+	sudo apt install -f
 	sudo rm -r $HOME/Downloads/chrome
 	sudo rm -r $HOME/Downloads/Dude
 	sudo rm -r $HOME/Downloads/Winbox
@@ -139,9 +139,9 @@ main_update_ubuntu () { # Executando...
 	echo -e "\n${AZUL}Começando em 3... 2... 1....\n${SEM_COR}\n"
 	sleep 3
 	testes_internet
-	misc
 	travas_apt
 	instala_apt_packages
+	misc
 	system_update
 	suporte_flatpak
 	instala_chrome

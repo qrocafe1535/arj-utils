@@ -10,7 +10,7 @@ echo \
 /interface bridge port add bridge=bridge1 interface=wlan1
 /interface bridge port add bridge=bridge1 interface=[/interface ethernet find default-name=ether1]
 /ip address add address=$BH1 interface=bridge1
-/ip route add distance=254 gateway=$GATEWAY
+/ip route add distance=254 gateway=$gateway
 /ip service set winbox port=47569
 /system identity set name=BH1-ARAUJOSAT-$ID
 /snmp community set [ find default=yes ] addresses=10.51.200.4/32,10.51.200.9/32 name=arj_sat
@@ -92,7 +92,7 @@ echo \
 /interface bridge port add bridge=bridge1 interface=[/interface ethernet find name=ether1]
 /interface bridge port add bridge=bridge1 interface=wlan1
 /ip address add address=$BH1 interface=bridge1
-/ip route add distance=254 gateway=$GATEWAY
+/ip route add distance=254 gateway=$gateway
 /system identity set name=BH1-$LOCAL-ARAUJOSAT
 /snmp community set [ find default=yes ] addresses=10.51.200.4/32,10.51.200.9/32 name=arj_sat
 /system logging action set 3 remote=10.51.200.3 remote-port=32514
@@ -133,7 +133,7 @@ ptp_bridge_bh2 () {
 /interface bridge port add bridge=bridge1 interface=[/interface ethernet find name=ether1]
 /interface bridge port add bridge=bridge1 interface=wlan1
 /ip address add address=$BH2 interface=bridge1
-/ip route add distance=254 gateway=$GATEWAY
+/ip route add distance=254 gateway=$gateway
 /system identity set name=BH2-$LOCAL-ARAUJOSAT
 /snmp community set [ find default=yes ] addresses=10.51.200.4/32,10.51.200.9/32 name=arj_sat
 /system logging action set 3 remote=10.51.200.3 remote-port=32514
