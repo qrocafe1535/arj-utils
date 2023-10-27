@@ -196,6 +196,9 @@ seta_max_l2mtu () {
 			add_l2mtu=''
 			break
 				;;
+		* )
+			echo -e "${VERMELHO}\nPor favor insira uma opção válida.${SEM_COR}"
+		;;
 		esac
 	done
 }
