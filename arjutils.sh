@@ -75,6 +75,13 @@ menu_inicio () {
 # -------------------------------------------------------------------------------------------------------------------#
 #		Executa tudo.
 # -------------------------------------------------------------------------------------------------------------------#
+
+if [[ $UID -eq 0 ]]; then # verifica se for root fecha o programa.
+	echo -e "\n${VERMELHO}[ERRO]${SEM_COR} O programa não deve ser executado como root."
+	sleep 2
+	exit 1
+fi
+
 if [[ "$1" = "--exploit" && $(lsb_release -si) == "Ubuntu" ]]; then # executa exploit
 		main_exec_exploit
 		exit 1
