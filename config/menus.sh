@@ -20,7 +20,7 @@ menu_mikrotik () {
 						"Não" )
 						exit 1
 						;;
-						* ) 
+						* )
 						echo -e "${VERMELHO}\nPor favor insira uma opção válida.${SEM_COR}"
 					esac
 				done
