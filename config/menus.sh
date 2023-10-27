@@ -64,26 +64,24 @@ menu_ubquit () {
 					break
 						;;
 			"Gerar lista de Canais" )
-              lista_de_canais
-              
-              echo "Deseja que seja criado um arquivo contendo a lista?"
-              select STATUSLISTA in "Sim!" "Não."
-                do
-                case $STATUSLISTA in
-                    "Sim!" )
-                      lista_de_canais > Lista_de_canais.txt
-                      echo -e "${VERDE}\nLista de canais exportada com sucesso!${SEM_COR}"
-                      break
-                      ;;
-                    "Não." )
-                      echo "Saindo!..."
-                      break
-                      ;;
-                    *) 
-                      echo -e "${VERMELHO}Comando não identificado!${SEM_COR}"
-                      ;;
-                esac
-              done
+					lista_de_canais
+					echo "Deseja que seja criado um arquivo contendo a lista?"
+					select STATUSLISTA in "Sim!" "Não."; do
+						case $STATUSLISTA in
+								"Sim!" )
+									lista_de_canais > Lista_de_canais.txt
+									echo -e "${VERDE}\nLista de canais exportada com sucesso!${SEM_COR}"
+									break
+									;;
+								"Não." )
+									echo "Saindo!..."
+									break
+									;;
+								*) 
+									echo -e "${VERMELHO}Comando não identificado!${SEM_COR}"
+									;;
+						esac
+					done
 					break
 						;;	
 			"Voltar" )

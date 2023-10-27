@@ -185,12 +185,19 @@ adicionar_usuario_mk () {
 } 
 
 seta_max_l2mtu () {
-	read -p $'Deseja setar o l2mtu das interfaces no máximo? (Recomendado). [S/n] \n' set_l2mtu
-	set_l2mtu="${set_l2mtu:-n}"
-	if [[ $set_l2mtu = "S" || $set_l2mtu = "s" ]]; then
-		add_l2mtu='int ethernet set l2mtu=20000 [f]'
-		set_l2mtu="Sim"
-	fi
+	select set_l2mtu in "Sim!" "Não."
+	do
+		case $set_l2mtu in 
+		Sim! )
+			add_l2mtu='int ethernet set l2mtu=20000 [f]'
+			break
+				;;
+		Não. )
+			add_l2mtu=''
+			break
+				;;
+		esac
+	done
 }
 
 identifica_bloco () { # identifica o bloco que será utilizado
@@ -244,6 +251,7 @@ ptp_tipo_pppoe () {
 			testa_bloco
 			echo -e "\nDeseja adicionar usuário e senha padrão ou custom?\n${VERMELHO}(também será removido o usuário admin)${SEM_COR}\n"
 			adicionar_usuario_mk
+			echo -e "Deseja setar o L2MTU no máximo? (recomendado)"
 			seta_max_l2mtu
 			echo -e \
 	"
@@ -288,6 +296,7 @@ ptp_tipo_bridge () {
 			testa_bloco
 			echo -e "\nDeseja adicionar usuário e senha padrão ou custom?\n${VERMELHO}(também será removido o usuário admin)${SEM_COR}\n"
 			adicionar_usuario_mk
+			echo -e "Deseja setar o L2MTU no máximo? (recomendado)"
 			seta_max_l2mtu
 		# CONFIRA SE AS INFORMAÇÕES ESTÃO CERTAS
 			echo -e \
