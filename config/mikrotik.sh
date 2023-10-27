@@ -235,7 +235,6 @@ testa_bloco () { # verifica se o bloco utilizado estará livre.
 		BH2="$network.$(( $host + 3))$mask_cidr"
 }
 
-
 ptp_tipo_pppoe () {
 			# -------------------------------------------------------------------- INTERAÇÕES COM O USUÁRIO )
 			echo "- Digite o ID do Contrato do cliente?"; read "ID"		
@@ -282,8 +281,6 @@ ptp_tipo_pppoe () {
 				esac
 			done
 }
-
-
 
 ptp_tipo_bridge () {
 			echo "- Qual é o nome da localidade?"; read "LOCAL"
