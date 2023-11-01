@@ -1,32 +1,43 @@
 menu_mikrotik () {
 	source config/mikrotik.sh # carrega lib mikrotiks
-			select tipo_do_ptp in "Gerar PTP para PPPoE" "Gerar PTP para Bridge" "Setar L2MTU Máximo" "Voltar" "Sair"
-			do
-				case $tipo_do_ptp in
-				"Gerar PTP para PPPoE" )
+	select tipo_do_ptp in "Gerar PTP para PPPoE" "Gerar PTP para Bridge" "Comando para setar o L2MTU Máximo" "Voltar" "Sair"; do
+		case $tipo_do_ptp in
+			"Gerar PTP para PPPoE" )
+				break
+				;;
+			"Gerar PTP para Bridge" )
+				break
+				;;
+			"Comando para setar o L2MTU Máximo" )
+				echo -e "\n/int ethernet set l2mtu=20000 [f]\n"
+				echo "Deseja voltar para o inicio?"
+				select voltar_inicio in "Sim!" "Não"; do
+					case $voltar_inicio in
+						"Sim!" )
+						sleep 1
 						break
 						;;
-				"Gerar PTP para Bridge" )
-					break
-						;;
-				"Setar L2MTU Máximo" )
-					echo -e "\n/int ethernet set l2mtu=20000 [f]\n"
-					seta_max_l2mtu
-					break
-						;;
-					"Voltar" )
-					break
-						;;
-					"Sair" )
-						clear
+						"Não" )
 						exit 1
 						;;
-					* ) 
+						* )
 						echo -e "${VERMELHO}\nPor favor insira uma opção válida.${SEM_COR}"
-						;;
-					
-				esac
-			done
+					esac
+				done
+				break
+				;;
+			"Voltar" )
+				break
+				;;
+			"Sair" )
+				clear
+				exit 1
+				;;
+			* ) 
+				echo -e "${VERMELHO}\nPor favor insira uma opção válida.${SEM_COR}"
+				;;
+		esac
+	done
 
 	if [[ "$tipo_do_ptp" = "Gerar PTP para PPPoE" ]]; then 	# ------------------------------------------- INICIO PONTO A PONTO DE PPPOE ) 
 			ptp_tipo_pppoe
@@ -53,26 +64,24 @@ menu_ubquit () {
 					break
 						;;
 			"Gerar lista de Canais" )
-              lista_de_canais
-              
-              echo "Deseja que seja criado um arquivo contendo a lista?"
-              select STATUSLISTA in "Sim!" "Não."
-                do
-                case $STATUSLISTA in
-                    "Sim!" )
-                      lista_de_canais > Lista_de_canais.txt
-                      echo -e "${VERDE}\nLista de canais exportada com sucesso!${SEM_COR}"
-                      break
-                      ;;
-                    "Não." )
-                      echo "Saindo!..."
-                      break
-                      ;;
-                    *) 
-                      echo -e "${VERMELHO}Comando não identificado!${SEM_COR}"
-                      ;;
-                esac
-              done
+					lista_de_canais
+					echo "Deseja que seja criado um arquivo contendo a lista?"
+					select STATUSLISTA in "Sim!" "Não."; do
+						case $STATUSLISTA in
+								"Sim!" )
+									lista_de_canais > Lista_de_canais.txt
+									echo -e "${VERDE}\nLista de canais exportada com sucesso!${SEM_COR}"
+									break
+									;;
+								"Não." )
+									echo "Saindo!..."
+									break
+									;;
+								*) 
+									echo -e "${VERMELHO}Comando não identificado!${SEM_COR}"
+									;;
+						esac
+					done
 					break
 						;;	
 			"Voltar" )

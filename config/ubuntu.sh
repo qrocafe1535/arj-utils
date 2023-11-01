@@ -103,21 +103,15 @@ instala_dude () { #instala dude client
 }
 
 mk_soft () {
-	echo -e "Deseja instalar Winbox e Dude?\n"
-	select  deseja_instalar in "Sim!" "Não"; do
-		case $deseja_instalar in
-			Sim! )
-			echo "Instalando..."
-			instala_winbox
-			instala_dude
-			break
-				;;
-			Não )
-			echo -e "Ok!...\n"
-			exit 1
-				;; 
-		esac
-	done
+	read -p $'\nDeseja instalar Winbox e o TheDude? [S/n] ' deseja_instalar
+	deseja_instalar="${deseja_instalar:-s}"
+	if [[ $deseja_instalar = "s" || $deseja_instalar = "S" ]]; then
+		echo -e "${VERDE}Instalando...${SEM_COR}"
+		instala_winbox
+		instala_dude
+	else
+		echo -e "\nPulando instalação...\n"
+	fi
 }
 
 instala_chrome () { # instala google chrome

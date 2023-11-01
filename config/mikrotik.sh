@@ -185,19 +185,22 @@ adicionar_usuario_mk () {
 } 
 
 seta_max_l2mtu () {
-		select set_l2mtu in "Sim!" "Não."
-		do
-			case $set_l2mtu in 
-			Sim! )
-				add_l2mtu='int ethernet set l2mtu=20000 [f]'
-				break
-					;;
-			Não. )
-				add_l2mtu=''
-				break
-					;;
-			esac
-		done
+	select set_l2mtu in "Sim!" "Não."
+	do
+		case $set_l2mtu in 
+		Sim! )
+			add_l2mtu='int ethernet set l2mtu=20000 [f]'
+			break
+				;;
+		Não. )
+			add_l2mtu=''
+			break
+				;;
+		* )
+			echo -e "${VERMELHO}\nPor favor insira uma opção válida.${SEM_COR}"
+		;;
+		esac
+	done
 }
 
 identifica_bloco () { # identifica o bloco que será utilizado
@@ -241,7 +244,6 @@ testa_bloco () { # verifica se o bloco utilizado estará livre.
 		BH1="$network.$(( $host + 2))$mask_cidr"
 		BH2="$network.$(( $host + 3))$mask_cidr"
 }
-
 
 ptp_tipo_pppoe () {
 			# -------------------------------------------------------------------- INTERAÇÕES COM O USUÁRIO )
@@ -290,8 +292,6 @@ ptp_tipo_pppoe () {
 				esac
 			done
 }
-
-
 
 ptp_tipo_bridge () {
 			echo "- Qual é o nome da localidade?"; read "LOCAL"
