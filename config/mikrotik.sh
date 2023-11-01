@@ -20,7 +20,7 @@ echo \
 /ip service set ftp address=186.249.81.30/32 port=47589
 /ip service set www disabled=yes
 /ip service set ssh disabled=no address=45.178.225.110/32,186.249.81.30/32,100.127.255.0/24 port=50004
-/set api address=186.249.81.58/32 disabled=no port=3540
+/ip service set api disabled=yes
 /ip service set winbox address=186.249.81.30/32,100.127.255.0/24 port=47569
 /ip service set api-ssl disabled=yes
 /ppp aaa set use-radius=yes
@@ -62,7 +62,7 @@ echo \
 /ip service set ftp address=186.249.81.30/32 port=47589
 /ip service set www disabled=yes
 /ip service set ssh disabled=no address=45.178.225.110/32,186.249.81.30/32,100.127.255.0/24 port=50004
-/set api address=186.249.81.58/32 disabled=no port=3540
+/ip service set api disabled=yes
 /ip service set winbox address=186.249.81.30/32,100.127.255.0/24 port=47569
 /ip service set api-ssl disabled=yes
 /ppp aaa set use-radius=yes
@@ -101,7 +101,7 @@ echo \
 /ip service set ftp address=186.249.81.30/32 port=47589
 /ip service set www disabled=yes
 /ip service set ssh disabled=no address=45.178.225.110/32,186.249.81.30/32,100.127.255.0/24 port=50004
-/set api address=186.249.81.58/32 disabled=no port=3540
+/ip service set api disabled=yes
 /ip service set winbox address=186.249.81.30/32,100.127.255.0/24 port=47569
 /ip service set api-ssl disabled=yes
 /ppp aaa set use-radius=yes
@@ -142,7 +142,7 @@ ptp_bridge_bh2 () {
 /ip service set ftp address=186.249.81.30/32 port=47589
 /ip service set www disabled=yes
 /ip service set ssh disabled=no address=45.178.225.110/32,186.249.81.30/32,100.127.255.0/24 port=50004
-/set api address=186.249.81.58/32 disabled=no port=3540
+/ip service set api disabled=yes
 /ip service set winbox address=186.249.81.30/32,100.127.255.0/24 port=47569
 /ip service set api-ssl disabled=yes
 /ppp aaa set use-radius=yes
