@@ -7,6 +7,8 @@
 # Descrição = Esse script foi criado com a finalidade de automatizar diversos dos processos do dia a dia no suporte técnico.
 # Sinta-se livre para modificar e utilizar da forma que quiser!
 
+PASTA_ABSOLUTA=$(dirname "$0")
+
 #RODAPÉ
 RODAPE1="
 ------- Selecione o que deseja: "
@@ -40,7 +42,7 @@ menu_inicio () {
 	while :; do
 		clear
 		echo -e "$LOGO_ARJ" # Exibe logo no inicio.
-		source config/menus.sh # Carrega menus
+		source $PASTA_ABSOLUTA/config/menus.sh # Carrega menus
 		select tipo_do_servico in "Gerar PTP para Mikrotik" "Manutenção para Antenas Ubiquit" "Manutenção Linux" "Sair"; do
 			case $tipo_do_servico in
 				"Gerar PTP para Mikrotik" )

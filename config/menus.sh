@@ -1,5 +1,5 @@
 menu_mikrotik () {
-	source config/mikrotik.sh # carrega lib mikrotiks
+	source $PASTA_ABSOLUTA/config/mikrotik.sh # carrega lib mikrotiks
 	select tipo_do_ptp in "Gerar PTP para PPPoE" "Gerar PTP para Bridge" "Comando para setar o L2MTU Máximo" "Voltar" "Sair"; do
 		case $tipo_do_ptp in
 			"Gerar PTP para PPPoE" )
@@ -49,7 +49,7 @@ menu_mikrotik () {
 }
 
 menu_ubquit () {
-	source config/ubquit.sh # config da sessão ubquit
+	source $PASTA_ABSOLUTA/config/ubquit.sh # config da sessão ubquit
 	PS3="$RODAPE1" # ----------------------- FRASE DO RODAPÉ )
 
 	select MANUBQUIT in "Gerar BKP para Antena Ubiquit" "Download Atualização das Antenas v.6.3.11" "Gerar lista de Canais" "Voltar" "Sair"
@@ -102,7 +102,7 @@ menu_ubquit () {
 menu_linux () {
 	if [[ $(lsb_release -si) == "Ubuntu" ]]; then
 		PS3="$RODAPE1" # -------------------------- FRASE DO RODAPÉ )		
-		source config/ubuntu.sh
+		source $PASTA_ABSOLUTA/config/ubuntu.sh
 		echo -e "\nSistema detectado = ${VERDE}UBUNTU${SEM_COR}\n"
 		sleep 1
 			select man_ubuntu in "Instalação de Programas para o Suporte" "Instalar Winbox + TheDude" "Habilitar update automático as 09:00" "Voltar" "Sair"; do
@@ -135,7 +135,7 @@ menu_linux () {
 # --------------------------------------------------------------------------------------------------------------#
 	elif [[ $(lsb_release -si) == "Debian" ]]; then # sessão do debian
 		PS3="$RODAPE1" # -------------------------- FRASE DO RODAPÉ )
-		source config/debian.sh
+		source $PASTA_ABSOLUTA/config/debian.sh
 		echo -e "\nSistema detectado = ${VERDE}DEBIAN${SEM_COR}\n"
 		sleep 1
 				select man_debian in "Instalação de Programas para o Suporte" "Instalar Winbox + TheDude" "Habilitar update automático as 09:00" "Voltar" "Sair"; do
