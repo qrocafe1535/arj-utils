@@ -1,172 +1,235 @@
+# menu_mikrotik.old () {
+# 	source $PASTA_ABSOLUTA/config/mikrotik.sh # carrega lib mikrotiks
+# 	select tipo_do_ptp in "Gerar PTP para PPPoE" "Gerar PTP para Bridge" "Comando para setar o L2MTU Máximo" "Voltar" "Sair"; do
+# 		case $tipo_do_ptp in
+# 			"Gerar PTP para PPPoE" )
+# 				break
+# 				;;
+# 			"Gerar PTP para Bridge" )
+# 				break
+# 				;;
+# 			"Comando para setar o L2MTU Máximo" )
+# 				echo -e "\n/int ethernet set l2mtu=20000 [f]\n"
+# 				echo "Deseja voltar para o inicio?"
+# 				select voltar_inicio in "Sim!" "Não"; do
+# 					case $voltar_inicio in
+# 						"Sim!" )
+# 						sleep 1
+# 						break
+# 						;;
+# 						"Não" )
+# 						exit 1
+# 						;;
+# 						* )
+# 						echo -e "${VERMELHO}\nPor favor insira uma opção válida.${SEM_COR}"
+# 					esac
+# 				done
+# 				break
+# 				;;
+# 			"Voltar" )
+# 				break
+# 				;;
+# 			"Sair" )
+# 				clear
+# 				exit 1
+# 				;;
+# 			* ) 
+# 				echo -e "${VERMELHO}\nPor favor insira uma opção válida.${SEM_COR}"
+# 				;;
+# 		esac
+# 	done
+
+# 	if [[ "$tipo_do_ptp" = "Gerar PTP para PPPoE" ]]; then 	# ------------------------------------------- INICIO PONTO A PONTO DE PPPOE ) 
+# 			ptp_tipo_pppoe
+# 	fi 
+
+# 	if [[ "$tipo_do_ptp" = "Gerar PTP para Bridge" ]]; then  #--------------------------------------------------------- PONTO A PONTO BRIDGE - INICIO) 
+# 			ptp_tipo_bridge
+# 	fi
+# }
+
+
+# menu_ubquit.old () {
+# 	source $PASTA_ABSOLUTA/config/ubquit.sh # config da sessão ubquit
+# 	PS3="$RODAPE1" # ----------------------- FRASE DO RODAPÉ )
+
+# 	select MANUBQUIT in "Gerar BKP para Antena Ubiquit" "Download Atualização das Antenas v.6.3.11" "Gerar lista de Canais" "Voltar" "Sair"
+# 	do
+# 		case $MANUBQUIT in
+# 			"Gerar BKP para Antena Ubiquit" )
+#         gerar_config_painel
+# 					break
+# 						;;
+# 			"Download Atualização das Antenas v.6.3.11" )
+#         download_att_antenas
+# 					break
+# 						;;
+# 			"Gerar lista de Canais" )
+# 					lista_de_canais
+# 					echo "Deseja que seja criado um arquivo contendo a lista?"
+# 					select STATUSLISTA in "Sim!" "Não."; do
+# 						case $STATUSLISTA in
+# 								"Sim!" )
+# 									lista_de_canais > Lista_de_canais.txt
+# 									echo -e "${VERDE}\nLista de canais exportada com sucesso!${SEM_COR}"
+# 									break
+# 									;;
+# 								"Não." )
+# 									echo "Saindo!..."
+# 									break
+# 									;;
+# 								*) 
+# 									echo -e "${VERMELHO}Comando não identificado!${SEM_COR}"
+# 									;;
+# 						esac
+# 					done
+# 					break
+# 						;;	
+# 			"Voltar" )
+# 				break
+# 				;;
+# 			"Sair" )
+# 				clear
+# 				exit 1
+# 				;;
+# 			* ) 
+# 				echo -e "${VERMELHO}\nPor favor insira uma opção válida.${SEM_COR}"
+# 						;;
+			
+# 		esac
+# 	done
+# }
+
+
+
+# menu_linux.old () {
+# 	if [[ $(lsb_release -si) == "Ubuntu" ]]; then
+# 		PS3="$RODAPE1" # -------------------------- FRASE DO RODAPÉ )		
+# 		source $PASTA_ABSOLUTA/config/ubuntu.sh
+# 		echo -e "\nSistema detectado = ${VERDE}UBUNTU${SEM_COR}\n"
+# 		sleep 1
+# 			select man_ubuntu in "Instalação de Programas para o Suporte" "Instalar Winbox + TheDude" "Habilitar update automático as 09:00" "Voltar" "Sair"; do
+# 				case $man_ubuntu in 
+# 					"Instalação de Programas para o Suporte" )
+# 						main_update_ubuntu # executa uma manutenção completa bem como a Instalação do Winbox + The dude
+# 						break
+# 							;;
+# 					"Instalar Winbox + TheDude" )
+# 						mk_soft # instala winbox e the dude client.
+# 						system_clean # limpa o sistema.
+# 						break
+# 							;;
+# 					"Habilitar update automático as 09:00" )
+# 						cron_update_auto # Habilita o update automático via cron.
+# 						break
+# 							;;
+# 					"Voltar" )
+# 						break
+# 							;;
+# 					"Sair" )
+# 						clear
+# 						exit 1
+# 							;;
+# 					* ) 
+# 						echo -e "${VERMELHO}\nPor favor insira uma opção válida.${SEM_COR}"
+# 							;;
+# 				esac
+# 			done
+# --------------------------------------------------------------------------------------------------------------#
+# 	elif [[ $(lsb_release -si) == "Debian" ]]; then # sessão do debian
+# 		PS3="$RODAPE1" # -------------------------- FRASE DO RODAPÉ )
+# 		source $PASTA_ABSOLUTA/config/debian.sh
+# 		echo -e "\nSistema detectado = ${VERDE}DEBIAN${SEM_COR}\n"
+# 		sleep 1
+# 				select man_debian in "Instalação de Programas para o Suporte" "Instalar Winbox + TheDude" "Habilitar update automático as 09:00" "Voltar" "Sair"; do
+# 				case $man_debian in 
+# 					"Instalação de Programas para o Suporte" )
+# 						main_update_debian # executa uma manutenção completa bem como a Instalação do Winbox + The dude
+# 						break
+# 							;;
+# 					"Instalar Winbox + TheDude" )
+# 						mk_soft # instala winbox e the dude client.
+# 						system_clean # limpa o sistema.
+# 						break
+# 							;;
+# 					"Habilitar update automático as 09:00" )
+# 						cron_update_auto # Habilita o update automático via cron.
+# 						break
+# 							;;
+# 					"Voltar" )
+# 						break
+# 							;;
+# 					"Sair" )
+# 						clear
+# 						exit 1
+# 							;;
+# 					* ) 
+# 						echo -e "${VERMELHO}\nPor favor insira uma opção válida.${SEM_COR}"
+# 							;;
+# 				esac
+# 			done
+# 		else 
+# 			echo -e "\n${VERMELHO}Ops... \nO sistema utlizado não parece ser compativel com o script.\n${SEM_COR}"
+# 				sleep 3
+# 		fi
+# }
+
 menu_mikrotik () {
-	source $PASTA_ABSOLUTA/config/mikrotik.sh # carrega lib mikrotiks
-	select tipo_do_ptp in "Gerar PTP para PPPoE" "Gerar PTP para Bridge" "Comando para setar o L2MTU Máximo" "Voltar" "Sair"; do
-		case $tipo_do_ptp in
-			"Gerar PTP para PPPoE" )
-				break
-				;;
-			"Gerar PTP para Bridge" )
-				break
-				;;
-			"Comando para setar o L2MTU Máximo" )
-				echo -e "\n/int ethernet set l2mtu=20000 [f]\n"
-				echo "Deseja voltar para o inicio?"
-				select voltar_inicio in "Sim!" "Não"; do
-					case $voltar_inicio in
-						"Sim!" )
-						sleep 1
-						break
-						;;
-						"Não" )
-						exit 1
-						;;
-						* )
-						echo -e "${VERMELHO}\nPor favor insira uma opção válida.${SEM_COR}"
-					esac
-				done
-				break
-				;;
-			"Voltar" )
-				break
-				;;
-			"Sair" )
-				clear
-				exit 1
-				;;
-			* ) 
-				echo -e "${VERMELHO}\nPor favor insira uma opção válida.${SEM_COR}"
-				;;
-		esac
-	done
+    source $PASTA/config/mikrotik.sh
+    tipo_do_ptp=$(gum choose 'Gerar PTP para PPPoE' 'Gerar PTP para Bridge' 'Comando para setar o L2MTU Máximo' 'Voltar')
 
-	if [[ "$tipo_do_ptp" = "Gerar PTP para PPPoE" ]]; then 	# ------------------------------------------- INICIO PONTO A PONTO DE PPPOE ) 
-			ptp_tipo_pppoe
-	fi 
+   	if [[ "$tipo_do_ptp" = "Gerar PTP para PPPoE" ]]; then 	# ------------------------------------------- INICIO PONTO A PONTO DE PPPOE ) 
+        ptp_tipo_pppoe
 
-	if [[ "$tipo_do_ptp" = "Gerar PTP para Bridge" ]]; then  #--------------------------------------------------------- PONTO A PONTO BRIDGE - INICIO) 
-			ptp_tipo_bridge
-	fi
+    elif [[ "$tipo_do_ptp" = "Gerar PTP para Bridge" ]]; then  #--------------------------------------------------------- PONTO A PONTO BRIDGE - INICIO) 
+        ptp_tipo_bridge
+
+    elif [[ "$tipo_do_ptp" = "Comando para setar o L2MTU Máximo" ]]; then
+        echo -e "\n/int ethernet set l2mtu=20000 [f]\n"
+        sleep 3
+
+   fi
+
 }
 
 menu_ubquit () {
-	source $PASTA_ABSOLUTA/config/ubquit.sh # config da sessão ubquit
-	PS3="$RODAPE1" # ----------------------- FRASE DO RODAPÉ )
+        source $PASTA/config/ubquit.sh
+    tipo_do_ptp=$(gum choose "Gerar BKP para Antena Ubiquit" "Download Atualização das Antenas v.6.3.11" "Gerar lista de Canais" "Voltar")
+        if [[ "$tipo_do_ptp" == "Gerar BKP para Antena Ubiquit" ]]; then
+            gerar_config_painel
 
-	select MANUBQUIT in "Gerar BKP para Antena Ubiquit" "Download Atualização das Antenas v.6.3.11" "Gerar lista de Canais" "Voltar" "Sair"
-	do
-		case $MANUBQUIT in
-			"Gerar BKP para Antena Ubiquit" )
-        gerar_config_painel
-					break
-						;;
-			"Download Atualização das Antenas v.6.3.11" )
-        download_att_antenas
-					break
-						;;
-			"Gerar lista de Canais" )
-					lista_de_canais
-					echo "Deseja que seja criado um arquivo contendo a lista?"
-					select STATUSLISTA in "Sim!" "Não."; do
-						case $STATUSLISTA in
-								"Sim!" )
-									lista_de_canais > Lista_de_canais.txt
-									echo -e "${VERDE}\nLista de canais exportada com sucesso!${SEM_COR}"
-									break
-									;;
-								"Não." )
-									echo "Saindo!..."
-									break
-									;;
-								*) 
-									echo -e "${VERMELHO}Comando não identificado!${SEM_COR}"
-									;;
-						esac
-					done
-					break
-						;;	
-			"Voltar" )
-				break
-				;;
-			"Sair" )
-				clear
-				exit 1
-				;;
-			* ) 
-				echo -e "${VERMELHO}\nPor favor insira uma opção válida.${SEM_COR}"
-						;;
-			
-		esac
-	done
+        elif [[ "$tipo_do_ptp" == "Download Atualização das Antenas v.6.3.11" ]]; then
+            download_att_antenas
+
+        elif [[ "$tipo_do_ptp" == "Gerar lista de Canais" ]]; then
+            lista_de_canais
+            export_txt=$(gum confirm --affirmative="Sim" --negative="Não" "Deseja exportar um arquivo contendo a lista?" && lista_de_canais > Lista_de_canais.txt)
+
+    fi
 }
 
+
 menu_linux () {
-	if [[ $(lsb_release -si) == "Ubuntu" ]]; then
-		PS3="$RODAPE1" # -------------------------- FRASE DO RODAPÉ )		
-		source $PASTA_ABSOLUTA/config/ubuntu.sh
-		echo -e "\nSistema detectado = ${VERDE}UBUNTU${SEM_COR}\n"
-		sleep 1
-			select man_ubuntu in "Instalação de Programas para o Suporte" "Instalar Winbox + TheDude" "Habilitar update automático as 09:00" "Voltar" "Sair"; do
-				case $man_ubuntu in 
-					"Instalação de Programas para o Suporte" )
-						main_update_ubuntu # executa uma manutenção completa bem como a Instalação do Winbox + The dude
-						break
-							;;
-					"Instalar Winbox + TheDude" )
-						mk_soft # instala winbox e the dude client.
-						system_clean # limpa o sistema.
-						break
-							;;
-					"Habilitar update automático as 09:00" )
-						cron_update_auto # Habilita o update automático via cron.
-						break
-							;;
-					"Voltar" )
-						break
-							;;
-					"Sair" )
-						clear
-						exit 1
-							;;
-					* ) 
-						echo -e "${VERMELHO}\nPor favor insira uma opção válida.${SEM_COR}"
-							;;
-				esac
-			done
-# --------------------------------------------------------------------------------------------------------------#
-	elif [[ $(lsb_release -si) == "Debian" ]]; then # sessão do debian
-		PS3="$RODAPE1" # -------------------------- FRASE DO RODAPÉ )
-		source $PASTA_ABSOLUTA/config/debian.sh
-		echo -e "\nSistema detectado = ${VERDE}DEBIAN${SEM_COR}\n"
-		sleep 1
-				select man_debian in "Instalação de Programas para o Suporte" "Instalar Winbox + TheDude" "Habilitar update automático as 09:00" "Voltar" "Sair"; do
-				case $man_debian in 
-					"Instalação de Programas para o Suporte" )
-						main_update_debian # executa uma manutenção completa bem como a Instalação do Winbox + The dude
-						break
-							;;
-					"Instalar Winbox + TheDude" )
-						mk_soft # instala winbox e the dude client.
-						system_clean # limpa o sistema.
-						break
-							;;
-					"Habilitar update automático as 09:00" )
-						cron_update_auto # Habilita o update automático via cron.
-						break
-							;;
-					"Voltar" )
-						break
-							;;
-					"Sair" )
-						clear
-						exit 1
-							;;
-					* ) 
-						echo -e "${VERMELHO}\nPor favor insira uma opção válida.${SEM_COR}"
-							;;
-				esac
-			done
-		else 
-			echo -e "\n${VERMELHO}Ops... \nO sistema utlizado não parece ser compativel com o script.\n${SEM_COR}"
-				sleep 3
-		fi
+    man_ubuntu=$(gum choose "Instalação de Programas para o Suporte" "Instalar Winbox + TheDude" "Habilitar update automático as 09:00" "Voltar")
+        if [[ "$man_ubuntu" == "Instalação de Programas para o Suporte" && $(lsb_release -si) == "Ubuntu" ]]; then
+            source $PASTA/config/ubuntu.sh
+            main_update_ubuntu
+
+        elif [[ "$man_ubuntu" == "Instalação de Programas para o Suporte" && $(lsb_release -si) == "Debian" ]]; then
+            source $PASTA/config/debian.sh
+            main_update_debian
+
+        elif [[ "$man_ubuntu" == "Instalação de Programas para o Suporte" ]]; then
+            echo -e "\n${VERMELHO}Ops... \nO sistema utlizado não parece ser compativel com o script.\n${SEM_COR}"
+            sleep 3
+
+        elif [[ "$man_ubuntu" == "Instalar Winbox + TheDude" ]]; then
+            mk_soft
+            system_clean
+
+        elif [[ "$man_ubuntu" == "Habilitar update automático as 09:00" ]]; then
+            cron_update_auto
+
+    fi 
+
 }

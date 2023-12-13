@@ -113,7 +113,8 @@ instala_dude () { #instala dude client
 }
 
 mk_soft () {
-	read -p $'\nDeseja instalar Winbox e o TheDude? [S/n] ' deseja_instalar
+    comfirmacao=$(gum confirm --affirmative="Sim" --negative="Não" "Deseja instalar Winbox e o TheDude?" && deseja_instalar)
+    # read -p $'\nDeseja instalar Winbox e o TheDude? [S/n] ' deseja_instalar
 	deseja_instalar="${deseja_instalar:-s}"
 	if [[ $deseja_instalar = "s" || $deseja_instalar = "S" ]]; then
 		echo -e "${VERDE}Instalando...${SEM_COR}"

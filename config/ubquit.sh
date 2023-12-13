@@ -230,51 +230,52 @@ wpasupplicant.status=disabled
 " > BKP-ARJ-${NOME}.cfg
 }
 
-identifica_bloco_antena () { # identifica o bloco que será utilizado
-	echo -e "\nQual o bloco que será utilizado? \nUtilize o formato: ${AZUL}X.X.X.X Y${SEM_COR}"
-	read -p "Endereço IP: " ip mask
+
+identifica_bloco_antena () {
+    ip=$(gum input --placeholder "Qual o endereço de rede? X.X.X.X")
+    mask=$(gum input --placeholder "Qual a mascara? Y")
 
 # variaveis 
-	network=$( echo "$ip" | cut -d "." -f1,2,3 ) # network ip
-	host=$( echo "$ip" | cut -d "." -f4 ) # separa o ultimo octeto do host da rede
-	host_mask=$( echo "$mask" | cut -d "." -f4 ) # separa o ultimo octeto da mascara da rede
+    network=$( echo "$ip" | cut -d "." -f1,2,3 ) # network ip
+    host=$( echo "$ip" | cut -d "." -f4 ) # separa o ultimo octeto do host da rede
+    host_mask=$( echo "$mask" | cut -d "." -f4 ) # separa o ultimo octeto da mascara da rede
 
-	if [[ $host_mask -eq 252 ]] || [[ $host_mask -eq 30 ]]; then
-			mask_cidr="255.255.255.252"
-	else 
-			echo -e "${VERMELHO}\nO valor inserido não corresponde a um valor válido.${SEM_COR}\nSó serão aceitos blocos /30\n"
-			exit 1
-	fi
+    if [[ $host_mask -eq 252 ]] || [[ $host_mask -eq 30 ]]; then
+        mask_cidr="255.255.255.252"
+        gateway="$network.$(( $host + 1))" # gateway da rede
+        ap1="$network.$(( $host + 2))" # ip do ap1
+        return 0
+    else 
+        echo -e "${VERMELHO}\nO valor inserido não corresponde a um valor válido.${SEM_COR}\nSó serão aceitos blocos /30\n"
+    fi
 
-	gateway="$network.$(( $host + 1))" # gateway da rede
-	ap1="$network.$(( $host + 2))" # ip do ap1
-	return 0
 }
 
 testa_bloco_antena () { # verifica se o bloco utilizado estará livre.
-	if ping -c 1 -W 1 "$gateway" &> /dev/null; then
-			echo -e "\n${AMARELO}[ATENÇÃO]${SEM_COR} O IP $gateway está respondendo a ICMP."
-		elif ping -c 1 -W 1 "$network" &> /dev/null; then
-			echo -e "\n${AMARELO}[ATENÇÃO]${SEM_COR} O IP $ap1 está respondendo a ICMP."
-	else
-			echo -e "\n${VERDE}O bloco está livre.${SEM_COR}\n"
-			sleep 1
-	fi
-			GATEWAY="$network.$(( $host + 1))"
-			AP1="$network.$(( $host + 2))"
+    if ping -c 1 -W 1 "$gateway" &> /dev/null; then
+        echo -e "\n${AMARELO}[ATENÇÃO]${SEM_COR} O IP $gateway está respondendo a ICMP."
+    elif ping -c 1 -W 1 "$network" &> /dev/null; then
+        echo -e "\n${AMARELO}[ATENÇÃO]${SEM_COR} O IP $ap1 está respondendo a ICMP."
+    else
+        echo -e "\n${VERDE}O bloco está livre.${SEM_COR}\n"
+        sleep 1
+    fi
+        GATEWAY="$network.$(( $host + 1))"
+        AP1="$network.$(( $host + 2))"
 }
 
 
 download_att_antenas () {
-			diretorio_destino="/home/$USER/Downloads/ANTENAS-6.3.11"
-			echo "Realizando download dos arquivos direto da fabricante em $diretorio_destino"
-			mkdir -p "$diretorio_destino"  # -p para criar o diretório se ele não existir
-			# baixando binários na pasta definida.
-			echo "Binário XW"
-			wget -P "$diretorio_destino" "https://dl.ui.com/firmwares/XW-fw/v6.3.11/XW.v6.3.11.33396.230425.1644.bin"
-			echo "Binário XM"
-			wget -P "$diretorio_destino" "https://dl.ui.com/firmwares/XN-fw/v6.3.11/XM.v6.3.11.33396.230425.1742.bin"
-			echo -e "${VERDE}Download Finalizado com sucesso! No diretório $diretorio_destino ${SEM_COR}"
+    diretorio_destino="/home/$USER/Downloads/ANTENAS-6.3.11"
+    echo "Realizando download dos arquivos direto da fabricante em $diretorio_destino"
+    mkdir -p "$diretorio_destino"  # -p para criar o diretório se ele não existir
+    # baixando binários na pasta definida.
+    echo "Binário XW"
+    wget -P "$diretorio_destino" "https://dl.ui.com/firmwares/XW-fw/v6.3.11/XW.v6.3.11.33396.230425.1644.bin"
+    echo "Binário XM"
+    wget -P "$diretorio_destino" "https://dl.ui.com/firmwares/XN-fw/v6.3.11/XM.v6.3.11.33396.230425.1742.bin"
+    echo -e "${VERDE}Download Finalizado com sucesso! No diretório $diretorio_destino ${SEM_COR}"
+    sleep 2
 }
 
 lista_de_canais () {
@@ -285,12 +286,12 @@ lista_de_canais () {
 }
 
 gerar_config_painel () {
-		read -p "Qual o nome do painel? " "NOME"			 
-		read -p "Qual o SSID que deseja propagar? " "SSID"  
-		read -p "Qual WPA do painel? " "WPA" 
-		identifica_bloco_antena
-		testa_bloco_antena
-		echo -e \
+    NOME=$(gum input --placeholder "Qual o nome do painel?")
+    SSID=$(gum input --placeholder "Qual o SSID que deseja propagar?")
+    WPA=$(gum input --placeholder "Qual WPA do painel?")
+    identifica_bloco_antena
+    testa_bloco_antena
+    echo -e \
 "
 ------- CONFIRA AS INFORMAÇÕES --------
 
@@ -304,27 +305,5 @@ MASCARA: ${VERMELHO}$mask_cidr${SEM_COR}
 ---------------------------------------
 "
 
-PS3="$RODAPE2" # ----------------------- FRASE DO RODAPÉ )
-
-
-		select STATUS3 in "Sim!" "Não." #----------------------------- (SELEÇÃO DE SIM OU NÃO)
-			do
-			case $STATUS3 in 
-				"Sim!" ) #----------------------- (CASO SIM EXECUTE ABAIXO)
-					bkp_da_antena
-					echo -e "\n${VERDE}Backup exportado com sucesso!${SEM_COR}\n"
-					sleep 3
-					break
-							;;
-				"Não." )
-					echo -e "Tente novamente! \nSaindo..."
-						sleep 2
-						return 1
-							;;
-				* )
-					echo -e "${VERMELHO}\nPor favor insira uma opção válida.${SEM_COR}"
-							;;
-				
-			esac
-			done
+confime_export=$(gum confirm --affirmative="Sim" --negative="Não" "As informações estão corretas?" && bkp_da_antena)
 }
