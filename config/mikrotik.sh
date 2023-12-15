@@ -164,44 +164,65 @@ ptp_bridge_bh2 () {
 }
 
 adicionar_usuario_mk () {
-		select adicionar_usuario in "Padrão." "Custom." #  ----------------------------------- ( DESEJA ADICIONAR USUÁRIO DEFAULT?)
-		do
-				case $adicionar_usuario in
-				Padrão. )
-					user_ptp="sup@sat"
-					user_password='"lRz\$&1hd=vW+yD1kw32sH7qC+e\$ONnHN.6qs+Ri}"'
-					break
-						;;
-				Custom. )
-				read -p "Digite o Usuário: " user_ptp
-				read -s -p "Digite a Senha: " user_password
-					break
-						;;
-				* )
-					echo -e "${VERMELHO}\nPor favor insira uma opção válida.${SEM_COR}"
-						;;
-			esac
-		done #  ----------------------------------- ( FINAL DESEJA ADICIONAR USUÁRIO DEFAULT?)
-} 
+    adicionar_usuario=$(gum choose 'Padrão' 'Custom')
+    if [[ $adicionar_usuario == Padrão ]]; then 
+        user_ptp="sup@sat"
+        user_password='"lRz\$&1hd=vW+yD1kw32sH7qC+e\$ONnHN.6qs+Ri}"'
+    elif [[ $adicionar_usuario == "Custom" ]]; then
+        user_ptp=$(gum input --placeholder "Digite o username!")
+        user_password=$(gum input --placeholder "Digite a senha!")
+    fi 
+}
+
+# adicionar_usuario_mk.old () {
+# 		select adicionar_usuario in "Padrão." "Custom." #  ----------------------------------- ( DESEJA ADICIONAR USUÁRIO DEFAULT?)
+# 		do
+# 				case $adicionar_usuario in
+# 				Padrão. )
+# 					user_ptp="sup@sat"
+# 					user_password='"lRz\$&1hd=vW+yD1kw32sH7qC+e\$ONnHN.6qs+Ri}"'
+# 					break
+# 						;;
+# 				Custom. )
+# 				read -p "Digite o Usuário: " user_ptp
+# 				read -s -p "Digite a Senha: " user_password
+# 					break
+# 						;;
+# 				* )
+# 					echo -e "${VERMELHO}\nPor favor insira uma opção válida.${SEM_COR}"
+# 						;;
+# 			esac
+# 		done #  ----------------------------------- ( FINAL DESEJA ADICIONAR USUÁRIO DEFAULT?)
+# } 
+
 
 seta_max_l2mtu () {
-	select set_l2mtu in "Sim!" "Não."
-	do
-		case $set_l2mtu in 
-		Sim! )
-			add_l2mtu='int ethernet set l2mtu=20000 [f]'
-			break
-				;;
-		Não. )
-			add_l2mtu=''
-			break
-				;;
-		* )
-			echo -e "${VERMELHO}\nPor favor insira uma opção válida.${SEM_COR}"
-		;;
-		esac
-	done
+    confime_export=$(gum confirm --affirmative="Sim" --negative="Não" "Deseja setar o l2mtu no máximo?")
+        if [[ $confime_export ]]; then
+        add_l2mtu='int ethernet set l2mtu=20000 [f]'
+        else
+        add_l2mtu=''
+    fi
 }
+
+# seta_max_l2mtu.old () {
+# 	select set_l2mtu in "Sim!" "Não."
+# 	do
+# 		case $set_l2mtu in 
+# 		Sim! )
+# 			add_l2mtu='int ethernet set l2mtu=20000 [f]'
+# 			break
+# 				;;
+# 		Não. )
+# 			add_l2mtu=''
+# 			break
+# 				;;
+# 		* )
+# 			echo -e "${VERMELHO}\nPor favor insira uma opção válida.${SEM_COR}"
+# 		;;
+# 		esac
+# 	done
+# }
 
 identifica_bloco () { # identifica o bloco que será utilizado
 	echo -e "\nQual o bloco que será utilizado? \nUtilize o formato: ${AZUL}X.X.X.X Y${SEM_COR}"
@@ -247,15 +268,19 @@ testa_bloco () { # verifica se o bloco utilizado estará livre.
 
 ptp_tipo_pppoe () {
 			# -------------------------------------------------------------------- INTERAÇÕES COM O USUÁRIO )
-			echo "- Digite o ID do Contrato do cliente?"; read "ID"		
-			echo "- Qual o login do PPPoE do cliente?"; read "LOGIN"		
-			echo -e "- Qual a senha do PPPoE do cliente?"; read "SENHA"		
+
+            ID=$(gum input --placeholder "Digite o ID do Contrato do cliente?")
+            LOGIN=$(gum input --placeholder "Qual o login do PPPoE do cliente?")
+            SENHA=$(gum input --placeholder "Qual a senha do PPPoE do cliente?")
 			identifica_bloco
 			testa_bloco
-			echo -e "\nDeseja adicionar usuário e senha padrão ou custom?\n${VERMELHO}(também será removido o usuário admin)${SEM_COR}\n"
 			adicionar_usuario_mk
-			echo -e "Deseja setar o L2MTU no máximo? (recomendado)"
 			seta_max_l2mtu
+
+			# echo "- Digite o ID do Contrato do cliente?"; read "ID"		
+			# echo "- Qual o login do PPPoE do cliente?"; read "LOGIN"		
+			# echo -e "- Qual a senha do PPPoE do cliente?"; read "SENHA"		
+
 			echo -e \
 	"
 	------- CONFIRA AS INFORMAÇÕES --------
@@ -270,38 +295,44 @@ ptp_tipo_pppoe () {
 
 	---------------------------------------
 	"
-	PS3="$RODAPE2" # ------------------------------------------- RODAPÉ )
-			select STATUS1 in "Sim!" "Não." #  ----------------------------------- ( SELEÇÃO DE CONFIMAÇÃO SIM OU NÃO )
-			do
-					case $STATUS1 in
-					Sim! )
-						ptp_pppoe_bh1 #EXPORTA BH1
-						ptp_pppoe_bh2 #EXPORTA BH2
-						echo -e "${VERDE}\nScript do BH1 e BH2 exportado com sucesso!${SEM_COR}"
-						sleep 2
-							break
-							;;
-					Não. ) 
-						echo -e "\nTente novamente! Saindo.....\n"
-						sleep 2
-						return 1
-							;;
-					* )
-						echo -e "${VERMELHO}\nPor favor insira uma opção válida.${SEM_COR}"
-							;;
-				esac
-			done
-}
+confime_export=$(gum confirm --affirmative="Sim" --negative="Não" 'As informações estão corretas?')
+    if [[ $confime_export ]]; then
+        ptp_pppoe_bh1 #EXPORTA BH1
+        ptp_pppoe_bh2 #EXPORTA BH2
+        sleep 2
+    else
+        echo -e "\nTente novamente! Saindo.....\n"
+fi 
+} 
+
+# 			select STATUS1 in "Sim!" "Não." #  ----------------------------------- ( SELEÇÃO DE CONFIMAÇÃO SIM OU NÃO )
+# 			do
+# 					case $STATUS1 in
+# 					Sim! )
+# 						ptp_pppoe_bh1 #EXPORTA BH1
+# 						ptp_pppoe_bh2 #EXPORTA BH2
+# 						echo -e "${VERDE}\nScript do BH1 e BH2 exportado com sucesso!${SEM_COR}"
+# 						sleep 2
+# 							break
+# 							;;
+# 					Não. ) 
+# 						echo -e "\nTente novamente! Saindo.....\n"
+# 						sleep 2
+# 						return 1
+# 							;;
+# 					* )
+# 						echo -e "${VERMELHO}\nPor favor insira uma opção válida.${SEM_COR}"
+# 							;;
+# 				esac
+# 			done
+# }
 
 ptp_tipo_bridge () {
-			echo "- Qual é o nome da localidade?"; read "LOCAL"
+            LOCAL=$(gum input --placeholder "Qual é o nome da localidade?")
 			identifica_bloco
 			testa_bloco
-			echo -e "\nDeseja adicionar usuário e senha padrão ou custom?\n${VERMELHO}(também será removido o usuário admin)${SEM_COR}\n"
 			adicionar_usuario_mk
-			echo -e "Deseja setar o L2MTU no máximo? (recomendado)"
 			seta_max_l2mtu
-		# CONFIRA SE AS INFORMAÇÕES ESTÃO CERTAS
 			echo -e \
 		"
 		------- CONFIRA AS INFORMAÇÕES --------
@@ -318,26 +349,15 @@ ptp_tipo_bridge () {
 		"
 		PS3="$RODAPE2" # ----------------------- FRASE DO RODAPÉ )
 
-		select STATUS2 in "Sim!" "Não."
-		do
-			case $STATUS2 in
-				Sim! )
-					ptp_bridge_bh1 #EXPORTA BH1
-					ptp_bridge_bh2 #EXPORTA BH2
-					echo -e "${VERDE}\nScript do BH1 e BH2 exportado com sucesso!${SEM_COR}"
-					sleep 2
-						break
-						;;
-				Não. ) 
-					echo -e "\nTente novamente! Saindo....."
-					sleep 2
-					return 1
-						;;
-				* ) 
-					echo -e "${VERMELHO}\nPor favor insira uma opção válida.${SEM_COR}"
-						;;
-			esac
-		done
+confime_export1=$(gum confirm --affirmative="Sim!" --negative="Não." 'As informações estão corretas?')
+    if [[ $confime_export1 ]]; then
+        echo -e "\n${VERDE}[SUCESSO]${SEM_COR} Arquivo exportado com sucesso!"
+        ptp_pppoe_bh1 #EXPORTA BH1
+        ptp_pppoe_bh2 #EXPORTA BH2
+        sleep 2
+    else
+        echo -e "\nTente novamente! Saindo.....\n"
+fi 
 }
 
 # MIKROTIK
