@@ -175,12 +175,7 @@ adicionar_usuario_mk () {
 }
 
 seta_max_l2mtu () {
-    confime_export=$(gum confirm --affirmative="Sim" --negative="Não" "Deseja setar o l2mtu no máximo?")
-        if [[ $confime_export -eq 0 ]]; then
-        add_l2mtu='int ethernet set l2mtu=20000 [f]'
-        else
-        add_l2mtu=''
-    fi
+gum confirm "Deseja setar o l2mtu para o máximo?" --default=false --affirmative "[Yes]" --negative "[No]" && add_l2mtu='int ethernet set l2mtu=20000 [f]' || add_l2mtu=''
 }
 
 identifica_bloco () { # identifica o bloco que será utilizado
@@ -249,7 +244,7 @@ L2MTU: ${VERMELHO}$set_l2mtu${SEM_COR}
 
 ---------------------------------------
 "
-confime_export=$(gum confirm --affirmative="Sim" --negative="Não" 'As informações estão corretas?')
+gum confirm --affirmative="Sim" --negative="Não" 'As informações estão corretas?' && confime_export=0 || confime_export=1
     if [[ $confime_export -eq 0 ]]; then
         ptp_pppoe_bh1 #EXPORTA BH1
         ptp_pppoe_bh2 #EXPORTA BH2
@@ -281,7 +276,7 @@ L2MTU: ${VERMELHO}$set_l2mtu${SEM_COR}
 "
         PS3="$RODAPE2" # ----------------------- FRASE DO RODAPÉ )
 
-    confime_export=$(gum confirm --affirmative="Sim!" --negative="Não." 'As informações estão corretas?')
+gum confirm --affirmative="Sim" --negative="Não" 'As informações estão corretas?' && confime_export=0 || confime_export=1
     if [[ $confime_export -eq 0 ]]; then
         echo "\n${VERDE}[SUCESSO]${SEM_COR} Arquivo exportado com sucesso!"
         ptp_bridge_bh1 #EXPORTA BH1

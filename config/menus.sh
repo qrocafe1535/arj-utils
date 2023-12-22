@@ -27,7 +27,7 @@ menu_ubquit () {
 
         elif [[ "$tipo_do_ptp" == "Gerar lista de Canais" ]]; then
             lista_de_canais
-            export_txt=$(gum confirm --affirmative="Sim" --negative="Não" "Deseja exportar um arquivo contendo a lista?" && lista_de_canais > Lista_de_canais.txt)
+            gum confirm --affirmative="Sim" --negative="Não" "Deseja exportar um arquivo contendo a lista?" && lista_de_canais > Lista_de_canais.txt
 
     fi
 }

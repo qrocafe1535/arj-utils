@@ -305,5 +305,5 @@ MASCARA: ${VERMELHO}$mask_cidr${SEM_COR}
 ---------------------------------------
 "
 
-confime_export=$(gum confirm --affirmative="Sim" --negative="Não" "As informações estão corretas?" && bkp_da_antena)
+gum confirm --affirmative="Sim" --negative="Não" "As informações estão corretas?" && bkp_da_antena
 }
