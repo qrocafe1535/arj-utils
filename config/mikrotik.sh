@@ -175,12 +175,15 @@ adicionar_usuario_mk () {
 }
 
 seta_max_l2mtu () {
-gum confirm "Deseja setar o l2mtu para o máximo?" --default=false --affirmative "[Yes]" --negative "[No]" && add_l2mtu='int ethernet set l2mtu=20000 [f]' || add_l2mtu=''
+gum confirm "Deseja setar o l2mtu para o máximo?" --default=false --affirmative "Sim!" --negative "Não" && add_l2mtu='int ethernet set l2mtu=20000 [f]' || add_l2mtu=''
 }
 
 identifica_bloco () { # identifica o bloco que será utilizado
-	echo -e "\nQual o bloco que será utilizado? \nUtilize o formato: ${AZUL}X.X.X.X Y${SEM_COR}"
-	read -p "Endereço IP: " ip mask
+ip=$(gum input --placeholder 'Informe o endereço de rede utilizando o formato: X.X.X.X [Enter]')
+mask=$(gum input --placeholder 'Informe a mascara [Enter]')
+
+	# echo -e "\nQual o bloco que será utilizado? \nUtilize o formato: ${AZUL}X.X.X.X Y${SEM_COR}"
+	# read -p "Endereço IP: " ip mask
 
 # variaveis 
 	network=$( echo "$ip" | cut -d "." -f1,2,3 ) # network ip
