@@ -175,7 +175,7 @@ adicionar_usuario_mk () {
 }
 
 seta_max_l2mtu () {
-gum confirm "Deseja setar o l2mtu para o máximo?" --default=false --affirmative "Sim!" --negative "Não" && add_l2mtu='int ethernet set l2mtu=20000 [f]' || add_l2mtu=''
+gum confirm "Deseja setar o l2mtu para o máximo?" --default=false --affirmative "Sim!" --negative "Não" && add_l2mtu='int ethernet set l2mtu=20000 [f]' && set_l2mtu='Sim!' || add_l2mtu='' set_l2mtu='Não'
 }
 
 identifica_bloco () { # identifica o bloco que será utilizado
@@ -233,25 +233,22 @@ ptp_tipo_pppoe () {
             testa_bloco
             adicionar_usuario_mk
             seta_max_l2mtu
-                echo -e \
+            gum style \
+                        --foreground 212 --border-foreground 212 --border double \
+                        --align left --width 40 --margin "1 1" --padding "1 3" \
 "
-------- CONFIRA AS INFORMAÇÕES --------
+ID DO CLIENTE: $ID
+LOGIN DO PPPOE: $LOGIN
+SENHA DO PPPOE: $SENHA
+GATEWAY DO BH1: $GATEWAY
+BLOCO DO BH1: $BH1
+USUÁRIO: $adicionar_usuario
+L2MTU: $set_l2mtu"
 
-ID DO CLIENTE:${VERMELHO}  $ID ${SEM_COR}
-LOGIN DO PPPOE:${VERMELHO} $LOGIN ${SEM_COR}
-SENHA DO PPPOE:${VERMELHO} $SENHA ${SEM_COR}
-GATEWAY DO BH1:${VERMELHO} $GATEWAY ${SEM_COR}
-BLOCO DO BH1:${VERMELHO}   $BH1 ${SEM_COR}
-USUÁRIO: ${VERMELHO}$adicionar_usuario${SEM_COR}
-L2MTU: ${VERMELHO}$set_l2mtu${SEM_COR}
-
----------------------------------------
-"
 gum confirm --affirmative="Sim" --negative="Não" 'As informações estão corretas?' && confime_export=0 || confime_export=1
     if [[ $confime_export -eq 0 ]]; then
-        ptp_pppoe_bh1 #EXPORTA BH1
-        ptp_pppoe_bh2 #EXPORTA BH2
-        sleep 2
+        gum spin --show-output --title "Exportando BH1" sleep 2 && ptp_pppoe_bh1
+        gum spin --show-output --title "Exportando BH2" sleep 2 && ptp_pppoe_bh2
     else
         echo -e "\nTente novamente! Saindo.....\n"
 fi 
@@ -263,28 +260,22 @@ ptp_tipo_bridge () {
         testa_bloco
         adicionar_usuario_mk
         seta_max_l2mtu
-        echo -e \
+        gum style \
+                    --foreground 212 --border-foreground 212 --border double \
+                    --align left --width 40 --margin "1 1" --padding "1 3" \
 "
-------- CONFIRA AS INFORMAÇÕES --------
-
-NOME DO BH1: BH1-${VERMELHO}$LOCAL${SEM_COR}-ARAUJOSAT
-NOME DO BH2: BH2-${VERMELHO}$LOCAL${SEM_COR}-ARAUJOSAT
-GATEWAY:   ${VERMELHO}$GATEWAY${SEM_COR}
-IP DO BH1: ${VERMELHO}$BH1${SEM_COR}
-IP DO BH2: ${VERMELHO}$BH2${SEM_COR}
-USUÁRIO: ${VERMELHO}$adicionar_usuario${SEM_COR}
-L2MTU: ${VERMELHO}$set_l2mtu${SEM_COR}
-
----------------------------------------
-"
-        PS3="$RODAPE2" # ----------------------- FRASE DO RODAPÉ )
+NOME DO BH1: BH1-$LOCAL-ARAUJOSAT
+NOME DO BH2: BH2-$LOCAL-ARAUJOSAT
+GATEWAY:   $GATEWAY
+IP DO BH1: $BH1
+IP DO BH2: $BH2
+USUÁRIO: $adicionar_usuario
+L2MTU: $set_l2mtu"
 
 gum confirm --affirmative="Sim" --negative="Não" 'As informações estão corretas?' && confime_export=0 || confime_export=1
     if [[ $confime_export -eq 0 ]]; then
-        echo "\n${VERDE}[SUCESSO]${SEM_COR} Arquivo exportado com sucesso!"
-        ptp_bridge_bh1 #EXPORTA BH1
-        ptp_bridge_bh2 #EXPORTA BH2
-        sleep 2
+        gum spin --title "Exportando BH1" sleep 2 && ptp_bridge_bh1
+        gum spin --title "Exportando BH2" sleep 2 && ptp_bridge_bh2
     else
         echo -e "\nTente novamente! Saindo.....\n"
     fi

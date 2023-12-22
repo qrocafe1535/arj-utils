@@ -291,19 +291,17 @@ gerar_config_painel () {
     WPA=$(gum input --placeholder "Qual WPA do painel?")
     identifica_bloco_antena
     testa_bloco_antena
-    echo -e \
+        gum style \
+                    --foreground 212 --border-foreground 212 --border double \
+                    --align left --width 40 --margin "1 1" --padding "1 3" \
 "
-------- CONFIRA AS INFORMAÇÕES --------
-
-NOME: ${VERMELHO}$NOME${SEM_COR}
-SSID: ${VERMELHO}$SSID${SEM_COR}
-WPA: ${VERMELHO}$WPA${SEM_COR}
-GATEWAY: ${VERMELHO}$GATEWAY${SEM_COR}
-IP: ${VERMELHO}$AP1${SEM_COR}
-MASCARA: ${VERMELHO}$mask_cidr${SEM_COR}
-
----------------------------------------
+NOME: $NOME
+SSID: $SSID
+WPA: $WPA
+GATEWAY: $GATEWAY
+IP: $AP1
+MASCARA: $mask_cidr
 "
 
-gum confirm --affirmative="Sim" --negative="Não" "As informações estão corretas?" && bkp_da_antena
+gum confirm --affirmative="Sim" --negative="Não" "As informações estão corretas?" && gum spin --title "Exportando BH1" sleep 2 && bkp_da_antena
 }
