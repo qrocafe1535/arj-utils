@@ -174,55 +174,14 @@ adicionar_usuario_mk () {
     fi 
 }
 
-# adicionar_usuario_mk.old () {
-# 		select adicionar_usuario in "Padrão." "Custom." #  ----------------------------------- ( DESEJA ADICIONAR USUÁRIO DEFAULT?)
-# 		do
-# 				case $adicionar_usuario in
-# 				Padrão. )
-# 					user_ptp="sup@sat"
-# 					user_password='"lRz\$&1hd=vW+yD1kw32sH7qC+e\$ONnHN.6qs+Ri}"'
-# 					break
-# 						;;
-# 				Custom. )
-# 				read -p "Digite o Usuário: " user_ptp
-# 				read -s -p "Digite a Senha: " user_password
-# 					break
-# 						;;
-# 				* )
-# 					echo -e "${VERMELHO}\nPor favor insira uma opção válida.${SEM_COR}"
-# 						;;
-# 			esac
-# 		done #  ----------------------------------- ( FINAL DESEJA ADICIONAR USUÁRIO DEFAULT?)
-# } 
-
-
 seta_max_l2mtu () {
     confime_export=$(gum confirm --affirmative="Sim" --negative="Não" "Deseja setar o l2mtu no máximo?")
-        if [[ $confime_export ]]; then
+        if [[ $confime_export -eq 0 ]]; then
         add_l2mtu='int ethernet set l2mtu=20000 [f]'
         else
         add_l2mtu=''
     fi
 }
-
-# seta_max_l2mtu.old () {
-# 	select set_l2mtu in "Sim!" "Não."
-# 	do
-# 		case $set_l2mtu in 
-# 		Sim! )
-# 			add_l2mtu='int ethernet set l2mtu=20000 [f]'
-# 			break
-# 				;;
-# 		Não. )
-# 			add_l2mtu=''
-# 			break
-# 				;;
-# 		* )
-# 			echo -e "${VERMELHO}\nPor favor insira uma opção válida.${SEM_COR}"
-# 		;;
-# 		esac
-# 	done
-# }
 
 identifica_bloco () { # identifica o bloco que será utilizado
 	echo -e "\nQual o bloco que será utilizado? \nUtilize o formato: ${AZUL}X.X.X.X Y${SEM_COR}"
@@ -249,21 +208,21 @@ identifica_bloco () { # identifica o bloco que será utilizado
 }
 
 testa_bloco () { # verifica se o bloco utilizado estará livre.
-	if ping -c 1 -W 1 "$gateway" &> /dev/null; then
-			echo -e "\n${AMARELO}[ATENÇÃO]${SEM_COR} O IP $gateway está respondendo a ICMP."
-		elif ping -c 1 -W 1 "$network" &> /dev/null; then
-			echo -e "\n${AMARELO}[ATENÇÃO]${SEM_COR} O IP $network está respondendo a ICMP."
-		elif ping -c 1 -W 1 "$bh1" &> /dev/null; then
-			echo -e "\n${AMARELO}[ATENÇÃO]${SEM_COR} O IP $bh1 está respondendo a ICMP."
-		elif ping -c 1 -W 1 "$bh2" &> /dev/null; then
-			echo -e "\n${AMARELO}[ATENÇÃO]${SEM_COR} O IP $bh2 está respondendo a ICMP."
-	else
-				echo -e "\n${VERDE}O bloco está livre.${SEM_COR}\n"
-			sleep 1
-	fi
-		GATEWAY="$network.$(( $host + 1))$mask_cidr"
-		BH1="$network.$(( $host + 2))$mask_cidr"
-		BH2="$network.$(( $host + 3))$mask_cidr"
+    if ping -c 1 -W 1 "$gateway" &> /dev/null; then
+        echo -e "\n${AMARELO}[ATENÇÃO]${SEM_COR} O IP $gateway está respondendo a ICMP."
+    elif ping -c 1 -W 1 "$network" &> /dev/null; then
+        echo -e "\n${AMARELO}[ATENÇÃO]${SEM_COR} O IP $network está respondendo a ICMP."
+    elif ping -c 1 -W 1 "$bh1" &> /dev/null; then
+        echo -e "\n${AMARELO}[ATENÇÃO]${SEM_COR} O IP $bh1 está respondendo a ICMP."
+    elif ping -c 1 -W 1 "$bh2" &> /dev/null; then
+        echo -e "\n${AMARELO}[ATENÇÃO]${SEM_COR} O IP $bh2 está respondendo a ICMP."
+    else
+        echo -e "\n${VERDE}O bloco está livre.${SEM_COR}\n"
+    sleep 1
+    fi
+    GATEWAY="$network.$(( $host + 1))$mask_cidr"
+    BH1="$network.$(( $host + 2))$mask_cidr"
+    BH2="$network.$(( $host + 3))$mask_cidr"
 }
 
 ptp_tipo_pppoe () {
@@ -272,31 +231,26 @@ ptp_tipo_pppoe () {
             ID=$(gum input --placeholder "Digite o ID do Contrato do cliente?")
             LOGIN=$(gum input --placeholder "Qual o login do PPPoE do cliente?")
             SENHA=$(gum input --placeholder "Qual a senha do PPPoE do cliente?")
-			identifica_bloco
-			testa_bloco
-			adicionar_usuario_mk
-			seta_max_l2mtu
+            identifica_bloco
+            testa_bloco
+            adicionar_usuario_mk
+            seta_max_l2mtu
+                echo -e \
+"
+------- CONFIRA AS INFORMAÇÕES --------
 
-			# echo "- Digite o ID do Contrato do cliente?"; read "ID"		
-			# echo "- Qual o login do PPPoE do cliente?"; read "LOGIN"		
-			# echo -e "- Qual a senha do PPPoE do cliente?"; read "SENHA"		
+ID DO CLIENTE:${VERMELHO}  $ID ${SEM_COR}
+LOGIN DO PPPOE:${VERMELHO} $LOGIN ${SEM_COR}
+SENHA DO PPPOE:${VERMELHO} $SENHA ${SEM_COR}
+GATEWAY DO BH1:${VERMELHO} $GATEWAY ${SEM_COR}
+BLOCO DO BH1:${VERMELHO}   $BH1 ${SEM_COR}
+USUÁRIO: ${VERMELHO}$adicionar_usuario${SEM_COR}
+L2MTU: ${VERMELHO}$set_l2mtu${SEM_COR}
 
-			echo -e \
-	"
-	------- CONFIRA AS INFORMAÇÕES --------
-
-	ID DO CLIENTE:${VERMELHO}  $ID ${SEM_COR}
-	LOGIN DO PPPOE:${VERMELHO} $LOGIN ${SEM_COR}
-	SENHA DO PPPOE:${VERMELHO} $SENHA ${SEM_COR}
-	GATEWAY DO BH1:${VERMELHO} $GATEWAY ${SEM_COR}
-	BLOCO DO BH1:${VERMELHO}   $BH1 ${SEM_COR}
-	USUÁRIO: ${VERMELHO}$adicionar_usuario${SEM_COR}
-	L2MTU: ${VERMELHO}$set_l2mtu${SEM_COR}
-
-	---------------------------------------
-	"
+---------------------------------------
+"
 confime_export=$(gum confirm --affirmative="Sim" --negative="Não" 'As informações estão corretas?')
-    if [[ $confime_export ]]; then
+    if [[ $confime_export -eq 0 ]]; then
         ptp_pppoe_bh1 #EXPORTA BH1
         ptp_pppoe_bh2 #EXPORTA BH2
         sleep 2
@@ -305,59 +259,37 @@ confime_export=$(gum confirm --affirmative="Sim" --negative="Não" 'As informaç
 fi 
 } 
 
-# 			select STATUS1 in "Sim!" "Não." #  ----------------------------------- ( SELEÇÃO DE CONFIMAÇÃO SIM OU NÃO )
-# 			do
-# 					case $STATUS1 in
-# 					Sim! )
-# 						ptp_pppoe_bh1 #EXPORTA BH1
-# 						ptp_pppoe_bh2 #EXPORTA BH2
-# 						echo -e "${VERDE}\nScript do BH1 e BH2 exportado com sucesso!${SEM_COR}"
-# 						sleep 2
-# 							break
-# 							;;
-# 					Não. ) 
-# 						echo -e "\nTente novamente! Saindo.....\n"
-# 						sleep 2
-# 						return 1
-# 							;;
-# 					* )
-# 						echo -e "${VERMELHO}\nPor favor insira uma opção válida.${SEM_COR}"
-# 							;;
-# 				esac
-# 			done
-# }
-
 ptp_tipo_bridge () {
-            LOCAL=$(gum input --placeholder "Qual é o nome da localidade?")
-			identifica_bloco
-			testa_bloco
-			adicionar_usuario_mk
-			seta_max_l2mtu
-			echo -e \
-		"
-		------- CONFIRA AS INFORMAÇÕES --------
+        LOCAL=$(gum input --placeholder "Qual é o nome da localidade?")
+        identifica_bloco
+        testa_bloco
+        adicionar_usuario_mk
+        seta_max_l2mtu
+        echo -e \
+"
+------- CONFIRA AS INFORMAÇÕES --------
 
-		NOME DO BH1: BH1-${VERMELHO}$LOCAL${SEM_COR}-ARAUJOSAT
-		NOME DO BH2: BH2-${VERMELHO}$LOCAL${SEM_COR}-ARAUJOSAT
-		GATEWAY:   ${VERMELHO}$GATEWAY${SEM_COR}
-		IP DO BH1: ${VERMELHO}$BH1${SEM_COR}
-		IP DO BH2: ${VERMELHO}$BH2${SEM_COR}
-		USUÁRIO: ${VERMELHO}$adicionar_usuario${SEM_COR}
-		L2MTU: ${VERMELHO}$set_l2mtu${SEM_COR}
+NOME DO BH1: BH1-${VERMELHO}$LOCAL${SEM_COR}-ARAUJOSAT
+NOME DO BH2: BH2-${VERMELHO}$LOCAL${SEM_COR}-ARAUJOSAT
+GATEWAY:   ${VERMELHO}$GATEWAY${SEM_COR}
+IP DO BH1: ${VERMELHO}$BH1${SEM_COR}
+IP DO BH2: ${VERMELHO}$BH2${SEM_COR}
+USUÁRIO: ${VERMELHO}$adicionar_usuario${SEM_COR}
+L2MTU: ${VERMELHO}$set_l2mtu${SEM_COR}
 
-		---------------------------------------
-		"
-		PS3="$RODAPE2" # ----------------------- FRASE DO RODAPÉ )
+---------------------------------------
+"
+        PS3="$RODAPE2" # ----------------------- FRASE DO RODAPÉ )
 
-confime_export1=$(gum confirm --affirmative="Sim!" --negative="Não." 'As informações estão corretas?')
-    if [[ $confime_export1 ]]; then
-        echo -e "\n${VERDE}[SUCESSO]${SEM_COR} Arquivo exportado com sucesso!"
-        ptp_pppoe_bh1 #EXPORTA BH1
-        ptp_pppoe_bh2 #EXPORTA BH2
+    confime_export=$(gum confirm --affirmative="Sim!" --negative="Não." 'As informações estão corretas?')
+    if [[ $confime_export -eq 0 ]]; then
+        echo "\n${VERDE}[SUCESSO]${SEM_COR} Arquivo exportado com sucesso!"
+        ptp_bridge_bh1 #EXPORTA BH1
+        ptp_bridge_bh2 #EXPORTA BH2
         sleep 2
     else
         echo -e "\nTente novamente! Saindo.....\n"
-fi 
+    fi
 }
 
 # MIKROTIK
