@@ -8,7 +8,6 @@ echo \
 /interface wireless set [ find default-name=wlan1 ] band=5ghz-a/n channel-width=20/40mhz-XX country=no_country_set disabled=no frequency=5500 frequency-mode=superchannel mode=bridge nv2-preshared-key=bh1#$ID nv2-security=enabled ssid=BH1-ARAUJOSAT-$ID wireless-protocol=nv2 wps-mode=disabled
 /interface wireless set [ find default-name=wlan1 ] disabled=no
 /interface bridge port add bridge=bridge1 interface=wlan1
-/interface bridge port add bridge=bridge1 interface=[/interface ethernet find default-name=ether1]
 /ip address add address=$BH1 interface=bridge1
 /ip route add distance=254 gateway=$gateway
 /ip service set winbox port=47569
@@ -19,7 +18,7 @@ echo \
 /ip service set telnet disabled=yes port=47589
 /ip service set ftp address=186.249.81.30/32 port=47589
 /ip service set www disabled=yes
-/ip service set ssh disabled=no address=45.178.225.110/32,186.249.81.30/32,100.127.255.0/24 port=50004
+/ip service set ssh disabled=no address=45.178.225.110/32,186.249.81.30/32,100.127.255.0/24,10.51.200.16/32 port=50004
 /ip service set api address=186.249.81.58/32 disabled=no port=3540
 /ip service set winbox address=186.249.81.30/32,100.127.255.0/24 port=47569
 /ip service set api-ssl disabled=yes
@@ -36,6 +35,7 @@ echo \
 /user aaa set interim-update=3m use-radius=yes
 /user add group=full address=186.249.81.30 name=$user_ptp password=$user_password
 /user remove admin
+/interface bridge port add bridge=bridge1 interface=[/interface ethernet find default-name=ether1]
 /$add_l2mtu
 /
 " > "BH1-ARAUJOSAT-${LOGIN}-${ID}.rsc"
@@ -61,7 +61,7 @@ echo \
 /ip service set telnet disabled=yes port=47589
 /ip service set ftp address=186.249.81.30/32 port=47589
 /ip service set www disabled=yes
-/ip service set ssh disabled=no address=45.178.225.110/32,186.249.81.30/32,100.127.255.0/24 port=50004
+/ip service set ssh disabled=no address=45.178.225.110/32,186.249.81.30/32,100.127.255.0/24,10.51.200.16/32 port=50004
 /ip service set api address=186.249.81.58/32 disabled=no port=3540
 /ip service set winbox address=186.249.81.30/32,100.127.255.0/24 port=47569
 /ip service set api-ssl disabled=yes
@@ -89,7 +89,6 @@ echo \
 /
 /interface bridge add name=bridge1
 /interface wireless set [ find default-name=wlan1 ] band=5ghz-a/n channel-width=20/40mhz-XX country=no_country_set disabled=no frequency=5500 frequency-mode=superchannel mode=bridge nv2-preshared-key=bh1#$LOCAL nv2-security=enabled ssid=BH1-$LOCAL wireless-protocol=nv2 wps-mode=disabled
-/interface bridge port add bridge=bridge1 interface=[/interface ethernet find name=ether1]
 /interface bridge port add bridge=bridge1 interface=wlan1
 /ip address add address=$BH1 interface=bridge1
 /ip route add distance=254 gateway=$gateway
@@ -100,7 +99,7 @@ echo \
 /ip service set telnet disabled=yes port=47589
 /ip service set ftp address=186.249.81.30/32 port=47589
 /ip service set www disabled=yes
-/ip service set ssh disabled=no address=45.178.225.110/32,186.249.81.30/32,100.127.255.0/24 port=50004
+/ip service set ssh disabled=no address=45.178.225.110/32,186.249.81.30/32,100.127.255.0/24,10.51.200.16/32 port=50004
 /ip service set api address=186.249.81.58/32 disabled=no port=3540
 /ip service set winbox address=186.249.81.30/32,100.127.255.0/24 port=47569
 /ip service set api-ssl disabled=yes
@@ -117,6 +116,7 @@ echo \
 /user aaa set interim-update=3m use-radius=yes
 /user add group=full address=186.249.81.30 name=$user_ptp password=$user_password
 /user remove admin
+/interface bridge port add bridge=bridge1 interface=[/interface ethernet find name=ether1]
 /$add_l2mtu
 /
 " > "BH1-${LOCAL}-ARAUJOSAT.rsc"
@@ -130,7 +130,6 @@ ptp_bridge_bh2 () {
 /interface wireless set [ find default-name=wlan1 ] band=5ghz-a/n channel-width=20/40mhz-XX country=no_country_set disabled=no frequency-mode=superchannel mode=station-bridge nv2-preshared-key=bh1#$LOCAL nv2-security=enabled radio-name=BH2-$LOCAL scan-list=default,5100-6000 ssid=BH1-$LOCAL wireless-protocol=nv2
 /interface wireless nstreme set wlan1 enable-nstreme=yes
 /interface wireless security-profiles set [ find default=yes ] supplicant-identity=MikroTik
-/interface bridge port add bridge=bridge1 interface=[/interface ethernet find name=ether1]
 /interface bridge port add bridge=bridge1 interface=wlan1
 /ip address add address=$BH2 interface=bridge1
 /ip route add distance=254 gateway=$gateway
@@ -141,7 +140,7 @@ ptp_bridge_bh2 () {
 /ip service set telnet disabled=yes port=47589
 /ip service set ftp address=186.249.81.30/32 port=47589
 /ip service set www disabled=yes
-/ip service set ssh disabled=no address=45.178.225.110/32,186.249.81.30/32,100.127.255.0/24 port=50004
+/ip service set ssh disabled=no address=45.178.225.110/32,186.249.81.30/32,100.127.255.0/24,10.51.200.16/32 port=50004
 /ip service set api address=186.249.81.58/32 disabled=no port=3540
 /ip service set winbox address=186.249.81.30/32,100.127.255.0/24 port=47569
 /ip service set api-ssl disabled=yes
@@ -158,6 +157,7 @@ ptp_bridge_bh2 () {
 /user aaa set interim-update=3m use-radius=yes
 /user add group=full address=186.249.81.30 name=$user_ptp password=$user_password
 /user remove admin
+/interface bridge port add bridge=bridge1 interface=[/interface ethernet find name=ether1]
 /$add_l2mtu
 /
 " > "BH2-${LOCAL}-ARAUJOSAT.rsc"
