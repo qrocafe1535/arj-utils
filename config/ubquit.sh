@@ -265,7 +265,6 @@ testa_bloco_antena () { # verifica se o bloco utilizado estará livre.
         AP1="$network.$(( $host + 2))"
 }
 
-
 download_att_antenas () {
     diretorio_destino="/home/$USER/Downloads/ANTENAS-6.3.11"
     echo "Realizando download dos arquivos direto da fabricante em $diretorio_destino"
@@ -304,5 +303,5 @@ IP: $AP1
 MASCARA: $mask_cidr
 "
 
-gum confirm --affirmative="Sim" --negative="Não" "As informações estão corretas?" && gum spin --title "Exportando BH1" sleep 2 && bkp_da_antena
+gum confirm --affirmative="Sim" --negative="Não" "As informações estão corretas?" && gum spin --title "Exportando configuração..." sleep 2 && bkp_da_antena
 }
